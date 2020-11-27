@@ -1,0 +1,119 @@
+.sidebar .nav-link i, .sidebar .navbar .dropdown-toggle i, .navbar .sidebar .dropdown-toggle i {
+      display: inline-block;
+      width: 20px;
+      margin: 0 0.5rem 0 0;
+      font-size: 18px;
+      color:  rgb(255,255,255);
+      text-align: center; 
+}
+
+.sidebar .nav-link:hover i, .sidebar .navbar .dropdown-toggle:hover i, .navbar .sidebar .dropdown-toggle:hover i {
+    color: #fff;
+    font-size: 25px;
+}
+
+.card-header button {
+    float:right;
+}
+
+form label {
+    color:rgba(35, 25, 228, 0.667);
+    font-weight: 300;
+    font-weight: bold;
+}
+
+.customers  input,select,.custom-select{
+    border-top: 0;
+    border-bottom: 1px solid rgb(80, 78, 78 0.6);
+    border-left: 0;
+    border-right: 0;
+}
+
+input:focus, input.form-control:focus, .custom-select:focus{
+
+    outline:none !important;
+    outline-width: 0 !important;
+    box-shadow: none;
+    -moz-box-shadow: none;
+    -webkit-box-shadow: none;
+}
+
+.customers  input:focus{
+    border-top: 0;
+    border-bottom: 2px solid rgba(35, 138, 247, 0.756);
+    border-left: 0;
+    border-right: 0;
+}
+
+.links  input,select,.custom-select{
+    border-top: 0;
+    border-bottom: 1px solid rgb(80, 78, 78 0.6);
+    border-left: 0;
+    border-right: 0;
+}
+
+.links  input:focus{
+    border-top: 0;
+    border-bottom: 2px solid rgba(35, 138, 247, 0.756);
+    border-left: 0;
+    border-right: 0;
+}
+.worker  input,select,.custom-select{
+    border-top: 0;
+    border-bottom: 1px solid rgb(80, 78, 78 0.6);
+    border-left: 0;
+    border-right: 0;
+}
+
+.worker  input:focus{
+    border-top: 0;
+    border-bottom: 2px solid rgba(35, 138, 247, 0.756);
+    border-left: 0;
+    border-right: 0;
+}
+
+.category  input,select,.custom-select{
+    border-top: 0;
+    border-bottom: 1px solid rgb(80, 78, 78 0.6);
+    border-left: 0;
+    border-right: 0;
+}
+
+.category  input:focus{
+    border-top: 0;
+    border-bottom: 2px solid rgba(35, 138, 247, 0.756);
+    border-left: 0;
+    border-right: 0;
+}
+
+.provider  input,select,.custom-select{
+    border-top: 0;
+    border-bottom: 1px solid rgb(80, 78, 78 0.6);
+    border-left: 0;
+    border-right: 0;
+}
+
+.provider  input:focus{
+    border-top: 0;
+    border-bottom: 2px solid rgba(35, 138, 247, 0.756);
+    border-left: 0;
+    border-right: 0;
+}
+
+.product_img{
+    width: 170px;
+    height: 170px;
+}
+
+.product_img .img_product{
+    width: 100%;
+}
+
+.img_products{
+    width: 100px;
+    height: 100px;
+}
+
+.img_products img{
+    width: 100%;
+}
