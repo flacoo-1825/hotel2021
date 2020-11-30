@@ -13,13 +13,15 @@ class Certificate extends Model
         'temperature_entry_client',
         'temperature_exit_client',
         'number_certificate',
-        'cityDestination_certificate', 
+        'cityDestination_certificate',
+        'time_entry_certificate',
+        'time_exit_certificate',
         'placabike_certificate',
-        'placaCar_certificate', 
-        'adults_certificate', 
+        'placaCar_certificate',
+        'adults_certificate',
         'children_certificate',
-        'entry_certificate', 
-        'exit_certificate', 
+        'entry_certificate',
+        'exit_certificate',
         'observation_certificate'
 
     ];

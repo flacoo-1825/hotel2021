@@ -18,6 +18,7 @@ class CreateRoomsTable extends Migration
             $table->integer('type_room_id')->unsigned(); 
             $table->integer('client_id')->nullable();
             $table->string('number');
+            $table->string('number_certificate')->nullable();
             $table->double('price', 8, 2)->nullable();
             $table->double('price_air', 8, 2)->nullable();
             $table->enum('frozen',['Ventilador','Aire Acondicionado','Aire Acondicionado---Ventilador']);

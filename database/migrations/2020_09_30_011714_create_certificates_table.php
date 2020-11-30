@@ -27,11 +27,12 @@ class CreateCertificatesTable extends Migration
             $table->integer('children_certificate')->nullable();
             $table->date('entry_certificate')->nullable();
             $table->date('exit_certificate')->nullable();
+            $table->string('time_entry_certificate')->nullable();
+            $table->string('time_exit_certificate')->nullable();
             $table->text('observation_certificate')->nullable();
             $table->timestamps();
 
             $table->foreign('client_id')->references('id')->on('customers');
-            
         });
     }
 

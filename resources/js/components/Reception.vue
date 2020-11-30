@@ -96,6 +96,7 @@
                                 <th>segundo Apellido</th>
                                 <th>Cédula</th>
                                 <th>Fecha de Nacimiento</th>
+                                <th>Temperatura de entrada</th>
                                 <th>Opciones</th>
                               </tr>
                             </thead>
@@ -106,10 +107,10 @@
                                 <td v-text="acomp.secondSurname_acomp" ></td>
                                 <td v-text="acomp.cedula_acomp" ></td>
                                 <td v-text="acomp.birth_date_acomp" ></td>
-                                <!-- <td v-text:format="dateformat(acomp.birth_date_acomp)"></td> -->
+                                <td v-text="acomp.temperature_entry_acomp+'°C'" ></td>
                                 <td>
-                                  <a href="#" class="btn btn-danger "  title="Eliminar" @click="deleteAcomp(acomp)" >
-                                    <i class="fas fa-trash-alt"></i> Eliminar
+                                  <a href="#" class="btn-floatiing bg-danger"  title="Eliminar" @click="deleteAcomp(acomp)" >
+                                    <i class="fas fa-trash-alt"></i>
                                   </a>
                                 </td>
                               </tr>
@@ -237,7 +238,7 @@
                                           <span class="input-group-text">°C</span>
                                         </div>
                                       </div>
-                                      <div class="col-sm-12 col-md-3 input-group">
+                                      <!-- <div class="col-sm-12 col-md-3 input-group"> TODO:
                                         <div class="input-group">
                                           <label for="text-input ">Temperatura de salida</label>
                                         </div>
@@ -245,12 +246,18 @@
                                         <div class="input-group-append">
                                           <span class="input-group-text">°C</span>
                                         </div>
-                                      </div>
-                                      <div class="col-sm-12 col-md-6 input-group">
+                                      </div> -->
+                                      <div class="col-sm-12 col-md-4 input-group">
                                         <div class="input-group">
                                           <label for="text-input ">Fecha de ingreso</label>
                                         </div>
                                           <date-picker v-model="entry_certificate"   :language="es" :lang="lang" valueType="format"></date-picker>
+                                      </div>
+                                      <div class="col-sm-12 col-md-3 input-group">
+                                        <div class="input-group">
+                                          <label for="text-input ">Hora de entrada</label>
+                                        </div>
+                                        <input type="text" class="form-control"  v-model="time_entry_certificate"  placeholder="">
                                       </div>
                                   </div>
                                   <div class="row mb-4 mt-3">
@@ -302,7 +309,7 @@
                                       <div class="input-group">
                                         <label for="text-input ">Temperatura de entrada</label>
                                       </div>
-                                      <input type="number" class="form-control"  v-model="temperature_entry_client"  placeholder="">
+                                      <input type="number" class="form-control"  v-model="temperature_entry_acomp"  placeholder="">
                                       <div class="input-group-append">
                                         <span class="input-group-text">°C</span>
                                       </div>
@@ -311,7 +318,7 @@
                                       <div class="input-group">
                                         <label for="text-input ">Temperatura de salida</label>
                                       </div>
-                                      <input type="number" class="form-control"  v-model="temperature_exit_client" v-bind:disabled="desactivar==1" placeholder="">
+                                      <input type="number" class="form-control"  v-model="temperature_exit_acomp" v-bind:disabled="desactivar==1" placeholder="">
                                       <div class="input-group-append">
                                         <span class="input-group-text">°C</span>
                                       </div>
@@ -350,27 +357,23 @@
                                   </div>
                                     <div class="row">
                                       <div class="col-sm-12 col-md-4">
-                                          <label for="email-input ">Tipo de ventilación</label>
+                                          <label for="email-input ">Precio habitación</label>
                                           <div class="form-check">
-                                            <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" :value="price" checked>
                                             <label class="form-check-label" for="exampleRadios1">
-                                              Ventilador
+                                              Ventilador : <span class="text-danger">{{ price | currency}}</span>
                                             </label>
                                           </div>
                                           <div class="form-check">
-                                            <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios2" :value="price_air">
                                             <label class="form-check-label" for="exampleRadios2">
-                                              Aire Acondicionado
+                                              A/C : <span class="text-danger">{{ price_air | currency}}</span>
                                             </label>
                                           </div>
                                       </div>
                                       <div class="col-sm-12 col-md-4">
-                                          <label for="text-input ">Ciudad de origen</label>
-                                          <input type="text" class="form-control"  v-model="cityOrigin_certificate"  placeholder="introduzca la ciudad">
+                                          <label for="text-input ">Habitación : <span v-text="number" class="text-danger"></span></label>
                                       </div>
                                       <div class="col-sm-12 col-md-4">
-                                          <label for="text-input ">Ciudad de destino</label>
-                                          <input type="text" class="form-control" v-model="cityDestination_certificate"   placeholder="introduzca la ciudad">
+                                          <label for="text-input ">Tipo de habitación : <span v-text="name_type_room" class="text-danger"></span></label>
                                       </div>
                                   </div>
                                 </template>
@@ -398,11 +401,9 @@
                                           <label for="text-input ">Edad</label>
                                           <input type="text" class="form-control" placeholder="" v-model="age_client">
                                       </div>
-                                      
                                       <div class="col-lg-4 mb-2">
                                       <label for="text-input ">Fecha de Nacimiento</label>
                                       <date-picker v-model="birth_date_client"   :language="es" :lang="lang" valueType="format"></date-picker>
-                                      <!-- <Datepicker  v-model='birth_date_client'    :language="es" :value="Date" :format="dateformat(birth_date_client)"  ></Datepicker> -->
                                       </div>
                                   </div>
                                   <div class="row">
@@ -458,19 +459,9 @@
                               <a  class="btn btn-success  text-white"  @click="search_client(cc_client,option = 1)" v-if="accion==1">Ingresar</a>
                               <a  class="btn btn-success  text-white" @click="registerCustomers()" v-if="accion==3">Registrar</a>
                               <a  class="btn btn-success  text-white" @click="stateBusy()" v-if="accion==4">Hospedar</a>
-                              <hr>
-                              <!-- <template v-if="arrayError">
-                                  <div >
-                                      <ul class="list-unstyled  alert-danger  row">
-                                              <li v-text="error[0]" class="col-sm-12 col-md-6 col-lg-6 pull-left"    v-for="error in arrayError "></li>
-                                      </ul>
-                                  </div>
-                              </template> -->
                           </div>
                       </div>
-                      <!-- /.modal-content -->
                   </div>
-                  <!-- /.modal-dialog -->
               </div>
         <!--modal reservar  -->
               <div class="modal fade reservation" :class="{'mostrar' : modal == 4 }" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="display: none;" aria-hidden="true">
@@ -541,8 +532,8 @@
                           <div class="col-sm-12 col-md-4">
                               <label for="text-input ">Celular</label>
                               <input type="text" class="form-control"  v-model=' phone_client '  placeholder="introduzca el celular">
-                          </div>        
-                          <div class="col-sm-12 col-md-4">  
+                          </div>
+                          <div class="col-sm-12 col-md-4">
                               <label for="email-input ">Nacionalidad</label>
                               <input type="text" class="form-control"  v-model=' nationality_client '  placeholder="introduzca la nacionalidad">
                           </div>
@@ -595,10 +586,10 @@
                         <button type="button" class="btn btn-warning" @click="closeModal('reservation')">
                           <i class="fas fa-times-circle"></i> Cerrar
                         </button>
-                        <button type="button" class="btn btn-danger" @click="actionEvent(option=2)"> Eliminar reserva 
+                        <button type="button" class="btn btn-danger" @click="actionEvent(option=2)"> Eliminar reserva
                           <i class="fas fa-trash-alt"></i>
                         </button>
-                        <button type="button" class="btn btn-success" @click="actionEvent(option=1)"> Actualizar reserva 
+                        <button type="button" class="btn btn-success" @click="actionEvent(option=1)"> Actualizar reserva
                           <i class="fas fa-exchange-alt"></i>
                         </button>
                       </template>
@@ -606,7 +597,7 @@
                         <button type="button" class="btn btn-danger" @click="closeModal('reservation')">
                           <i class="fas fa-times-circle"></i> Cerrar
                         </button>
-                        <button type="button" class="btn btn-success" @click="addReservation()"> Generar reserva 
+                        <button type="button" class="btn btn-success" @click="addReservation()"> Generar reserva
                           <i class="far fa-share-square"></i>
                         </button>
                       </template>
@@ -1178,6 +1169,9 @@
               },
               events: [],
             },
+            time_entry_certificate : '',
+            temperature_exit_acomp : 0,
+            temperature_entry_acomp : 0,
             options : 0,
             reservation_id : 0,
             color: "#df2020",
@@ -1305,23 +1299,22 @@
             if(!this.pagination.to) {
                 return [];
             }
-            
-            var from = this.pagination.current_page - this.offset; 
+            var from = this.pagination.current_page - this.offset;
             if(from < 1) {
                 from = 1;
             }
 
-            var to = from + (this.offset * 2); 
+            var to = from + (this.offset * 2);
             if(to >= this.pagination.last_page){
                 to = this.pagination.last_page;
-            }  
+            }
 
             var pagesArray = [];
             while(from <= to) {
                 pagesArray.push(from);
                 from++;
             }
-            return pagesArray;             
+            return pagesArray;
 
         },
 
@@ -1393,9 +1386,9 @@
                   'room_id' : this.room_id,
                   'customer_id' : this.client_id,
                   'reservation_date' :    this.reservation_date,
-                  'title': 'H-' + this.arrayRooms[this.room_id-1]['number']+this.condition_state, 
-                  'start' : this.reservation_date_entry, 
-                  'end'   : this.reservation_date_exit, 
+                  'title': 'H-' + this.arrayRooms[this.room_id-1]['number']+this.condition_state,
+                  'start' : this.reservation_date_entry,
+                  'end'   : this.reservation_date_exit,
                   'color' : this.color,
                   'textColor' : '#000',
                 })
@@ -1414,12 +1407,12 @@
                 this.room_id = '*';
                 this.client_id = '';
                 this.reservation_date = '';
-                this.condition_state = '-R.Editable'; 
-                this.reservation_date_entry = ''; 
-                this.reservation_date_exit = ''; 
+                this.condition_state = '-R.Editable';
+                this.reservation_date_entry = '';
+                this.reservation_date_exit = '';
                 this.color = '';
               break;
-          
+
             case 2:
               // console.log(this.reservation_id);
                 var url = 'reservation/delete?reservation_id='+ this.reservation_id;
@@ -1441,9 +1434,9 @@
                 this.room_id = '*';
                 this.client_id = '';
                 this.reservation_date = '';
-                this.condition_state = '-R.Editable'; 
-                this.reservation_date_entry = ''; 
-                this.reservation_date_exit = ''; 
+                this.condition_state = '-R.Editable';
+                this.reservation_date_entry = '';
+                this.reservation_date_exit = '';
                 this.color = '';
               break;
           }
@@ -1454,9 +1447,9 @@
           this.room_id = '*';
           this.client_id = '';
           this.reservation_date = '';
-          this.condition_state = '-R.Editable'; 
-          this.reservation_date_entry = ''; 
-          this.reservation_date_exit = ''; 
+          this.condition_state = '-R.Editable';
+          this.reservation_date_entry = '';
+          this.reservation_date_exit = '';
           this.color = '';
           let me = this;
           me.reservation_date_entry = arg.dateStr
@@ -1479,7 +1472,6 @@
         FormAdditional(){
             if (this.price_additional === '' || this.description_additional === '') {
               Swal.fire('Debes Completar los campos')
-             
             }else{
                 this.additional = {
                 'id' : this.id,
@@ -1750,71 +1742,76 @@
         },
 
         search_client(cc_client,option){
-                let me=this;
-                var url = 'customers/searchClient?cc_client=' + cc_client;
-                axios.get(url).then(function (response) {
-                    var respuesta= response.data;
-                    me.arrayUsuarioCliente = respuesta.client;
-                    // console.log(me.arrayUsuarioCliente);
-                    if (me.arrayUsuarioCliente.name_client === 'Usuario no registrado') {
-                         me.closeModal('modal');
-                         const swalWithBootstrapButtons = Swal.mixin({
-                          customClass: {
-                            confirmButton: 'btn btn-success',
-                            cancelButton: 'btn btn-danger'
-                          },
-                          buttonsStyling: false
+
+          if (cc_client === '0' || cc_client === '' || cc_client === 0) {
+            Swal.fire('Cédula incorrecta');
+          }else{
+            let me=this;
+            const url = 'customers/searchClient?cc_client=' + cc_client;
+            axios.get(url).then(function (response) {
+                var respuesta= response.data;
+                me.arrayUsuarioCliente = respuesta.client;
+                // console.log(me.arrayUsuarioCliente);
+                if (me.arrayUsuarioCliente.name_client === 'Usuario no registrado') {
+                      me.closeModal('modal');
+                      const swalWithBootstrapButtons = Swal.mixin({
+                      customClass: {
+                        confirmButton: 'btn btn-success',
+                        cancelButton: 'btn btn-danger'
+                      },
+                      buttonsStyling: false
+                      })
+                      swalWithBootstrapButtons.fire({
+                        title: 'El huésped no está registrado!',
+                        text: "Desea registrar el huésped?",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonText: 'Registrar',
+                        cancelButtonText: 'Cancelar!',
+                        reverseButtons: true
+                      }).then((result) => {
+                            if (result.value) { 
+                              me.openModal('room','register',me.arrayUsuarioCliente);
+                              // swalWithBootstrapButtons.fire(
+                              //   'Huésped registrado!',
+                              //   'Ya puedes ingresarlo.',
+                              //   'success'
+                              // )
+                            } else if (result.dismiss === Swal.DismissReason.cancel ){
+                              swalWithBootstrapButtons.fire(
+                                'Cancelado',
+                                'Recuerda él huésped no está en la base de datos!',
+                                'error'
+                              )
+                              }
                           })
-                          swalWithBootstrapButtons.fire({
-                            title: 'El huésped no está registrado!',
-                            text: "Desea registrar el huésped?",
-                            icon: 'warning',
-                            showCancelButton: true,
-                            confirmButtonText: 'Registrar',
-                            cancelButtonText: 'Cancelar!',
-                            reverseButtons: true
-                          }).then((result) => {
-                                if (result.value) { 
-                                  me.openModal('room','register',me.arrayUsuarioCliente);
-                                  // swalWithBootstrapButtons.fire(
-                                  //   'Huésped registrado!',
-                                  //   'Ya puedes ingresarlo.',
-                                  //   'success'
-                                  // )
-                                } else if (result.dismiss === Swal.DismissReason.cancel ){
-                                  swalWithBootstrapButtons.fire(
-                                    'Cancelado',
-                                    'Recuerda él huésped no está en la base de datos!',
-                                    'error'
-                                  )
-                                  }
-                              })
-                    }else{
-                      switch (option) {
-                        case 1: {
-                          me.closeModal('modal');
-                          me.openModal('room','certificate',me.arrayUsuarioCliente);
-                          break;
-                        };
-                        case 2:{
-                          me.closeModal('modal');
-                          me.openModal('room','reservation',me.arrayUsuarioCliente);
-                          break;
-                        }
-                         
-                      }
-                        // me.closeModal('modal');
-                        // me.openModal('room','certificate',me.arrayUsuarioCliente);
+                }else{
+                  switch (option) {
+                    case 1: {
+                      me.closeModal('modal');
+                      me.openModal('room','certificate',me.arrayUsuarioCliente);
+                      break;
+                    };
+                    case 2:{
+                      me.closeModal('modal');
+                      me.openModal('room','reservation',me.arrayUsuarioCliente);
+                      break;
                     }
-                   
-                    
-                    // me.id_client = respuesta.client.id;
-                })
-                  .catch(function (error) {
-                    console.log(error);
-                  });
+                      
+                  }
+                    // me.closeModal('modal');
+                    // me.openModal('room','certificate',me.arrayUsuarioCliente);
+                }
+                
+                
+                // me.id_client = respuesta.client.id;
+            })
+              .catch(function (error) {
+                console.log(error);
+              });
+          }
       },
-        
+
         registerCustomers(){
 
             let me = this;
@@ -1875,6 +1872,8 @@
                             'listAcomp'                   :    this.listAcomp,
                             'temperature_exit_client'     :    this.temperature_exit_client,
                             'temperature_entry_client'    :    this.temperature_entry_client,
+                            'time_entry_certificate'      :    this.time_entry_certificate,
+                            'number_certificate'          :    this.number_certificate
 
                 }).then(function (response) {
                     Swal.fire({
@@ -1884,7 +1883,6 @@
                       showConfirmButton: false,
                       timer: 1500
                     });
-                     
 
                   })
                   .catch(function (error) {
@@ -1895,7 +1893,6 @@
 
             },
         totalSales(option){
-          
           switch (option){
             case 1 :{
                 this.total_reception = 0;
@@ -1952,7 +1949,6 @@
               break;
             }
           }
-          
         },
 
         openModal(model, accion, data = [] ){
@@ -1960,6 +1956,8 @@
               case  "room" : {
                   switch(accion){
                       case "create" : {
+                          console.log(data);
+
                           this.search_check();
                           this.modal = 1;
                           this.add = 0;
@@ -1969,7 +1967,11 @@
                           this.accion = 1;
                           this.cc_client = '';
                           this.rooms_id = data['id'];
-                        break;       
+                          this.name_type_room =  data['name_type_room'];
+                          this.number =  data['number'];
+                          this.price = data['price'];
+                          this.price_air = data['price_air']
+                        break;
                       };
 
                       case "edit" :{
@@ -2008,7 +2010,7 @@
 
                       case "certificate" :{
                           this.search_certificate();
-                          //console.log(data);
+                          // console.log(data);
                           this.modal = 1;
                           this.add = 0,
                           this.desactivar = 1;
@@ -2017,15 +2019,19 @@
                           this.accion = 4;
                           this.number_certificate;
                           this.rooms_id ;
+                          this.time_entry_certificate = '';
+                          this.observation_certificate = '';
                           this.children_certificate = '';
                           this.adults_certificate = '';
                           this.cityOrigin_certificate = '';
+                          this.temperature_entry_client = '';
+                          this.entry_certificate = '';
                           this.cityDestination_certificate = '';
                           this.name_client = data['name_client'];
-                          this.type_room =  data['type_room'];
-                          this.number =  data['number'];
-                          this.price =  data['price'];
-                          this.price_air =  data['price_air'];
+                          this.name_type_room =  this.name_type_room;
+                          this.number =  this.number;
+                          this.price =  this.price;
+                          this.price_air =  this.price_air;
                           this.frozen =  data['frozen'];
                           this.state =  data['state'];
                           this.client_id = data['id'];
@@ -2068,7 +2074,6 @@
                           this.state_client = 0;
                           this.phone_client = '';
                           this.email_client = '';
-                         
                           break;
 
                       };
@@ -2093,7 +2098,6 @@
                       };
 
                       case "products" :{
-                         
                         this.add2 = 1;
                         this.newSale = 1;
                         this.titleModal = 'Productos';
@@ -2327,6 +2331,7 @@
                             'id' :    this.rooms_id,
                             'client_id' : this.client_id,
                             'number_check' : this.number_check,
+                            'number_certificate' : this.number_certificate
 
                 }).then(function (response) {
                     Swal.fire({
@@ -2390,7 +2395,6 @@
                           var room = [];
                           room = me.dataRoom;
                           me.openModal('room','edit',room);
-                      
                     }).catch(function (error) {
                         console.log(error);
                     });
@@ -2576,18 +2580,26 @@
 
         addAcomp(){
 
-            if(this.name_acomp!="" && this.firstSurname_acomp!="" && this.secondSurname_acomp!="" && this.cedula_acomp!="" && this.birth_date_acomp!=""){
+            if(this.name_acomp!="" && this.firstSurname_acomp!="" && this.secondSurname_acomp!="" && this.cedula_acomp!="" && this.birth_date_acomp!="" && this.temperature_entry_acomp!= 0){
 
-                this.listAcomp.push({name_acomp:this.name_acomp, firstSurname_acomp:this.firstSurname_acomp, secondSurname_acomp:this.secondSurname_acomp,
-                                                        cedula_acomp:this.cedula_acomp, birth_date_acomp:this.birth_date_acomp});
-                this.name_acomp = '';
-                this.firstSurname_acomp = '';
-                this.secondSurname_acomp = '';
-                this.cedula_acomp = '';
-                this.birth_date_acomp = '';
+                this.listAcomp.push({
+                  name_acomp:this.name_acomp,
+                  firstSurname_acomp:this.firstSurname_acomp,
+                  secondSurname_acomp:this.secondSurname_acomp,
+                  cedula_acomp:this.cedula_acomp,
+                  birth_date_acomp:this.birth_date_acomp,
+                  temperature_entry_acomp:this.temperature_entry_acomp
+                });
+
+                this.name_acomp               = '';
+                this.firstSurname_acomp       = '';
+                this.secondSurname_acomp      = '';
+                this.cedula_acomp             = '';
+                this.birth_date_acomp         = '';
+                this.temperature_entry_acomp  = 0;
             }
             else{
-                alert("Por favor ingrese todos los campos del formulario gracias.")
+              Swal.fire('Debes llenar los campos del formulario')
             }
 
         },
@@ -2668,7 +2680,6 @@
 
 
         updateRoom(page,search,valor){
-                
                 let me = this;
                 var url = 'room/update?page=' + page + '&search='+ search + "&valor=" + valor;
                 axios.put(url,{
@@ -2719,19 +2730,18 @@
 </script>
 
 <style>
-     
+
     .modal-content{
     width:100% ! important;
-    position:  absolute ! important; 
+    position:  absolute ! important;
     }
     .mostrar{
-    display:  list-item ! important;  
+    display:  list-item ! important;
     opacity:  1 ! important;
     position:  absolute ! important;
     background-color: #3c29297a !important;
     }
 
-    
     .disponible{
       border: 1px solid rgb(33, 136, 56);
       /* border: 1px solid #e0e5ec;  */
@@ -2851,6 +2861,36 @@
 
     .reservation{
       margin-top: 400px;
+    }
+
+    .btn-floatiing {
+        display: inline-block;
+        color: rgb(14, 236, 62);
+        position: relative;
+        overflow: hidden;
+        z-index: 1;
+        width: 30px;
+        height: 30px;
+        line-height: 30px;
+        padding: 0;
+        background-color: #5a1aee;
+        border-radius: 50%;
+        -webkit-transition: background-color .3s;
+        transition: background-color .3s;
+        cursor: pointer;
+        vertical-align: middle;
+        box-shadow: 0 1px 10px
+        rgba(0, 0, 0, 0.4);
+    }
+
+    .btn-floatiing i {
+        width: 50%;
+        height: 80%;
+        display: inline-block;
+        text-align: center;
+        color: #eee;
+        font-size: 1rem;
+        line-height: 20px;
     }
 
 </style>

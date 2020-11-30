@@ -54,12 +54,11 @@ class CertificateController extends Controller
             ],
             'certificates' => $certificates
         ];
-      
     }
 
 
     public function store(Request $request)
-    {     
+    {
             if (!$request->ajax()) return redirect('/');
             $certificates=Certificate::create($request->all());
             $ojo  = $request->listAcomp;
@@ -67,7 +66,6 @@ class CertificateController extends Controller
             // $certificate = Certificate::find(1);
             // $certificate = Certificate::last(1);
             $certificate=Certificate::all()->last();
-            
             // $certificate = Certificate::find(1)->companions($ojo);
             $certificate->companions()->createMany($ojo);
             // $companions  = $request->listAcomp;
@@ -78,11 +76,10 @@ class CertificateController extends Controller
             // $ojo->companions()->save($companions);
 
             // return $ojo;
-            
 
     }
 
-    
+
 
     public function update(Request $request)
     {		

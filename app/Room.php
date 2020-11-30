@@ -7,15 +7,16 @@ use Illuminate\Database\Eloquent\Model;
 class Room extends Model
 {
     protected $fillable = [
-    	
-        'type_room_id' , 
+
+        'type_room_id',
         'client_id',
-        'number', 
+        'number',
         'price' ,
-        'price_air' , 
-        'frozen' , 
-        'number_facture' , 
-        'state' , 
+        'price_air',
+        'number_certificate',
+        'frozen' ,
+        'number_facture' ,
+        'state' ,
         'condition' ,
         'condition_state',
 

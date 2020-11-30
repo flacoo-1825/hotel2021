@@ -124,6 +124,7 @@ class RoomController extends Controller
         $room->state = 'Ocupada';
         $room->client_id = $request->client_id;
         $room->number_facture = $request->number_check;
+        $room->number_certificate = $request->number_certificate;
         $room->save();
     }
 
