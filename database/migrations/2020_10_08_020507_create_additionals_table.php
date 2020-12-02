@@ -16,9 +16,11 @@ class CreateAdditionalsTable extends Migration
         Schema::create('additionals', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name_additional')->nullable();
+            $table->string('number_facture_additional')->nullable();
             $table->text('description_additional')->nullable();
             $table->double('price_additional', 8, 2)->nullable();
             $table->boolean('condition_additional')->default(1);
+            $table->boolean('view_facture_additional')->default(1);
             $table->timestamps();
         });
     }

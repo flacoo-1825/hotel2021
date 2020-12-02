@@ -34,22 +34,22 @@ class SaleController extends Controller
         ];
         // $sales = sale::get();
         // return $sales;
-      
     } 
 
 
     public function store(Request $request)
-    {     
+    {
             if (!$request->ajax()) return redirect('/');
             // $sale=Sale::create($request->all());
             $listSale = $request->sale;
+            $number_facture = $request->number_facture;
 
-            for ($i=0; $i < count($listSale) ; $i++) { 
+            for ($i=0; $i < count($listSale) ; $i++) {
                 $sale = new Sale();
                 $sale->checkbook_id = NULL ;
                 $sale->product_id = $listSale[$i]['product_id'] ;
                 $sale->taxe_id = NULL ;
-                $sale->number_bill_sales = $listSale[$i]['number_facture'] ;
+                $sale->number_bill_sales = $number_facture;
                 $sale->quantity_sales = $listSale[$i]['cantidad_product'] ;
                 $sale->price_unit_sales = $listSale[$i]['sale_product'] ;
                 $sale->dian_bill = 'No' ;
@@ -59,19 +59,16 @@ class SaleController extends Controller
             }
     }
 
-    
-
     public function update(Request $request)
-    {		
+    {
         if (!$request->ajax()) return redirect('/');
-             
+
         $listSale = $request->sale;
         $number_reception = $request->number_reception;
 
-        for ($i=0; $i < count($listSale) ; $i++) { 
+        for ($i=0; $i < count($listSale) ; $i++) {
 
             $sale =  Sale::findOrFail($listSale[$i]['id']);
-           
             $sale->number_bill_sales = $number_reception;
             $sale->state_bill = 0 ;
             $sale->save();

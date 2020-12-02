@@ -68,7 +68,6 @@ Route::put('customers/update','CustomersController@update')->name('customers.upd
 Route::get('customers/searchClient','CustomersController@searchClient')->name('customers.searchClient');
 Route::get('searchCustomer','CustomersController@searchCustomer')->name('customers.searchCustomer');
 
-        
 Route::get('worker','WorkerController@index')->name('worker.index');
 Route::post('worker/register','WorkerController@store')->name('worker.store');
 Route::put('worker/update','WorkerController@update')->name('worker.update');

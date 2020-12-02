@@ -140,12 +140,12 @@ class RoomController extends Controller
 
 
       public function listRoomActive(Request $request)
-    {   
-         
+    {
+
        if (!$request->ajax()) return redirect('/');
          $search = $request->search;
          $valor = $request->valor;
-         
+
         if ($search==''){
             $room = Room::leftJoin('customers','rooms.client_id' ,'=', 'customers.id')
                         ->join('type_rooms','rooms.type_room_id', '=', 'type_rooms.id')
@@ -153,7 +153,7 @@ class RoomController extends Controller
                         'rooms.number','rooms.price','rooms.client_id','rooms.condition',
                         'rooms.price_air','rooms.frozen','rooms.number_facture',
                         'rooms.state','customers.firstSurname_client','customers.cedula_client',
-                        'customers.name_client','customers.nationality_client','customers.phone_client', 
+                        'customers.name_client','customers.nationality_client','customers.phone_client',
                         'customers.secondSurname_client')
                         ->where('condition','=','1')
                         ->orderBy('id', 'asc')->paginate(9);
@@ -165,12 +165,12 @@ class RoomController extends Controller
                         'rooms.number','rooms.price','rooms.client_id','rooms.condition',
                         'rooms.price_air','rooms.frozen','rooms.number_facture',
                         'rooms.state','customers.firstSurname_client','customers.cedula_client',
-                        'customers.name_client','customers.nationality_client','customers.phone_client', 
+                        'customers.name_client','customers.nationality_client','customers.phone_client',
                         'customers.secondSurname_client')
                         ->where('condition','=','1')
                         ->where($valor, 'like', '%'. $search . '%')->orderBy('id', 'desc')->paginate(18);
         }
- 
+
         return [
                 'pagination'      => [
                 'total'              => $room->total(),
@@ -194,15 +194,14 @@ class RoomController extends Controller
     }
 
     public function listReservation(Request $request)
-    {   
-         
+    {
     //    if (!$request->ajax()) return redirect('/');
-         
-  
+
+
         $rooms = Room::select('id','number')
                     ->where('condition','=','1')
                     ->orderBy('id', 'asc')->get();
-    
+
         return $rooms;
     }
 }

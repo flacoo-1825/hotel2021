@@ -928,6 +928,7 @@
                 <!-- /.modal-dialog -->
                 </div>
       </div>
+      <!-- modal addition -->
       <div class="modal fade" tabindex="-1" :class="{'mostrar' : add3}" >
           <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
             <div class="modal-content container bg-container-modal">
@@ -968,7 +969,7 @@
                       <div class="row text-right">
                         <template v-if="addAddition==0">
                           <div class="col">
-                            <a class="btn btn-success" @click="addAddition=1" href="#"><i class="fas fa-plus-circle"></i></a>
+                            <a class="btn btn-floating bg-success" @click="addAddition=1" href="#"><i class="fas fa-plus"></i></a>
                           </div>
                         </template>
                         <template v-if="addAddition==1">
@@ -977,7 +978,7 @@
                                 <div class="row text-left">
                                     <div class="col-lg-6 mb-2">
                                         <label for="text-input ">Nombre adicional</label>
-                                        <input type="text" class="form-control" disabled placeholder="Otro" v-model="name_additional">
+                                        <input type="text" class="form-control" disabled  v-model="name_additional">
                                     </div>
                                     <div class="col-lg-6 mb-2">
                                         <label for="text-input ">Precio</label>
@@ -1021,21 +1022,12 @@
                                 <td class="d-flex justify-content-center">
                                   <a href="#" class="btn btn-danger btn-sm" title="Inactivo"  @click="deleteAddition(additional)"><i class="fas fa-trash-alt">
                                     </i> Eliminar
-                                  </a> 
+                                  </a>
                                 </td>
                               </tr>
                           </tbody>
                         </table>
                       </template>
-                        
-                      <!-- <table class="table table-hover  table-sm text-center" >
-                        <thead >
-                          <tr class="d-flex justify-content-end">
-                            <th>total</th>
-                            <th>{{totalNewSaleAdditional | currency}}</th>
-                          </tr>
-                        </thead>
-                      </table> -->
                     </div>
                   </div>
                 </div>
@@ -1044,10 +1036,15 @@
                       <a class="btn btn-danger  text-white" @click="closeModal('additional')">
                         <i class="fas fa-times-circle"></i> Cerrar
                       </a>
-                    </div>   
+                    </div>
+                    <div class="col-lg-2">
+                      <a class="btn btn-success text-white" @click="addAdditionalRoom()">
+                        <i class="fas fa-plus-circle"></i> Agregar
+                      </a>
+                    </div>
                 </div>
             </div>
-          </div>  
+          </div>
       </div>
       <template v-if="factura==2">
         <div class="card">
@@ -1072,7 +1069,7 @@
                           </div>
                           <div class="col-md-4 mb-2 certificate  input-group">
                               <label for="text-input ">Factura</label>
-                              <h2 v-text="number_check"></h2>
+                              <h2 v-text="number_facture"></h2>
                           </div>
                         </div>
                         <div class="row mb-4">
@@ -1139,7 +1136,7 @@
   Vue.use(VueCurrencyFilter, {
     symbol: '$', // El símbolo, por ejemplo €
     thousandsSeparator: ',', // Separador de miles
-    fractionCount: 2, // ¿Cuántos decimales mostrar?
+    fractionCount: 1, // ¿Cuántos decimales mostrar?
     fractionSeparator: '.', // Separador de decimales
     symbolPosition: 'front', // Posición del símbolo. Puede ser al inicio ('front') o al final ('') es decir, si queremos que sea al final, en lugar de front ponemos una cadena vacía ''
     symbolSpacing: true // Indica si debe poner un espacio entre el símbolo y la cantidad
@@ -1181,7 +1178,7 @@
             id : 1,
             reservation_date_entry : '',
             reservation_date_exit : '',
-            name_additional : '',
+            name_additional : 'Compra para habitación',
             price_additional : '',
             description_additional : '',
             addAddition : '',
@@ -1475,7 +1472,7 @@
             }else{
                 this.additional = {
                 'id' : this.id,
-                'name_additional' : 'Otro',
+                'name_additional' : this.name_additional,
                 'price_additional' :this.price_additional,
                 'description_additional' : this.description_additional,
               },
@@ -1489,6 +1486,7 @@
             var url  = 'sale/register';
             axios.post(url,{
                 'sale' : this.listProduct,
+                'number_facture' : this.number_facture,
             }).then(function (response) {
                 Swal.fire({
                   position: 'center',
@@ -1497,6 +1495,31 @@
                   showConfirmButton: false,
                   timer: 1500
                 });
+                  var room = [];
+                  room = me.dataRoom;
+                  // console.log(room);
+                  me.openModal('room','edit',room);
+              })
+              .catch(function (error) {
+                    console.log(error);
+              });
+        },
+
+        addAdditionalRoom(){
+            let me = this;
+            var url  = 'additional/register';
+            axios.post(url,{
+                'additional' : this.listAdditional,
+                'number_facture' : this.number_facture,
+            }).then(function (response) {
+                Swal.fire({
+                  position: 'center',
+                  icon: 'success',
+                  title: 'Tus adicionales se cargaron a la habitación',
+                  showConfirmButton: false,
+                  timer: 1500
+                });
+                  me.closeModal('additional');
                   var room = [];
                   room = me.dataRoom;
                   // console.log(room);
@@ -1810,7 +1833,7 @@
                 console.log(error);
               });
           }
-      },
+        },
 
         registerCustomers(){
 
@@ -1999,6 +2022,7 @@
                           this.secondSurname_client =  data['secondSurname_client'];
                           this.title__facture = data['number_facture'];
                           this.name_type_room = data['name_type_room'];
+                          this.number_facture = data['number_facture'];
                           this.dataRoom = data;
                           this.search_sales();
 
@@ -2093,6 +2117,10 @@
                         this.factura = 2;
                         this.titleModal = 'Productos';
                         this.listProduct = [];
+                        this.number_check;
+                        this.number_facture;
+                        this.search = '';
+                        this.arrayProducts = [];
 
                         break;
                       };
@@ -2165,6 +2193,7 @@
                       case "additional" :{
                         this.add3 = 1;
                         this.titleModal = 'Adicionales';
+                        this.number_facture;
 
                         break;
                       };
@@ -2244,11 +2273,11 @@
             // this.arrayError = [];
               this.listRoomsActive(1,this.search,this.valor);
               break;
-          
+
             case "acomp":
               this.add = 0;
               this.modal = 1;
-              this.titleModal ='Acta de entrada'; 
+              this.titleModal ='Acta de entrada';
               this.check = [];
               break;
 
@@ -2264,6 +2293,9 @@
 
             case "additional":
               this.add3 = 0;
+              this.listAdditional = [];
+              this.search = '';
+              this.addAddition = 0;
               break;
 
             case "reservation":
@@ -2626,12 +2658,11 @@
         addAdditional(additional){
               // console.log(additional);
           this.listAdditional.push({
-            additional_id : additional.id, 
-            name_additional:additional.name_additional, 
-            price_additional:additional.price_additional, 
-            description_additional:additional.description_additional, 
+            additional_id : additional.id,
+            name_additional:additional.name_additional,
+            price_additional:additional.price_additional,
+            description_additional:additional.description_additional,
             total:additional.price_additional,
-            number_facture : this.number_facture,
           });
 
         },

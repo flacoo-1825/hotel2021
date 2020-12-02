@@ -34,22 +34,30 @@ class AdditionalController extends Controller
         ];
         // $additionals = additional::get();
         // return $additionals;
-      
     }
 
 
     public function store(Request $request)
-    {     
+    {
             if (!$request->ajax()) return redirect('/');
-            $additional=Additional::create($request->all());
+            // $sale=Sale::create($request->all());
+            $listAdditional = $request->additional;
+            $number_facture = $request->number_facture;
+
+            for ($i=0; $i < count($listAdditional) ; $i++) {
+                $additional = new Additional();
+                $additional->name_additional = $listAdditional[$i]['name_additional'] ;
+                $additional->number_facture_additional = $number_facture;
+                $additional->description_additional = $listAdditional[$i]['description_additional'] ;;
+                $additional->price_additional = $listAdditional[$i]['price_additional'] ;;
+                $additional->condition_additional = 1 ;
+                $additional->view_facture_additional = 1 ;
+                $additional->save();
+            }
 
     }
-
-    
-
     public function update(Request $request)
-    {		
-       		
+    {
        		if (!$request->ajax()) return redirect('/');
 
             $additional =  Additional::findOrFail($request->id);

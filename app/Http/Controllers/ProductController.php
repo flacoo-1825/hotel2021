@@ -7,14 +7,12 @@ use Illuminate\Support\facades\Storage;
 
 class ProductController extends Controller
 {
-    
 	public function index(Request $request)
-    {   
-         
+    {
+
        	if (!$request->ajax()) return redirect('/');
          $search = $request->search;
          $valor = $request->valor;
-         
         if ($search==''){
             $products = Product::orderBy('id', 'desc')->paginate(10);
         }
@@ -35,12 +33,12 @@ class ProductController extends Controller
         ];
         // $products = Room::get();
         // return $products;
-      
+
     }
 
 
     public function store(Request $request)
-    {     
+    {
             if (!$request->ajax()) return redirect('/');
 
             $exploded = explode(',', $request->img_product);

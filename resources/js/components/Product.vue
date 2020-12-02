@@ -37,10 +37,12 @@
                                    </td>
                                    <td  v-text="product.stock_product"></td>
                                    <td>
-                                        <a href="#" class="btn  btn-outline-info btn-sm p-1" title="Ver" @click="openModal('product','ver',product)" ><i class="far fa-eye"></i></a>
-                                        <span>&nbsp</span> 
-                                        <a href="#" class="btn btn-outline-warning btn-sm p-1"  title="Editar" @click="openModal('product','editar',product)" ><i class="fas fa-user-edit"></i></a>
-                                        <span>&nbsp</span>
+                                        <a href="#" class="btn  btn-outline-info btn-sm p-1" title="Ver" @click="openModal('product','ver',product)" >
+                                          <i class="far fa-eye"></i>
+                                        </a>
+                                        <a href="#" class="btn btn-outline-warning btn-sm p-1"  title="Editar" @click="openModal('product','editar',product)" >
+                                          <i class="fas fa-user-edit"></i>
+                                        </a>
                                         <template v-if="product.condition_product">
                                                 <button class="btn btn-outline-success btn-sm p-1" title="Activo"   @click="desactivarProduct(product.id)"><i class="fas fa-check p-1"></i></button>
                                         </template>
@@ -344,7 +346,7 @@
                             this.imagenMiniatura = 'logo.png';
 
 
-                        break;       
+                        break;
                       };
 
                       case "editar" :{
@@ -403,7 +405,6 @@
           this.modal = 0;
           this.arrayError = [];
           this.listProducts(1,this.search,this.valor);
-          
         },
 
         registerProduct(page,search,valor){
@@ -421,7 +422,6 @@
                             'sale_product'    : this.sale_product,
                             'img_product' :   this.imagenMiniatura,
                             'nombre_img': this.nombre_img,
-                           
 
                 }).then(function (response) {
                     Swal.fire({
