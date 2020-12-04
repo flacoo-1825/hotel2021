@@ -238,7 +238,7 @@
                                           <span class="input-group-text">°C</span>
                                         </div>
                                       </div>
-                                      <!-- <div class="col-sm-12 col-md-3 input-group"> TODO:
+                                      <!-- <div class="col-sm-12 col-md-3 input-group">
                                         <div class="input-group">
                                           <label for="text-input ">Temperatura de salida</label>
                                         </div>
@@ -725,7 +725,7 @@
                         <hr>
                         <div class="row mb-4 mt-3">
                             <div class="col-md-12 mb-2 text-center certificate">
-                                <h4>Adicionales</h4>
+                                <h4>Servicios adicionales</h4>
                             </div>
                         </div>
                         <div class="row">
@@ -737,10 +737,7 @@
                                     <th class="text-center">total</th>
                                     <th class="text-center">
                                       <span class="custom-control custom-checkbox">
-                                        <a href="#" @click="selectAll()" class="btn btn-primary">Seleccionar Todo</a>
-                                      </span>
-                                      <span class="custom-control custom-checkbox">
-                                        <a href="#" class="btn btn-success" @click="openModal('room','reception')" >Generar factura</a>
+                                        <a href="#" @click="selectAllAdditional()" class="btn btn-primary">Seleccionar Todo</a>
                                       </span>
                                     </th>
                                 </tr>
@@ -749,13 +746,12 @@
                                 <tr class="text-center" v-for="additional in listAdditional"  :Key="additional.id">
                                   <td v-text="additional.name_additional">
                                   </td>
-                                  <td  v-text="additional.number_facture"></td>
-                                  <!-- <td  v-text="additional.quantity_sales"></td> -->
-                                  <td>{{additional.total | currency}}</td>
+                                  <td  v-text="additional.number_facture_additional"></td>
+                                  <td>{{additional.price_additional | currency}}</td>
                                   <td class="d-flex justify-content-center">
                                       <span class="custom-control custom-checkbox">
-                                        <input type="checkbox" class="custom-control-input prueba" :value="additional"  :id="additional.id" v-model="check" >
-                                        <label :for="additional.id"  class="custom-control-label" >facturar por recepción</label>
+                                        <input type="checkbox" class="custom-control-input additional2" :value="additional"  :id="additional.id+50" v-model="check2" >
+                                        <label :for="additional.id+50"  class="custom-control-label" >facturar por recepción</label>
                                       </span>
                                   </td>
                                 </tr>
@@ -765,7 +761,7 @@
                               <thead >
                                 <tr class="d-flex justify-content-end">
                                   <th>total</th>
-                                  <th>{{totalNewSaleFacture | currency}}</th>
+                                  <th>{{totalAdditional | currency}}</th>
                                 </tr>
                               </thead>
                             </table>
@@ -838,6 +834,12 @@
                                   <td v-text="product.quantity_sales"></td>
                                   <td>{{product.total_sales | currency}} </td>
                                 </tr>
+                                <tr v-for="additional in check2 " :key="additional.id">
+                                  <td v-text="additional.name_additional"></td>
+                                  <td  >Precio : {{additional.price_additional | currency}} </td>
+                                  <td v-text="1"></td>
+                                  <td>{{additional.price_additional | currency}} </td>
+                                </tr>
                               </tbody>
                             </template>
                             <template v-if="newSale==3">
@@ -856,7 +858,9 @@
                               <thead >
                                 <tr class="d-flex justify-content-end">
                                   <th>total</th>
-                                  <th>{{totalNewSale | currency}}</th>
+                                  <th>{{totalNewSale + totalSaleAdditional | currency}}</th>
+                                  <!-- <td>{{totalSaleAdditional | currency}} </td> -->
+
                                 </tr>
                               </thead>
                             </table>
@@ -919,6 +923,7 @@
                         <div class="col-lg-2">
                           <a class="btn btn-success text-white" @click="addSaleReception()">
                             <i class="fas fa-money-check-alt"></i> Facturar
+                            <!-- TODO: here -->
                           </a>
                         </div>
                       </template>
@@ -939,7 +944,7 @@
                   <div class="row">
                     <div class="col-md-12">
                         <div class="input-group">
-                          <input type="text" v-model="search" @keyup="listAdditionActive(search)"  class="form-control" placeholder="Adicional a buscar">
+                          <input type="text" v-model="search" @keyup="listServicieActive(search)"  class="form-control" placeholder="Adicional a buscar">
                           <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i> Buscar</button>
                         </div>
                     </div>
@@ -954,12 +959,12 @@
                             </tr>
                           </thead>
                           <tbody class="bg-white text-center table-bordered">
-                            <tr v-for="addition in arrayAddition " :key="addition.id">
-                              <td v-text="addition.name_additional"></td>
-                              <td  >Precio : {{addition.price_additional | currency}} </td>
-                              <td>{{addition.price_additional | currency}}</td>
+                            <tr v-for="servicie in arrayServicie " :key="servicie.id">
+                              <td v-text="servicie.name_servicie"></td>
+                              <td  >Precio : {{servicie.price_servicie | currency}} </td>
+                              <td>{{servicie.price_servicie | currency}}</td>
                               <td>
-                                <a href="#" class="btn btn-success "  title="Agregar" @click="addAdditional(addition)" >
+                                <a href="#" class="btn btn-success "  title="Agregar" @click="addAdditional(servicie)" >
                                   <i class="fas fa-trash-alt"></i> Agregar
                                 </a>
                               </td>
@@ -978,15 +983,15 @@
                                 <div class="row text-left">
                                     <div class="col-lg-6 mb-2">
                                         <label for="text-input ">Nombre adicional</label>
-                                        <input type="text" class="form-control" disabled  v-model="name_additional">
+                                        <input type="text" class="form-control" disabled  v-model="name_servicie">
                                     </div>
                                     <div class="col-lg-6 mb-2">
                                         <label for="text-input ">Precio</label>
-                                        <input type="number" class="form-control" v-model="price_additional">
+                                        <input type="number" class="form-control" v-model="price_servicie">
                                     </div>
                                     <div class="col-lg-12 mb-2">
                                         <label for="text-input ">Descripción</label>
-                                        <textarea  cols="30" rows="4" class="form-control" v-model="description_additional"></textarea>
+                                        <textarea  cols="30" rows="4" class="form-control" v-model="description_servicie"></textarea>
                                     </div>
                                 </div>
                                 <div>
@@ -1000,7 +1005,7 @@
                         <hr>
                         <div class="row text-center">
                           <div class="col">
-                            <h4>Adicionales que se cargaran a la habitación</h4>
+                            <h4>Servicios que se cargaran a la habitación</h4>
                           </div>
                         </div>
                         <table class="table table-bordered table-striped table-sm">
@@ -1178,7 +1183,7 @@
             id : 1,
             reservation_date_entry : '',
             reservation_date_exit : '',
-            name_additional : 'Compra para habitación',
+            name_servicie : 'Compra para habitación',
             price_additional : '',
             description_additional : '',
             addAddition : '',
@@ -1194,6 +1199,7 @@
             number_facture : '',
             number : 0,
             check : [],
+            check2 : [],
             ruta : 'img/products/',
             url_img : '',
             total : '',
@@ -1256,7 +1262,7 @@
             arrayProducts : [],
             dataRoom : [],
             listRoomFree : [],
-            arrayAddition : [],
+            arrayServicie : [],
             listAdditional : [],
             arrayEvents : [],
             rooms : '',
@@ -1336,6 +1342,16 @@
 
         totalNewSaleReception: function(){
             var option = 5;
+            return this.totalSales(option);
+        },
+
+        totalAdditional: function(){
+            var option = 6;
+            return this.totalSales(option);
+        },
+
+        totalSaleAdditional: function(){
+            var option = 7;
             return this.totalSales(option);
         },
 
@@ -1467,14 +1483,14 @@
               });
         },
         FormAdditional(){
-            if (this.price_additional === '' || this.description_additional === '') {
+            if (this.price_servicie === '' || this.description_servicie === '') {
               Swal.fire('Debes Completar los campos')
             }else{
                 this.additional = {
                 'id' : this.id,
-                'name_additional' : this.name_additional,
-                'price_additional' :this.price_additional,
-                'description_additional' : this.description_additional,
+                'name_servicie' : this.name_servicie,
+                'price_servicie' :this.price_servicie,
+                'description_servicie' : this.description_servicie,
               },
               // console.log(this.additional);
               this.addAddition = 0;
@@ -1606,13 +1622,13 @@
               });
         },
 
-        listAdditionActive(search){
+        listServicieActive(search){
           let me=this;
-          var url = 'additional/active?search='+ search;
+          var url = 'servicie/active?search='+ search;
           axios.get(url).then(function (response) {
               //  var respuesta= response.data;
-               me.arrayAddition = response.data;
-              //console.log(me.arrayAddition);
+               me.arrayServicie = response.data;
+              //console.log(me.arrayServicie);
 
           })
             .catch(function (error) {
@@ -1661,6 +1677,20 @@
                me.listSales= response.data;
               //  me.listSale = respuesta[0].number_certificate;
               //  me.arrayRoom = respuesta.room.data;
+              // console.log(respuesta);
+
+          })
+            .catch(function (error) {
+              console.log(error);
+              });
+        },
+
+        search_additional(){
+          let me=this;
+          var number_facture = this.number_facture;
+          var url = 'additional/listAdditional?number_facture='+number_facture;
+          axios.get(url).then(function (response) {
+               me.listAdditional= response.data;
               // console.log(respuesta);
 
           })
@@ -1918,57 +1948,79 @@
         totalSales(option){
           switch (option){
             case 1 :{
-                this.total_reception = 0;
+                let total_reception = 0;
                 var sales = this.check;
                 for(var i = 0; i < sales.length; i++){
                   var item = sales[i]['total_sales'];
-                  this.total_reception += item;
+                  total_reception += item;
                 }
-                return this.total_reception;
+                return total_reception;
                 break;
             }
 
             case 2 :{
-                this.total_reception = 0;
+                let total_reception = 0;
                 var sales = this.listProduct;
                 for(var i = 0; i < sales.length; i++){
                   var item = sales[i]['sale_product']*sales[i]['cantidad_product'];
-                  this.total_reception += item;
+                  total_reception += item;
                 }
-                return this.total_reception;
+                return total_reception;
                 break;
             }
 
             case 3 :{
-                this.total_reception = 0;
+                let total_reception = 0;
                 var sales = this.listSales;
                 for(var i = 0; i < sales.length; i++){
                   var item = sales[i]['total_sales'];
-                  this.total_reception += item;
+                  total_reception += item;
                 }
-                return this.total_reception;
+                return total_reception;
                 break;
             }
 
             case 4 :{
-              this.total_reception = 0;
+              let total_reception = 0;
               var sales = this.listSales;
               for(var i = 0; i < sales.length; i++){
                 var item = sales[i]['total_sales'];
-                this.total_reception += item;
+                total_reception += item;
               }
-              return this.total_reception;
+              return total_reception;
               break;
             }
 
             case 5 :{
-              this.total_reception = 0;
+              let total_reception = 0;
               var sales = this.listProduct;
               for(var i = 0; i < sales.length; i++){
                 var item = sales[i]['total'];
-                this.total_reception += item;
+                total_reception += item;
               }
-              return this.total_reception;
+              return total_reception;
+              break;
+            }
+
+            case 6 :{
+              let total_reception = 0;
+              var additionals = this.listAdditional;
+              for(var i = 0; i < additionals.length; i++){
+                var item = additionals[i]['price_additional'];
+                total_reception += item;
+              }
+              return total_reception;
+              break;
+            }
+
+            case 7 :{
+              let total_reception2 = 0;
+              var sale_additionals = this.check2;
+              for(var i = 0; i < sale_additionals.length; i++){
+                var item = sale_additionals[i]['price_additional'];
+                total_reception2 += item;
+              }
+              return total_reception2;
               break;
             }
           }
@@ -2025,6 +2077,7 @@
                           this.number_facture = data['number_facture'];
                           this.dataRoom = data;
                           this.search_sales();
+                          this.search_additional();
 
 
 
@@ -2172,6 +2225,7 @@
                         this.newSale = 3;
                         this.titleModal = 'Factura recepción';
                         this.check = this.listProduct;
+                        this.check2 = this.listAdditional;
                         this.name_product = '';
                         this.cantidad_product = 0;
                         this.sale_product = 0;
@@ -2192,8 +2246,11 @@
 
                       case "additional" :{
                         this.add3 = 1;
-                        this.titleModal = 'Adicionales';
+                        this.titleModal = 'Servicios';
                         this.number_facture;
+                        this.search = '';
+                        this.listAdditional = [];
+                        this.arrayServicie = [];
 
                         break;
                       };
@@ -2387,66 +2444,82 @@
 
         saleNewReception(){
             let me = this;
+            let data_additionals = this.check2;
+            console.log(this.check2);
             let data = this.check;
-            if (data.length == 0) {
-              Swal.fire({
-                icon: 'error',
-                title: 'Oops...',
-                text: 'No tienes productos para facturar!',
-              })
+            let arrayId = [];
+            for (let i = 0; i < me.check2.length; i++) {
+              if (me.check2[i]['name_additional'] != 'Compra para habitación') {
+                arrayId.push({
+                id : me.check2[i]['id'],
+                type : 'service',})
+              }else{
+                arrayId.push({
+                  id : me.check2[i]['id'],
+                  type : 'buyRoom',})
+              }
+            };
+            console.log(arrayId);
 
-            }else{
-              const swalWithBootstrapButtons = Swal.mixin({
-              customClass: {
-                confirmButton: 'btn btn-success',
-                cancelButton: 'btn btn-danger'
-              },
-              buttonsStyling: false
-              })
+            // if (data.length == 0) {
+            //   Swal.fire({
+            //     icon: 'error',
+            //     title: 'Oops...',
+            //     text: 'No tienes productos para facturar!',
+            //   })
 
-              swalWithBootstrapButtons.fire({
-                title: 'Está seguro?',
-                text: "Va a facturar estos productos por recepción!",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonText: 'Si, facturar',
-                cancelButtonText: 'No, Cancelar!',
-                reverseButtons: true
-              }).then((result) => {
-                if (result.value) { 
+            // }else{
+            //   const swalWithBootstrapButtons = Swal.mixin({
+            //   customClass: {
+            //     confirmButton: 'btn btn-success',
+            //     cancelButton: 'btn btn-danger'
+            //   },
+            //   buttonsStyling: false
+            //   })
 
-                    let me = this;
+            //   swalWithBootstrapButtons.fire({
+            //     title: 'Está seguro?',
+            //     text: "Va a facturar estos productos por recepción!",
+            //     icon: 'warning',
+            //     showCancelButton: true,
+            //     confirmButtonText: 'Si, facturar',
+            //     cancelButtonText: 'No, Cancelar!',
+            //     reverseButtons: true
+            //   }).then((result) => {
+            //     if (result.value) { 
 
-                    axios.put('sale/update',{
-                          'sale' : this.check,
-                          'number_reception' : this.number_reception,
-                    }).then(function (response) {
-                          me.registerCheckbooks();
-                          me.updateReception();
-                          me.check = [];
-                          var room = [];
-                          room = me.dataRoom;
-                          me.openModal('room','edit',room);
-                    }).catch(function (error) {
-                        console.log(error);
-                    });
-                  swalWithBootstrapButtons.fire(
-                    'Facturado!',
-                    'Productos fueron facturados por recepción.',
-                    'success'
-                  )
-                } else if (
-                  /* Read more about handling dismissals below */
-                  result.dismiss === Swal.DismissReason.cancel
-                ) {
-                  swalWithBootstrapButtons.fire(
-                    'Cancelado',
-                    'Tus productos siguen cargados en la habitación :)',
-                    'error'
-                  )
-                }
-              })
-            }
+            //         let me = this;
+
+            //         axios.put('sale/update',{
+            //               'sale' : this.check,
+            //               'number_reception' : this.number_reception,
+            //         }).then(function (response) {
+            //               me.registerCheckbooks();
+            //               me.updateReception();
+            //               me.check = [];
+            //               var room = [];
+            //               room = me.dataRoom;
+            //               me.openModal('room','edit',room);
+            //         }).catch(function (error) {
+            //             console.log(error);
+            //         });
+            //       swalWithBootstrapButtons.fire(
+            //         'Facturado!',
+            //         'Productos fueron facturados por recepción.',
+            //         'success'
+            //       )
+            //     } else if (
+            //       /* Read more about handling dismissals below */
+            //       result.dismiss === Swal.DismissReason.cancel
+            //     ) {
+            //       swalWithBootstrapButtons.fire(
+            //         'Cancelado',
+            //         'Tus productos siguen cargados en la habitación :)',
+            //         'error'
+            //       )
+            //     }
+            //   })
+            // }
         },
 
         searchRoomMove(){
@@ -2655,14 +2728,14 @@
 
         },
 
-        addAdditional(additional){
+        addAdditional(servicie){
               // console.log(additional);
           this.listAdditional.push({
-            additional_id : additional.id,
-            name_additional:additional.name_additional,
-            price_additional:additional.price_additional,
-            description_additional:additional.description_additional,
-            total:additional.price_additional,
+            additional_id : servicie.id,
+            name_additional:servicie.name_servicie,
+            price_additional:servicie.price_servicie,
+            description_additional:servicie.description_servicie,
+            total:servicie.price_servicie,
           });
 
         },
@@ -2749,6 +2822,15 @@
                 items[i].checked=true;
                 this.check=this.listSales;
             }
+        },
+
+        selectAllAdditional(){
+          var items=document.getElementsByClassName('additional2');
+          for(var i=0; i<items.length; i++){
+            if(items[i].type=='checkbox')
+              items[i].checked=true;
+              this.check2=this.listAdditional;
+          }
         }
 
         },

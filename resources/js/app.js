@@ -35,10 +35,11 @@ Vue.component('certificate', require('./components/Certificate.vue').default);
 Vue.component('companion', require('./components/Companion.vue').default);
 Vue.component('checkbook', require('./components/Checkbook.vue').default);
 Vue.component('ticket', require('./components/Ticket.vue').default);
-Vue.component('additional', require('./components/Additional.vue').default);
+Vue.component('servicie', require('./components/Servicie.vue').default);
 Vue.component('buy', require('./components/Buy.vue').default);
 Vue.component('user', require('./components/User.vue').default);
 Vue.component('role', require('./components/Role.vue').default);
+Vue.component('spinner', require('./components/Spinner.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

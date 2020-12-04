@@ -67,13 +67,13 @@ class AdditionalController extends Controller
             $additional->price_additional = $request->price_additional;
             $additional->condition_additional = '1';
             $additional->save();
-            
+
     }
 
 
     public function activo(Request $request)
-    {	
-      	
+    {
+
       	if (!$request->ajax()) return redirect('/');
 
         $additional =  Additional::findOrFail($request->id);
@@ -109,7 +109,18 @@ class AdditionalController extends Controller
             ->orderBy('id', 'desc')->get();
             return  $additional;
         }
-       
+    }
+
+    public function listAdditional(Request $request)
+    {
+       if (!$request->ajax()) return redirect('/');
+
+        $number_facture = $request->number_facture;
+
+        $additionals = Additional::where('number_facture_additional','=',$number_facture)
+                        ->orderBy('id', 'desc')->get();
+
+        return $additionals;
     }
 }
 

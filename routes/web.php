@@ -87,6 +87,15 @@ Route::put('additional/update','AdditionalController@update')->name('additional.
 Route::put('additional/activo','AdditionalController@activo')->name('additional.activo');
 Route::put('additional/inactivo','AdditionalController@inactivo')->name('additional.inactivo');
 Route::get('additional/active','AdditionalController@listAdditionalActive')->name('additional.listAdditionalActive');
+Route::get('additional/listAdditional','AdditionalController@listAdditional')->name('additional.listAdditional');
+
+
+Route::get('servicie','ServicieController@index')->name('servicie.index');
+Route::post('servicie/register','ServicieController@store')->name('servicie.store');
+Route::put('servicie/update','ServicieController@update')->name('servicie.update');
+Route::put('servicie/activo','ServicieController@activo')->name('servicie.activo');
+Route::put('servicie/inactivo','ServicieController@inactivo')->name('servicie.inactivo');
+Route::get('servicie/active','ServicieController@listServicieActive')->name('servicie.listservicieActive');
 
 Route::get('provider','ProviderController@index')->name('provider.index');
 Route::post('provider/register','ProviderController@store')->name('provider.store');

@@ -118,7 +118,7 @@
                                 <a class="nav-link" href="#"><i class="fas fa-list-ol"></i> Productos</a>
                             </li>
                             <li class="nav-item" @click="indice=24">
-                                <a class="nav-link" href="#"><i class="fas fa-plus-circle"></i></i> Adicionales</a>
+                                <a class="nav-link" href="#"><i class="fas fa-plus-circle"></i></i> Servicios</a>
                             </li>
                             <li class="nav-item" @click="indice=22">
                                 <a class="nav-link" href="#"><i class="fas fa-people-arrows"></i> Proveedores</a>
@@ -217,7 +217,7 @@
             <client v-if="indice==17"></client>
             <category v-if="indice==20"></category>
             <product v-if="indice==21"></product>
-            <additional v-if="indice==24"></additional>
+            <servicie v-if="indice==24"></servicie>
             <provider v-if="indice==22"></provider>
             <companion v-if="indice==23"></companion>
         </main>
