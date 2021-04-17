@@ -179,6 +179,12 @@ Route::post('reservation/register','ReservationController@store')->name('reserva
 Route::put('reservation/update','ReservationController@update')->name('reservation.update');
 Route::delete('reservation/delete','ReservationController@destroy')->name('reservation.delete');
 
+Route::get('day','DayController@index')->name('day.index');
+Route::post('day/register','DayController@store')->name('day.store');
+Route::put('day/update','DayController@update')->name('day.update');
+Route::get('day/listDays','DayController@listDays')->name('day.listDays');
+Route::put('day/inactivo','DayController@inactivo')->name('day.inactivo');
+
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');

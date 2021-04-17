@@ -50,7 +50,7 @@ Vue.component('spinner', require('./components/Spinner.vue').default);
 const app = new Vue({
     el: '#app',
     data: {
-        indice: 0,
+        indice: 3,
     }
 });
 

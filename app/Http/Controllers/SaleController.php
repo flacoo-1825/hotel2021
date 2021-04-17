@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\Sale;
+use App\Additional;
 use Illuminate\Http\Request;
 
 class SaleController extends Controller
@@ -64,22 +65,90 @@ class SaleController extends Controller
         if (!$request->ajax()) return redirect('/');
 
         $listSale = $request->sale;
+        $listAdditional = $request->arrayAdditional;
+        $total_facture = $request->valor_total;
         $number_reception = $request->number_reception;
 
-        for ($i=0; $i < count($listSale) ; $i++) {
+       if ($listSale) {
+            for ($i=0; $i < count($listSale) ; $i++) {
 
-            $sale =  Sale::findOrFail($listSale[$i]['id']);
-            $sale->number_bill_sales = $number_reception;
-            $sale->state_bill = 0 ;
-            $sale->save();
-        }
-  
+                $sale =  Sale::findOrFail($listSale[$i]['id']);
+                $sale->number_bill_sales = $number_reception;
+                $sale->state_bill = 0 ;
+                $sale->save();
+            }
+
+            for ($i=0; $i < count($listAdditional) ; $i++) {
+
+                // $sale = new Sale();
+                // $sale->checkbook_id = NULL ;
+                // $sale->additional_id = $listAdditional[$i]['id'];
+                // $sale->taxe_id = NULL ;
+                // $sale->number_bill_sales = $number_reception;
+                // $sale->quantity_sales = 1 ;
+                // $sale->price_unit_sales = $listAdditional[$i]['price_additional'] ;
+                // $sale->dian_bill = 'No' ;
+                // $sale->total_sales = $listAdditional[$i]['price_additional'] ;
+                // $sale->state_bill = 1 ;
+                // $sale->save();
+
+                // $additional = Additional::findOrFail($listAdditional[$i]['id']);
+                // $additional->view_facture_additional = '0';
+                // $additional->save();
+
+                if ($listAdditional[$i]['type'] == 'service') {
+                    $sale = new Sale();
+                    $sale->checkbook_id = NULL ;
+                    $sale->additional_id = $listAdditional[$i]['id'];
+                    $sale->taxe_id = NULL ;
+                    $sale->number_bill_sales = $number_reception;
+                    $sale->quantity_sales = 1 ;
+                    $sale->price_unit_sales = $listAdditional[$i]['price_additional'] ;
+                    $sale->dian_bill = 'No' ;
+                    $sale->total_sales = $listAdditional[$i]['price_additional'] ;
+                    $sale->state_bill = 1 ;
+                    $sale->save();
+
+                    $additional = Additional::findOrFail($listAdditional[$i]['id']);
+                    $additional->view_facture_additional = '0';
+                    $additional->save();
+                }else{
+                    $additional = Additional::findOrFail($listAdditional[$i]['id']);
+                    $additional->view_facture_additional = '0';
+                    $additional->save();
+                }
+            }
+       }else{
+            for ($i=0; $i < count($listAdditional) ; $i++) {
+                if ($listAdditional[$i]['type'] == 'service') {
+                    $sale = new Sale();
+                    $sale->checkbook_id = NULL ;
+                    $sale->additional_id = $listAdditional[$i]['id'];
+                    $sale->taxe_id = NULL ;
+                    $sale->number_bill_sales = $number_reception;
+                    $sale->quantity_sales = 1 ;
+                    $sale->price_unit_sales = $listAdditional[$i]['price_additional'] ;
+                    $sale->dian_bill = 'No' ;
+                    $sale->total_sales = $listAdditional[$i]['price_additional'] ;
+                    $sale->state_bill = 1 ;
+                    $sale->save();
+
+                    $additional = Additional::findOrFail($listAdditional[$i]['id']);
+                    $additional->view_facture_additional = '0';
+                    $additional->save();
+                }else{
+                    $additional = Additional::findOrFail($listAdditional[$i]['id']);
+                    $additional->view_facture_additional = '0';
+                    $additional->save();
+                }
+            }
+       }
+
     }
 
 
     public function activo(Request $request)
-    {	
-      	
+    {
       	if (!$request->ajax()) return redirect('/');
 
         $sale =  Sale::findOrFail($request->id);

@@ -60,7 +60,7 @@ class RoomController extends Controller
             $room->price_air = $request->price_air;
             $room->frozen = $request->frozen;
             $room->state = $request->state;
-            $room->reservation_date = $request->reservation_date;
+            // $room->reservation_date = $request->reservation_date;
             $room->save();
            
     }

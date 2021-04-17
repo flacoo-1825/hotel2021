@@ -29,7 +29,10 @@ class CreateBillsTable extends Migration
             $table->date('date_entry_bill')->nullable();
             $table->date('date_exit_bill')->nullable();
             $table->enum('dian_bill',['yes','no']);
-            $table->double('total_bill', 8, 2)->nullable();
+            $table->double('total_additionals', 8, 1)->nullable();
+            $table->double('total_products', 8, 1)->nullable();
+            $table->double('total_days', 8, 1)->nullable();
+            $table->double('total_bill', 8, 1)->nullable();
             $table->text('description_bill')->nullable();
             $table->boolean('state_bill')->default(0);
             $table->timestamps();

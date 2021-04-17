@@ -39,7 +39,7 @@ class CounterController extends Controller
 
             case 2 : {
 
-                $counter->number_ticket = $request->number_ticket;
+                $counter->number_ticket = $request->number_ticket+1;
                 $counter->save();
 
             break;

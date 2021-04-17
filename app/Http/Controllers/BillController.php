@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use App\bill;
 use App\Sale;
 use App\Buy;
+use App\Counter;
 use Illuminate\Http\Request;
 
 class BillController extends Controller
@@ -70,6 +71,7 @@ class BillController extends Controller
     {     
             if (!$request->ajax()) return redirect('/');
             $bill=bill::create($request->all());
+            
     }
 
     

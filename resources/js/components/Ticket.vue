@@ -1,121 +1,63 @@
 <template>
-    <div class="container-fluid">
-                <!-- Ejemplo de tabla Listado -->
-                <div class="card">
-                    <div class="card-header">
-                        <i class="fas fa-chevron-right fa5x"></i> Ventas habitación
-                    </div>
-                    <div class="card-body">
-                        <div class="form-group row">
-                            <div class="col-md-6">
-                                <div class="input-group">
-                                    <select class="form-control col-md-3" v-model="valor">
-                                      <option value="number_bill">Factura</option>
-                                    </select>
-                                    <input type="text" v-model="search" @keyup="listBills(1,search,valor)"  class="form-control" placeholder="Texto a buscar">
-                                    <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i> Buscar</button>
-                                </div>
-                            </div>
-                        </div>
-                        <table class="table table-bordered table-striped table-sm">
-                            <thead>
-                                <tr>
-                                    <th>Factura</th>
-                                    <th>total</th>
-                                    <th>Detalles factura</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr class="text-center" v-for="bill in arrayBill" :Key="bill.id">
-                                   <td  v-text="bill.number_bill"></td>
-                                   <td>{{bill.total_bills | currency}}</td>
-                                   <td>
-                                      <a href="#" class="btn  btn-warning btn-sm p-1" title="Ver" @click="openModal('bill','ver',bill)" >
-                                        <i class="far fa-eye"></i> Ver Detalle
-                                      </a>
-                                   </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                        <nav>
-                            <ul class="pagination">
-                              <li class="page-item" v-if="pagination.current_page > 1">
-                                    <a class="page-link" href="#" @click.prevent="cambiarPagina(pagination.current_page - 1,search,valor)">Anterior</a>
-                              </li>
-                              <li class="page-item" v-for="page in pagesNumber" :key="page" :class="[page == isActived ? 'active' : '']">
-                                    <a class="page-link" href="#" @click.prevent="cambiarPagina(page,search,valor)" v-text="page"></a>
-                              </li>
-                              <li class="page-item" v-if="pagination.current_page < pagination.last_page">
-                                    <a class="page-link" href="#" @click.prevent="cambiarPagina(pagination.current_page + 1,search,valor)">Siguiente</a>
-                              </li>
-                            </ul>
-                        </nav>
+  <div class="container-fluid">
+    <div class="card">
+        <div class="card-header">
+            <i class="fas fa-chevron-right fa5x"></i> Ventas habitación
+        </div>
+        <template v-if="facture == 0">
+          <div class="card-body">
+            <div class="form-group row">
+                <div class="col-md-6">
+                    <div class="input-group">
+                        <select class="form-control col-md-3" v-model="valor">
+                          <option value="number_bill">Factura</option>
+                        </select>
+                        <input type="text" v-model="search" @keyup="listBills(1,search,valor)"  class="form-control" placeholder="Texto a buscar">
+                        <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i> Buscar</button>
                     </div>
                 </div>
-                <!-- Fin ejemplo de tabla Listado -->
-                 <div class="modal fade" tabindex="-1" :class="{'mostrar' : modal}" >
-                  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
-                    <div class="modal-content container bg-container-modal">
-                      <div class="text-center">
-                        <h3 class="modal-title degraded-orange" v-text="titleModal"></h3>
-                      </div>
-                      <div class="modal-body">
-                          <div class="row">
-                            <div class="col-md-6 mb-2 certificate  input-group">
-                            </div>
-                            <div class="col-md-6 mb-2 certificate  input-group">
-                                <label for="text-input ">Factura</label>
-                                <h2 v-text="number_bill"></h2>
-                            </div>
-                          </div>
-                        <div class="row">
-                          <div class="col">
-                            <table class="table table-hover  table-sm text-center" >
-                              <thead >
-                                <tr>
-                                  <th>Producto</th>
-                                  <th>Precio C/u</th>
-                                  <th>cantidad</th>
-                                  <th>total</th>
-                                </tr>
-                              </thead>
-                                <tbody class="bg-white text-center table-bordered">
-                                  <tr v-for="product in arrayDetalleSales " :key="product.id">
-                                    <td v-text="product.name_product"></td>
-                                    <td  >Precio : {{product.price_unit_sales | currency}} </td>
-                                    <td>{{product.quantity_sales | currency}}</td>
-                                    <td v-text="product.total_sales"></td>
-                                  </tr>
-                                </tbody>  
-                            </table>
-                            <table class="table table-hover  table-sm text-center" >
-                                <thead >
-                                  <tr class="d-flex justify-content-end">
-                                    <th>total</th>
-                                    <th>{{total_bill | currency}}</th>
-                                  </tr>
-                                </thead>
-                              </table>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="row modal-footer">
-                          <div class="col-lg-2">
-                            <a class="btn btn-danger  text-white" @click="closeModal()">
-                              <i class="fas fa-times-circle"></i> Cerrar
-                            </a>
-                          </div>   
-                      </div>
-                      <!-- /.modal-content -->
-                    </div>
-                  <!-- /.modal-dialog -->
-                  </div>
-        </div>
-
+            </div>
+            <table class="table table-bordered table-striped table-sm">
+                <thead>
+                    <tr>
+                        <th>Factura</th>
+                        <th>total</th>
+                        <th>Detalles factura</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="text-center" v-for="bill in arrayBill" :Key="bill.id">
+                        <td  v-text="bill.number_bill"></td>
+                        <td>{{bill.total_bill | currency}}</td>
+                        <td>
+                          <a href="#" class="btn  btn-warning btn-sm p-1" title="Ver" @click="openModal('bill','ver',bill)" >
+                            <i class="far fa-eye"></i> Ver Detalle
+                          </a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <nav>
+                <ul class="pagination">
+                  <li class="page-item" v-if="pagination.current_page > 1">
+                        <a class="page-link" href="#" @click.prevent="cambiarPagina(pagination.current_page - 1,search,valor)">Anterior</a>
+                  </li>
+                  <li class="page-item" v-for="page in pagesNumber" :key="page" :class="[page == isActived ? 'active' : '']">
+                        <a class="page-link" href="#" @click.prevent="cambiarPagina(page,search,valor)" v-text="page"></a>
+                  </li>
+                  <li class="page-item" v-if="pagination.current_page < pagination.last_page">
+                        <a class="page-link" href="#" @click.prevent="cambiarPagina(pagination.current_page + 1,search,valor)">Siguiente</a>
+                  </li>
+                </ul>
+            </nav>
+          </div>
+        </template>
+        <template v-if="facture == 1">
+          <h1>here Data</h1>
+        </template>
+        
     </div>
-            <!--closed here Data-->
-
-           
+  </div>
 </template>
 
 
@@ -143,6 +85,7 @@
                     },
                     monthBeforeYear: false,
             },
+            facture  : 0,
             name_bill : '',
             total_bills : '',
             desactivar : 0,
@@ -244,28 +187,12 @@
           me.listBills(page,search,valor);
         },
 
-        openModal(model, accion, data = [] ){
+        openModal(accion, data = [] ){
 
-          switch(model){
-              case  "bill" : {
+          switch(accion){
 
-                  switch(accion){
-
-                      case "ver" :{
-
-                          //console.log(data);
-                            this.modal = 1;
-                            this.desactivar = 1;
-                            this.titleModal = 'Detalle de la factura';
-                            this.accion = 3;
-                            this.bill_id = '';
-                            this.number_bill =  data['number_bill'];
-                            this.total_bills =  data['total_bill'];
-                            this.detalleBills(this.number_bill);
-                          break;
-
-                      }
-                  }
+              case  "bill_detail" : {
+                this.facture = 1;
               }
           }
 

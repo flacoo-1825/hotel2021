@@ -664,6 +664,55 @@
                           <div class="col-md-4 mb-2 input-group">
                               <label for="text-input ">Precio : <span >{{price | currency}}</span></label>
                           </div>
+                          <div class="col-md-4 mb-2 input-group">
+                              <table class="table table-hover  table-sm text-center" >
+                                <thead >
+                                  <tr class="d-flex justify-content-end">
+                                    <th>Total fatura <span class="text-danger" v-text="number_facture"></span></th>
+                                    <th class="bg-success">{{totalFacture | currency}}</th>
+                                  </tr>
+                                </thead>
+                              </table>
+                          </div>
+                        </div>
+                        <hr>
+                        <div class="row mb-4 mt-3">
+                            <div class="col-md-12 mb-2 text-center certificate">
+                                <h3>Días de estadía</h3>
+                            </div>
+                            <div class="col-md-12 mb-2 text-right certificate">
+                                <button type="button" class="btn btn-success"  @click="openModal('room','days')">
+                                  <i class="fas fa-calendar-day"></i> Generar día
+                                </button>
+                            </div>
+                        </div>
+                        <div class="row">
+                          <table class="table table-bordered table-striped table-sm">
+                            <thead >
+                                <tr>
+                                    <th class="text-center">Fecha</th>
+                                    <th class="text-center">Tipo de ventilación</th>
+                                    <th class="text-center">precio día/hora</th>
+                                    <th class="text-center">total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="text-center" v-for="day in listDays" :Key="day.id">
+                                  <td v-text="day.date_day"></td>
+                                  <td  v-text="day.type_frozen_day"></td>
+                                  <td>{{day.price_day + day.price_hour | currency}}</td>
+                                  <td>{{day.total_day | currency}}</td>
+                                </tr>
+                            </tbody>
+                          </table>
+                          <table class="table table-hover  table-sm text-center" >
+                              <thead >
+                                <tr class="d-flex justify-content-end">
+                                  <th>Total días</th>
+                                  <th class="bg-warning">{{totalDays | currency}}</th>
+                                </tr>
+                              </thead>
+                            </table>
                         </div>
                         <hr>
                         <div class="row mb-4 mt-3">
@@ -716,8 +765,8 @@
                           <table class="table table-hover  table-sm text-center" >
                               <thead >
                                 <tr class="d-flex justify-content-end">
-                                  <th>total</th>
-                                  <th>{{totalNewSaleFacture | currency}}</th>
+                                  <th>Total productos</th>
+                                  <th class="bg-warning">{{totalNewSaleFacture | currency}}</th>
                                 </tr>
                               </thead>
                             </table>
@@ -758,18 +807,147 @@
                             </tbody>
                           </table>
                           <table class="table table-hover  table-sm text-center" >
-                              <thead >
-                                <tr class="d-flex justify-content-end">
-                                  <th>total</th>
-                                  <th>{{totalAdditional | currency}}</th>
-                                </tr>
-                              </thead>
-                            </table>
+                            <thead >
+                              <tr class="d-flex justify-content-end">
+                                <th>Total adicionales </th>
+                                <th class="bg-warning">{{totalAdditional | currency}}</th>
+                              </tr>
+                            </thead>
+                          </table>
+                          <table class="table table-hover  table-sm text-center" >
+                            <thead >
+                              <tr class="d-flex justify-content-end">
+                                <th>Total fatura <span class="text-danger" v-text="number_facture"></span></th>
+                                <th class="bg-success">{{totalFacture | currency}}</th>
+                              </tr>
+                            </thead>
+                          </table>
                         </div>
                       </div>
                   </div>
         </div>
       </template>
+       <div class="modal fade" tabindex="-1" :class="{'mostrar' : add5 }" >
+                <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+                  <div class="modal-content container bg-container-modal">
+                    <div class="text-center">
+                      <h3 class="modal-title degraded-orange" v-text="titleModal"></h3>
+                    </div>
+                    <div class="modal-body">
+                      <table class="table table-hover  table-sm text-center" >
+                        <thead >
+                          <tr>
+                            <th class="text-center">Tipo ventilación</th>
+                            <th class="text-center" >Precio</th>
+                            <th class="text-center" >Fecha a generar</th>
+                            <th class="text-center" >Generar</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="text-center">
+                              <td>Ventilador</td>
+                              <td>{{price | currency}}</td>
+                              <td>
+                                <date-picker v-model="date_day" v-bind:disabled="desactivar==1"
+                                :language="es" :lang="lang" valueType="format">
+                                </date-picker>
+                              </td>
+                              <td>
+                                <div>
+                                  <a class="btn btn-success  text-white" @click="generateDay(1)">
+                                     <i class="fas fa-calendar-day"></i> Generar
+                                  </a>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr class="text-center">
+                              <td>A/C</td>
+                              <td>{{price_air | currency}}</td>
+                              <td>
+                                <date-picker v-model="date_day" v-bind:disabled="desactivar==1"
+                                :language="es" :lang="lang" valueType="format">
+                                </date-picker>
+                              </td>
+                              <td>
+                                <div>
+                                  <a class="btn btn-success  text-white" @click="generateDay(2)">
+                                    <i class="fas fa-calendar-day"></i> Generar
+                                  </a>
+                                </div>
+                              </td>
+                            </tr>
+                        </tbody>
+                      </table>
+                      <div class="row">
+                        <div class="col-sm-11"></div>
+                        <template v-if="dayNew==1">
+                          <div class="col-sm-1">
+                            <a type="button" class="btn btn-floatiing bg-danger"  @click="dayNew=0">
+                              <i class="fas fa-minus-circle"></i>
+                            </a>
+                          </div>
+                        </template>
+                        <template v-else>
+                          <div class="col-sm-1">
+                            <a type="button" class="btn btn-floatiing bg-success"  @click="dayNew=1">
+                              <i class="fas fa-plus-circle"></i>
+                            </a>
+                          </div>
+                        </template>
+                      </div>
+                      <template v-if="dayNew">
+                        <form action="" method="post" enctype="multipart/form-data" class="form-horizontal customers">
+                          <div class="row">
+                              <div class="col-lg-4 mb-2">
+                                 <label for="text-select ">Tipo de ventilación</label>
+                                <select class="form-control" v-model="name_frozen">
+                                  <option value="Ventilador">Ventilador</option>
+                                  <option value="A/C">A/C</option>
+                                </select>
+                              </div>
+                              <div class="col-lg-4 mb-2">
+                                  <label for="text-input ">Precio día</label>
+                                  <input class="form-control"  v-model = "price_day">
+                              </div>
+                              <div class="col-lg-4 mb-2">
+                                  <label for="text-input ">Precio hora</label>
+                                  <input type="number" class="form-control" placeholder="" v-bind:disabled="desactivar==1" v-model="price_hour">
+                              </div>
+                              <div class="col-lg-4 mb-2">
+                                  <label for="text-input ">Cantidad de horas</label>
+                                  <input type="number" class="form-control" placeholder="" v-bind:disabled="desactivar==1" v-model="many_hours_day">
+                              </div>
+                              <!-- <div class="col-lg-4 mb-2">
+                                  <label for="text-input ">Cantidad de días</label>
+                                  <input type="number" class="form-control" placeholder="" v-bind:disabled="desactivar==1" v-model="quantity_day">
+                              </div> -->
+                              <div class="col-lg-4 mb-2">
+                                <label for="text-input ">Fecha a generar</label>
+                                <date-picker v-model="date_day" v-bind:disabled="desactivar==1"   :language="es" :lang="lang" valueType="format"></date-picker>
+                              </div>
+                              <div class="col-lg-12 mb-2">
+                                <label for="text-input ">Observaciones</label>
+                                <textarea  cols="30" rows="4" class="form-control" placeholder="" v-bind:disabled="desactivar==1"
+                                v-model="description_day">
+                                </textarea>
+                              </div>
+                          </div>
+                        </form>
+                      </template>
+                    </div>
+                    <div class="row modal-footer">
+                        <div class="col-lg-2">
+                          <a class="btn btn-danger  text-white" @click="closeModal('days')">
+                            <i class="fas fa-times-circle"></i> Cerrar
+                          </a>
+                        </div>
+                          <a class="btn btn-success  text-white" @click="generateDay()">
+                            <i class="fas fa-calendar-day"></i> Generar
+                          </a>
+                    </div>
+                  </div>
+                </div>
+      </div>
       <div class="modal fade" tabindex="-1" :class="{'mostrar' : add2}" >
                 <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
                   <div class="modal-content container bg-container-modal">
@@ -834,7 +1012,7 @@
                                   <td v-text="product.quantity_sales"></td>
                                   <td>{{product.total_sales | currency}} </td>
                                 </tr>
-                                <tr v-for="additional in check2 " :key="additional.id">
+                                <tr v-for="additional in check2 " :key="additional.id+60">
                                   <td v-text="additional.name_additional"></td>
                                   <td  >Precio : {{additional.price_additional | currency}} </td>
                                   <td v-text="1"></td>
@@ -915,7 +1093,7 @@
                       <template v-if="newSale==2">
                         <div class="col-lg-2">
                           <a class="btn btn-success text-white" @click="saleNewReception()">
-                            <i class="fas fa-money-check-alt"></i> Facturar
+                            <i class="fas fa-money-check-alt"></i> Facturar <!--facturar por recepción -->
                           </a>
                         </div>
                       </template>
@@ -923,7 +1101,6 @@
                         <div class="col-lg-2">
                           <a class="btn btn-success text-white" @click="addSaleReception()">
                             <i class="fas fa-money-check-alt"></i> Facturar
-                            <!-- TODO: here -->
                           </a>
                         </div>
                       </template>
@@ -995,7 +1172,7 @@
                                     </div>
                                 </div>
                                 <div>
-                                  <a href="#" class="btn btn-success btn-block" @click="FormAdditional()">Agregar adiccional</a>
+                                  <a href="#" class="btn btn-success btn-block" @click="FormAdditional()">Agregar adicional</a>
                                 </div>
                             </form>
                           </div>
@@ -1047,6 +1224,18 @@
                         <i class="fas fa-plus-circle"></i> Agregar
                       </a>
                     </div>
+                </div>
+            </div>
+          </div>
+      </div>
+      <div class="modal fade" tabindex="-1" :class="{'mostrar' : add4}" >
+          <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+            <div class="modal-content container bg-container-modal">
+                <div class="text-center">
+                  <h3 class="modal-title degraded-orange" v-text="titleModal"></h3>
+                </div>
+                <div class="modal-body">
+                  <div class="loader">Loading...</div>
                 </div>
             </div>
           </div>
@@ -1171,6 +1360,19 @@
               },
               events: [],
             },
+            many_hours_day : 0,
+            quantity_day : 0,
+            description_day : '',
+            price_hour : 0,
+            price_day : 0,
+            date_day : '',
+            dayNew : 0,
+            hoursDay : 0,
+            listDays : [],
+            total_days : 0,
+            total_bill : 0,
+            total_product_sale : 0,
+            total_additionals : 0, 
             time_entry_certificate : '',
             temperature_exit_acomp : 0,
             temperature_entry_acomp : 0,
@@ -1189,6 +1391,7 @@
             addAddition : '',
             roomMove : '',
             move : '',
+            name_frozen : 'frozen_air',
             answer : '',
             number_update_ticket : '',
             total_reception : 0,
@@ -1275,6 +1478,9 @@
             add : 0,
             add2 : 0,
             add3 : 0,
+            add4 : 0,
+            add5 : 0,
+            daysPrice : [],
             desactivar : 0,
             condition : 1,
             search:'',
@@ -1352,6 +1558,16 @@
 
         totalSaleAdditional: function(){
             var option = 7;
+            return this.totalSales(option);
+        },
+
+        totalDays: function(){
+            var option = 8;
+            return this.totalSales(option);
+        },
+
+        totalFacture: function(){
+            var option = 9;
             return this.totalSales(option);
         },
 
@@ -1494,6 +1710,8 @@
               },
               // console.log(this.additional);
               this.addAddition = 0;
+              this.price_servicie = '';
+              this.description_servicie = '';
               this.addAdditional(this.additional);
             }
         },
@@ -1970,13 +2188,13 @@
             }
 
             case 3 :{
-                let total_reception = 0;
+                this.total_product_sale = 0;
                 var sales = this.listSales;
                 for(var i = 0; i < sales.length; i++){
                   var item = sales[i]['total_sales'];
-                  total_reception += item;
+                  this.total_product_sale += item;
                 }
-                return total_reception;
+                return this.total_product_sale;
                 break;
             }
 
@@ -2003,13 +2221,13 @@
             }
 
             case 6 :{
-              let total_reception = 0;
+              let total_additionals = 0;
               var additionals = this.listAdditional;
               for(var i = 0; i < additionals.length; i++){
                 var item = additionals[i]['price_additional'];
-                total_reception += item;
+                total_additionals += item;
               }
-              return total_reception;
+              return total_additionals;
               break;
             }
 
@@ -2023,7 +2241,101 @@
               return total_reception2;
               break;
             }
+            case 8 :{
+              this.total_days = 0;
+              var days = this.listDays;
+              for(var i = 0; i < days.length; i++){
+                var item = days[i]['total_day'];
+                this.total_days += item;
+              }
+              return this.total_days;
+              
+              break;
+            }
+
+            case 9 :{
+
+               let total_facture = this.totalAdditional + this.totalNewSaleFacture + this.totalDays;
+               this.total_bill = total_facture;
+               return total_facture;
+            }
           }
+        },
+        generateDay(key){
+            // many_hours_day : 0,
+            // quantity_day : 0,
+            // description_day : '',
+            // price_hour : '',
+            // price_day : '',
+            // date_day : '',
+            let price_days = this.price_day;
+            let price_hours = this.price_hour;
+            switch (key) {
+              case 1 :{
+                this.price_day = this.price;
+                this.name_frozen = 'Ventilador';
+
+                break;
+              };
+              case 2 : {
+                this.price_day = this.price_air;
+                this.name_frozen = 'A/C';
+                break;
+              };
+            }
+            if (this.many_hours_day == 0) {
+              this.total_day = this.price_day;
+            } else {
+              this.total_day = this.many_hours_day * this.price_hour;
+
+            };
+            var url  = 'day/register';
+            let me = this;
+            axios.post(url,{
+              'many_hours_day' : this.many_hours_day,
+              'quantity_day' : this.quantity_day,
+              'description_day' : this.description_day,
+              'price_hour' : this.price_hour,
+              'price_day' : this.price_day,
+              'date_day' : this.date_day,
+              'number_bill_day' : this.number_facture,
+              'type_frozen_day' : this.name_frozen,
+              'total_day' : this.total_day
+            }).then(function (response) {
+                Swal.fire({
+                  position: 'center',
+                  icon: 'success',
+                  title: 'Dia cargado a la habitación',
+                  showConfirmButton: false,
+                  timer: 1500
+                });
+                  var room = [];
+                  room = me.dataRoom;
+                  me.search_days();
+                  me.closeModal('days');
+                  console.log(room);
+                  // me.openModal('room','edit',room);
+              })
+              .catch(function (error) {
+                    console.log(error);
+              });
+
+        },
+
+        search_days(){
+          let me=this;
+          var number_facture = this.number_facture;
+          var url = 'day/listDays?number_facture='+number_facture;
+          axios.get(url).then(function (response) {
+               me.listDays= response.data;
+              //  me.listSale = respuesta[0].number_certificate;
+              //  me.arrayRoom = respuesta.room.data;
+              // console.log(me.listDays);
+
+          })
+            .catch(function (error) {
+              console.log(error);
+              });
         },
 
         openModal(model, accion, data = [] ){
@@ -2078,6 +2390,7 @@
                           this.dataRoom = data;
                           this.search_sales();
                           this.search_additional();
+                          this.search_days();
 
 
 
@@ -2224,8 +2537,8 @@
                         this.add2 = 1;
                         this.newSale = 3;
                         this.titleModal = 'Factura recepción';
-                        this.check = this.listProduct;
-                        this.check2 = this.listAdditional;
+                        // this.check = this.listProduct;
+                        // this.check2 = this.listAdditional;
                         this.name_product = '';
                         this.cantidad_product = 0;
                         this.sale_product = 0;
@@ -2316,6 +2629,27 @@
                           break;
 
                       };
+                      case "process" :{
+                          this.modal = 0;
+                          this.add = 0;
+                          this.add2 = 0;
+                          this.add3 = 0;
+                          this.add4 = 1;
+                          this.titleModal = 'Procesando la información';
+                        break;
+                      };
+                      case "days" :{
+                          this.add = 0;
+                          this.add2 = 0;
+                          this.add5 = 1;
+                          this.add3 = 0;
+                          this.add4 = 0;
+                          this.titleModal = 'Generar día';
+                          this.price = this.dataRoom['price'];
+                          this.frozen = this.dataRoom['frozen'];
+                          this.price_air = this.dataRoom['price_air'];
+                        break;
+                      };
                   }
               }
           }
@@ -2342,6 +2676,7 @@
               this.add2 = 0;
               this.move = 0;
               this.modal = 0;
+              this.check2 = [];
               break;
 
             case "product":
@@ -2357,6 +2692,23 @@
 
             case "reservation":
               this.modal2 = 0;
+              break;
+
+            case "newSale":
+              this.modal2 = 0;
+              this.check2 = [];
+              break;
+
+            case "process":
+              this.add = 0;
+              this.add1 = 0;
+              this.add2 = 0;
+              this.add3 = 0;
+              this.add4 = 0;
+              break;
+
+            case "days":
+              this.add5 = 0;
               break;
           }
         },
@@ -2397,8 +2749,24 @@
           var url = 'counter/update';
           axios.put(url,{
 
-                      'option' : 4,
-                      'number_reception' :    this.number_update_reception,
+              'option' : 4,
+              'number_reception' :    this.number_update_reception,
+
+          })
+            .catch(function (error) {
+                  var respuesta = error.response.data;
+                  me.arrayError = respuesta.errors;
+                  console.log(error.response.data);
+            });
+
+        },
+         updateBill(){
+          let me=this;
+          var url = 'counter/update';
+          axios.put(url,{
+
+              'option' : 2,
+              'number_ticket' :    this.number_update_ticket,
 
           })
             .catch(function (error) {
@@ -2444,82 +2812,91 @@
 
         saleNewReception(){
             let me = this;
-            let data_additionals = this.check2;
-            console.log(this.check2);
-            let data = this.check;
             let arrayId = [];
-            for (let i = 0; i < me.check2.length; i++) {
-              if (me.check2[i]['name_additional'] != 'Compra para habitación') {
-                arrayId.push({
-                id : me.check2[i]['id'],
-                type : 'service',})
-              }else{
-                arrayId.push({
-                  id : me.check2[i]['id'],
-                  type : 'buyRoom',})
-              }
-            };
-            console.log(arrayId);
+            if (me.check.length == 0 && me.check2.length == 0) {
+              Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'No tienes productos para facturar!',
+              })
 
-            // if (data.length == 0) {
-            //   Swal.fire({
-            //     icon: 'error',
-            //     title: 'Oops...',
-            //     text: 'No tienes productos para facturar!',
-            //   })
+            }else{
+              const swalWithBootstrapButtons = Swal.mixin({
+              customClass: {
+                confirmButton: 'btn btn-success',
+                cancelButton: 'btn btn-danger'
+              },
+              buttonsStyling: false
+              })
 
-            // }else{
-            //   const swalWithBootstrapButtons = Swal.mixin({
-            //   customClass: {
-            //     confirmButton: 'btn btn-success',
-            //     cancelButton: 'btn btn-danger'
-            //   },
-            //   buttonsStyling: false
-            //   })
-
-            //   swalWithBootstrapButtons.fire({
-            //     title: 'Está seguro?',
-            //     text: "Va a facturar estos productos por recepción!",
-            //     icon: 'warning',
-            //     showCancelButton: true,
-            //     confirmButtonText: 'Si, facturar',
-            //     cancelButtonText: 'No, Cancelar!',
-            //     reverseButtons: true
-            //   }).then((result) => {
-            //     if (result.value) { 
-
-            //         let me = this;
-
-            //         axios.put('sale/update',{
-            //               'sale' : this.check,
-            //               'number_reception' : this.number_reception,
-            //         }).then(function (response) {
-            //               me.registerCheckbooks();
-            //               me.updateReception();
-            //               me.check = [];
-            //               var room = [];
-            //               room = me.dataRoom;
-            //               me.openModal('room','edit',room);
-            //         }).catch(function (error) {
-            //             console.log(error);
-            //         });
-            //       swalWithBootstrapButtons.fire(
-            //         'Facturado!',
-            //         'Productos fueron facturados por recepción.',
-            //         'success'
-            //       )
-            //     } else if (
-            //       /* Read more about handling dismissals below */
-            //       result.dismiss === Swal.DismissReason.cancel
-            //     ) {
-            //       swalWithBootstrapButtons.fire(
-            //         'Cancelado',
-            //         'Tus productos siguen cargados en la habitación :)',
-            //         'error'
-            //       )
-            //     }
-            //   })
-            // }
+              swalWithBootstrapButtons.fire({
+                title: 'Está seguro?',
+                text: "Va a facturar estos productos por recepción!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Si, facturar',
+                cancelButtonText: 'No, Cancelar!',
+                reverseButtons: true
+              }).then((result) => {
+                if (result.value) {
+                    let me = this;
+                    me.openModal('room','process');
+                    let sumServicie = 0;
+                    for (let i = 0; i < me.check2.length; i++) {
+                    if (me.check2[i]['name_additional'] != 'Compra para habitación') {
+                      arrayId.push({
+                        id : me.check2[i]['id'],
+                        type : 'service',
+                        number_reception : this.number_reception,
+                        price_additional : me.check2[i]['price_additional'] })
+                    }else{
+                      arrayId.push({
+                        id : me.check2[i]['id'],
+                        type : 'buyRoom',
+                        number_reception : this.number_reception })
+                     }
+                    };
+                    for (let i = 0; i < arrayId.length; i++) {
+                      if (arrayId[i]['type'] == 'service') {
+                         sumServicie = arrayId[i]['price_additional']+sumServicie;
+                      }
+                    };
+                    // console.log(sumServicie);
+                    axios.put('sale/update',{
+                          'sale' : this.check,
+                          'number_reception' : this.number_reception,
+                          'arrayAdditional' : arrayId,
+                          'valor_total' : sumServicie,
+                    }).then(function (response) {
+                          me.registerCheckbooks();
+                          me.updateReception();
+                          me.closeModal('product');
+                          me.check = [];
+                          me.check2 = [];
+                          var room = [];
+                          room = me.dataRoom;
+                          me.closeModal('process');
+                          me.openModal('room','edit',room);
+                    }).catch(function (error) {
+                        console.log(error);
+                    });
+                  swalWithBootstrapButtons.fire(
+                    'Facturado!',
+                    'Productos fueron facturados por recepción.',
+                    'success'
+                  )
+                } else if (
+                  /* Read more about handling dismissals below */
+                  result.dismiss === Swal.DismissReason.cancel
+                ) {
+                  swalWithBootstrapButtons.fire(
+                    'Cancelado',
+                    'Tus productos siguen cargados en la habitación :)',
+                    'error'
+                  )
+                }
+              })
+            }
         },
 
         searchRoomMove(){
@@ -2537,7 +2914,7 @@
                 });
         },
         registerBill(answer){
-             var answer = this.answer;
+            var answer = this.answer;
               // console.log(answer);
             let me = this;
             var url  = 'bill/register';
@@ -2548,11 +2925,14 @@
                         'certificate_id' :   1,
                         'taxe_id'    : null,
                         'number_bill'    : this.number_ticket,
-                        'faker_number_bill'    : this.number_certificate,
+                        'faker_number_bill'    : this.number_facture,
                         'date_entry_bill'    : null,
                         'date_exit_bill'    : null,
                         'dian_bill'    : answer,
-                        'total_bill'    : this.total_reception,
+                        'total_products'    : this.total_product_sale,
+                        'total_days'    : this.total_days,
+                        'total_additionals'    : this.total_additionals,
+                        'total_bill'    : this.total_bill,
                         'state_bill'    : 1,
                         'class_bill'    : 'Venta',
                         
@@ -2565,6 +2945,8 @@
                   showConfirmButton: false,
                   timer: 1500
                 });
+                
+                me.updateBill();
               })
               .catch(function (error) {
                     var respuesta = error.response.data;
@@ -3004,6 +3386,104 @@
         color: #eee;
         font-size: 1rem;
         line-height: 20px;
+    }
+    .btn-add {
+        display: inline-block;
+        color: rgb(14, 236, 62);
+        position: relative;
+        overflow: hidden;
+        z-index: 1;
+        width: 30px;
+        height: 30px;
+        line-height: 30px;
+        padding: 0;
+        background-color: #5a1aee;
+        border-radius: 50%;
+        -webkit-transition: background-color .3s;
+        transition: background-color .3s;
+        cursor: pointer;
+        vertical-align: middle;
+        box-shadow: 0 1px 10px
+        rgba(0, 0, 0, 0.4);
+    }
+
+    .btn-add i {
+        width: 50%;
+        height: 80%;
+        display: inline-block;
+        text-align: center;
+        color: #eee;
+        font-size: 1rem;
+        line-height: 20px;
+    }
+    .loader {
+  color:rgb(0, 128, 128);
+  font-size: 20px;
+  margin: 100px auto;
+  width: 1em;
+  height: 1em;
+  border-radius: 50%;
+  position: relative;
+  text-indent: -9999em;
+  -webkit-animation: load4 1.3s infinite linear;
+  animation: load4 1.3s infinite linear;
+  -webkit-transform: translateZ(0);
+  -ms-transform: translateZ(0);
+  transform: translateZ(0);
+    }
+    @-webkit-keyframes load4 {
+      0%,
+      100% {
+        box-shadow: 0 -3em 0 0.2em, 2em -2em 0 0em, 3em 0 0 -1em, 2em 2em 0 -1em, 0 3em 0 -1em, -2em 2em 0 -1em, -3em 0 0 -1em, -2em -2em 0 0;
+      }
+      12.5% {
+        box-shadow: 0 -3em 0 0, 2em -2em 0 0.2em, 3em 0 0 0, 2em 2em 0 -1em, 0 3em 0 -1em, -2em 2em 0 -1em, -3em 0 0 -1em, -2em -2em 0 -1em;
+      }
+      25% {
+        box-shadow: 0 -3em 0 -0.5em, 2em -2em 0 0, 3em 0 0 0.2em, 2em 2em 0 0, 0 3em 0 -1em, -2em 2em 0 -1em, -3em 0 0 -1em, -2em -2em 0 -1em;
+      }
+      37.5% {
+        box-shadow: 0 -3em 0 -1em, 2em -2em 0 -1em, 3em 0em 0 0, 2em 2em 0 0.2em, 0 3em 0 0em, -2em 2em 0 -1em, -3em 0em 0 -1em, -2em -2em 0 -1em;
+      }
+      50% {
+        box-shadow: 0 -3em 0 -1em, 2em -2em 0 -1em, 3em 0 0 -1em, 2em 2em 0 0em, 0 3em 0 0.2em, -2em 2em 0 0, -3em 0em 0 -1em, -2em -2em 0 -1em;
+      }
+      62.5% {
+        box-shadow: 0 -3em 0 -1em, 2em -2em 0 -1em, 3em 0 0 -1em, 2em 2em 0 -1em, 0 3em 0 0, -2em 2em 0 0.2em, -3em 0 0 0, -2em -2em 0 -1em;
+      }
+      75% {
+        box-shadow: 0em -3em 0 -1em, 2em -2em 0 -1em, 3em 0em 0 -1em, 2em 2em 0 -1em, 0 3em 0 -1em, -2em 2em 0 0, -3em 0em 0 0.2em, -2em -2em 0 0;
+      }
+      87.5% {
+        box-shadow: 0em -3em 0 0, 2em -2em 0 -1em, 3em 0 0 -1em, 2em 2em 0 -1em, 0 3em 0 -1em, -2em 2em 0 0, -3em 0em 0 0, -2em -2em 0 0.2em;
+      }
+    }
+    @keyframes load4 {
+      0%,
+      100% {
+        box-shadow: 0 -3em 0 0.2em, 2em -2em 0 0em, 3em 0 0 -1em, 2em 2em 0 -1em, 0 3em 0 -1em, -2em 2em 0 -1em, -3em 0 0 -1em, -2em -2em 0 0;
+      }
+      12.5% {
+        box-shadow: 0 -3em 0 0, 2em -2em 0 0.2em, 3em 0 0 0, 2em 2em 0 -1em, 0 3em 0 -1em, -2em 2em 0 -1em, -3em 0 0 -1em, -2em -2em 0 -1em;
+      }
+      25% {
+        box-shadow: 0 -3em 0 -0.5em, 2em -2em 0 0, 3em 0 0 0.2em, 2em 2em 0 0, 0 3em 0 -1em, -2em 2em 0 -1em, -3em 0 0 -1em, -2em -2em 0 -1em;
+      }
+      37.5% {
+        box-shadow: 0 -3em 0 -1em, 2em -2em 0 -1em, 3em 0em 0 0, 2em 2em 0 0.2em, 0 3em 0 0em, -2em 2em 0 -1em, -3em 0em 0 -1em, -2em -2em 0 -1em;
+      }
+      50% {
+        box-shadow: 0 -3em 0 -1em, 2em -2em 0 -1em, 3em 0 0 -1em, 2em 2em 0 0em, 0 3em 0 0.2em, -2em 2em 0 0, -3em 0em 0 -1em, -2em -2em 0 -1em;
+      }
+      62.5% {
+        box-shadow: 0 -3em 0 -1em, 2em -2em 0 -1em, 3em 0 0 -1em, 2em 2em 0 -1em, 0 3em 0 0, -2em 2em 0 0.2em, -3em 0 0 0, -2em -2em 0 -1em;
+      }
+      75% {
+        box-shadow: 0em -3em 0 -1em, 2em -2em 0 -1em, 3em 0em 0 -1em, 2em 2em 0 -1em, 0 3em 0 -1em, -2em 2em 0 0, -3em 0em 0 0.2em, -2em -2em 0 0;
+      }
+      87.5% {
+        box-shadow: 0em -3em 0 0, 2em -2em 0 -1em, 3em 0 0 -1em, 2em 2em 0 -1em, 0 3em 0 -1em, -2em 2em 0 0, -3em 0em 0 0, -2em -2em 0 0.2em;
+      }
     }
 
 </style>

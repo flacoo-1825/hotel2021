@@ -81,18 +81,23 @@
                               </thead>
                                 <tbody class="bg-white text-center table-bordered">
                                   <tr v-for="product in arrayDetalle " :key="product.id">
-                                    <td v-text="product.name_product"></td>
+                                    <template v-if="product.name_product" >
+                                      <td v-text="product.name_product"></td>
+                                    </template>
+                                    <template  v-else>
+                                      <td v-text="product.name_additional"></td>
+                                    </template>
                                     <td  >Precio : {{product.price_unit_sales | currency}} </td>
                                     <td>{{product.quantity_sales | currency}}</td>
                                     <td v-text="product.total_sales"></td>
                                   </tr>
-                                </tbody>  
+                                </tbody>
                             </table>
                             <table class="table table-hover  table-sm text-center" >
                                 <thead >
                                   <tr class="d-flex justify-content-end">
                                     <th>total</th>
-                                    <th>{{total_checkbooks | currency}}</th>
+                                    <th>{{totalDetalle | currency}}</th>
                                   </tr>
                                 </thead>
                               </table>
@@ -104,7 +109,7 @@
                             <a class="btn btn-danger  text-white" @click="closeModal()">
                               <i class="fas fa-times-circle"></i> Cerrar
                             </a>
-                          </div>   
+                          </div>
                       </div>
                       <!-- /.modal-content -->
                     </div>
@@ -115,7 +120,7 @@
     </div>
             <!--closed here Data-->
 
-           
+
 </template>
 
 
@@ -134,7 +139,6 @@
   })
 //    import moment from 'moment';
   export default {
-      
     data() {
         return {
             lang: {
@@ -180,29 +184,45 @@
             if(!this.pagination.to) {
                 return [];
             }
-            
-            var from = this.pagination.current_page - this.offset; 
+            var from = this.pagination.current_page - this.offset;
             if(from < 1) {
                 from = 1;
             }
 
-            var to = from + (this.offset * 2); 
+            var to = from + (this.offset * 2);
             if(to >= this.pagination.last_page){
                 to = this.pagination.last_page;
-            }  
+            }
 
             var pagesArray = [];
             while(from <= to) {
                 pagesArray.push(from);
                 from++;
             }
-            return pagesArray;             
+            return pagesArray;
 
+        },
+        totalDetalle: function(){
+            var option = 1;
+            return this.sumDetalle(option);
         }
     },
 
 
     methods : {
+
+        sumDetalle(option){
+          switch (option) {
+            case 1 : {
+              let element = 0
+              for (let i = 0; i < this.arrayDetalle.length; i++) {
+                 element = this.arrayDetalle[i]['total_sales'] + element;
+              };
+              return element;
+              break;
+            };
+          }
+        },
 
         listCheckbooks(page,search,valor){
           let me=this;
@@ -225,7 +245,7 @@
           axios.get(url).then(function (response) {
                  me.arrayDetalle= response.data;
               // me.arrayDetalle = respuesta.checkbooks.data;
-              // console.log(response);
+              console.log(response);
 
           })
             .catch(function (error) {
@@ -256,6 +276,7 @@
                             this.titleModal = 'Detalle de la factura';
                             this.accion = 3;
                             this.checkbook_id = '';
+                            this.name_product ='';
                             this.number_checkbooks =  data['number_checkbooks'];
                             this.total_checkbooks =  data['total_checkbooks'];
                             this.detalleCheckbooks(this.number_checkbooks);

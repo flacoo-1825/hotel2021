@@ -220,6 +220,7 @@
             <servicie v-if="indice==24"></servicie>
             <provider v-if="indice==22"></provider>
             <companion v-if="indice==23"></companion>
+
         </main>
     </div>
     <footer class="app-footer">

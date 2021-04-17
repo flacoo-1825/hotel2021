@@ -61,15 +61,14 @@ class CheckbookController extends Controller
     
 
     public function update(Request $request)
-    {		
-               
+    {
         $listbill = $request->bill;
         $number_reception = $request->number_reception;
 
         for ($i=0; $i < count($listbill) ; $i++) { 
 
             $bill =  checkbook::findOrFail($listbill[$i]['id']);
-           
+
             $bill->number_bill_checkbooks = $number_reception;
             $bill->state_bill = 0 ;
             $bill->save();
@@ -101,8 +100,7 @@ class CheckbookController extends Controller
 
 
       public function listCheckbooks(Request $request)
-    {   
-         
+    {
     //    if (!$request->ajax()) return redirect('/');
 
         $number_checkbooks = $request->number_checkbooks;
@@ -110,14 +108,15 @@ class CheckbookController extends Controller
 
         $checkbooks = checkbook::join('sales', 'checkbooks.number_checkbooks', '=' ,'sales.number_bill_sales')
                         ->leftjoin('products', 'sales.product_id', '=' ,'products.id')
+                        ->leftjoin('additionals', 'sales.additional_id', '=' ,'additionals.id')
                         ->select('checkbooks.id','checkbooks.number_checkbooks','checkbooks.total_checkbooks',
                         'sales.number_bill_sales','sales.quantity_sales',
-                        'sales.price_unit_sales','sales.total_sales','products.name_product')
+                        'sales.price_unit_sales','sales.total_sales','products.name_product','additionals.name_additional')
                         ->where('checkbooks.number_checkbooks','=',$number_checkbooks)
                         ->orderBy('id', 'desc')->get();
-       
+
         // return [
-                
+
         //     'checkbooks' => $checkbooks
         // ];
 

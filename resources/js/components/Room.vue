@@ -391,7 +391,7 @@
                 axios.put(url,{
 
                             'id' : this.habitacion_id,
-                            'type_id' :    this.type_id,
+                            'type_id' :    this.type_room, 
                             'number' :   this.number,
                             'price'    : this.price,
                             'price_air'    : this.price_air,

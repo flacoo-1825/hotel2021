@@ -18,6 +18,7 @@ class CreateSalesTable extends Migration
             $table->integer('checkbook_id')->unsigned()->nullable();
             $table->integer('product_id')->unsigned()->nullable();
             $table->integer('additional_id')->unsigned()->nullable();
+            $table->integer('day_id')->unsigned()->nullable();
             $table->integer('taxe_id')->unsigned()->nullable();
             $table->string('number_bill_sales');
             $table->enum('dian_bill',['yes','no']);

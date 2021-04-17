@@ -95,8 +95,7 @@ class AdditionalController extends Controller
 
 
       public function listAdditionalActive(Request $request)
-    {   
-         
+    {
        if (!$request->ajax()) return redirect('/');
         $name_additional = $request->search;
 
@@ -118,6 +117,7 @@ class AdditionalController extends Controller
         $number_facture = $request->number_facture;
 
         $additionals = Additional::where('number_facture_additional','=',$number_facture)
+                        ->where('view_facture_additional','=',1)
                         ->orderBy('id', 'desc')->get();
 
         return $additionals;
