@@ -5,6 +5,8 @@ use App\bill;
 use App\Sale;
 use App\Buy;
 use App\Counter;
+use App\Day;
+use App\Additional;
 use Illuminate\Http\Request;
 
 class BillController extends Controller
@@ -13,15 +15,18 @@ class BillController extends Controller
 	public function index(Request $request)
     {   
          
-       	if (!$request->ajax()) return redirect('/');
+       	// if (!$request->ajax()) return redirect('/');
          $search = $request->search;
          $valor = $request->valor;
          
         if ($search==''){
-            $bills = Bill::orderBy('id', 'desc')->paginate(10);
+            $bills = Bill::select('id','number_bill','total_bill')
+                            ->orderBy('id', 'desc')->paginate(10);
         }
         else{
-            $bills = Bill::where($valor, 'like', '%'. $search . '%')->orderBy('id', 'desc')->paginate(10);
+            $bills = Bill::select('id','number_bill','total_bill')
+                            ->where($valor, 'like', '%'. $search . '%')
+                            ->orderBy('id', 'desc')->paginate(10);
         }
  
         return [
@@ -63,6 +68,53 @@ class BillController extends Controller
                 'to'                  => $bills->lastItem(),
             ],
             'bills' => $bills
+        ];
+    }
+
+    public function billDetail(Request $request)
+    {
+       	// if (!$request->ajax()) return redirect('/');
+         $id = $request->id_bill;
+         $bill = Bill::findOrFail($id);
+         $room = $bill['room_id'];
+         $number_facture = $bill['number_bill'];
+         $customer = $bill['customer_id'];
+         $worker = $bill['worker_id'];
+         $faker_number_bill = $bill['faker_number_bill'];
+        //  return $number_facture;
+         $billDetail = Bill::join('rooms', 'bills.room_id', '=' ,'rooms.id')
+                        ->join('customers', 'bills.customer_id', '=' ,'customers.id')
+                        ->join('certificates', 'bills.certificate_id', '=' ,'certificates.id')
+                        // ->join('workers', 'bills.worker_id', '=' ,'workers.id')
+                        ->select('bills.id','bills.number_bill','bills.date_entry_bill',
+                        'bills.date_exit_bill','bills.total_bill','bills.name_type_room','bills.total_products',
+                        'bills.total_additionals','bills.total_days','bills.description_bill',
+                        'customers.name_client','customers.firstSurname_client','customers.cedula_client',
+                        'customers.name_client','customers.nationality_client','customers.phone_client', 
+                        'customers.secondSurname_client','rooms.number','rooms.price','rooms.client_id',
+                        'rooms.condition','rooms.price_air','rooms.frozen')
+                        ->where('bills.number_bill','=',$number_facture)
+                        ->get();
+        
+         $days = Day::where('number_bill_day','=', $faker_number_bill)
+                    ->orderBy('id', 'desc')
+                    ->get();
+        
+         $sales = Sale::join('products', 'sales.product_id', '=' ,'products.id')
+                        ->select('sales.id','sales.number_bill_sales','sales.quantity_sales',
+                        'sales.price_unit_sales','sales.total_sales','products.name_product')
+                        ->where('number_bill_sales','=',$faker_number_bill)
+                        ->orderBy('id', 'desc')->get();
+
+         $additionals =  Additional::where('number_facture_additional','=', $number_facture)
+                        ->orderBy('id', 'desc')
+                        ->get();
+        return [
+            'billDetail' => $billDetail,
+            'days' => $days,
+            'sales' => $sales,
+            'sales' => $sales,
+            'additionals' => $additionals
         ];
     }
 

@@ -2935,6 +2935,7 @@
                         'total_bill'    : this.total_bill,
                         'state_bill'    : 1,
                         'class_bill'    : 'Venta',
+                        'name_type_room' : this.name_type_room,
                         
 
             }).then(function (response) {

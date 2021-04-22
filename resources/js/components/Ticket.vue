@@ -1,10 +1,10 @@
 <template>
   <div class="container-fluid">
     <div class="card">
-        <div class="card-header">
-            <i class="fas fa-chevron-right fa5x"></i> Ventas habitación
-        </div>
         <template v-if="facture == 0">
+          <div class="card-header">
+            <i class="fas fa-chevron-right fa5x"></i> Ventas habitación
+          </div>
           <div class="card-body">
             <div class="form-group row">
                 <div class="col-md-6">
@@ -30,7 +30,7 @@
                         <td  v-text="bill.number_bill"></td>
                         <td>{{bill.total_bill | currency}}</td>
                         <td>
-                          <a href="#" class="btn  btn-warning btn-sm p-1" title="Ver" @click="openModal('bill','ver',bill)" >
+                          <a href="#" class="btn  btn-warning btn-sm p-1" title="Ver" @click="openModal('bill_detail',bill)" >
                             <i class="far fa-eye"></i> Ver Detalle
                           </a>
                         </td>
@@ -53,7 +53,170 @@
           </div>
         </template>
         <template v-if="facture == 1">
-          <h1>here Data</h1>
+          <div class="card-header">
+              <i class="fas fa-chevron-right fa5x"></i> Factura de habitación
+              <button type="button" class="btn btn-danger"  @click="closedModal('bill_detail')">
+                  <i class="far fa-times-circle"></i>&nbsp;Cerrar
+              </button>
+          </div>
+            <div class="card-body">
+              <div class="container-fluid mb-5">
+                <div class="row">
+                  <div class="col-md-8 mb-2">
+                  </div>
+                  <div class="col-md-4 mb-2 certificate  input-group">
+                      <label for="text-input ">Factura</label>
+                      <h2 v-text="billDetail.number_bill"></h2>
+                  </div>
+                </div>
+                <div class="row mb-4">
+                    <div class="col-sm-12 col-md-12 mb-2 text-center certificate">
+                        <h3>Información del huéped</h3>
+                    </div>
+                </div>
+                <div class="row">
+                  <div class="col-sm-12 col-md-4 mb-2 input-group">
+                      <label for="text-input ">Cliente :
+                        <span v-text="billDetail.name_client">
+                          </span>
+                          <span v-text="billDetail.firstSurname_client">&nbsp
+                          </span>
+                          <span v-text="billDetail.secondSurname_client">&nbsp
+                          </span>
+                      </label>
+                  </div>
+                  <div class="col-sm-12 col-md-4 mb-2 input-group">
+                      <label for="text-input ">Celular : <span v-text="billDetail.phone_client"></span></label>
+                  </div>
+                  <div class="col-sm-12 col-md-4 mb-2 input-group">
+                      <label for="text-input ">Número de documento : <span v-text="billDetail.cedula_client"></span></label>
+                  </div>
+                   <div class="col-sm-12 col-md-4 mb-2 input-group">
+                      <label for="text-input ">Nacionalidad : <span v-text="billDetail.nationality_client"></span></label>
+                  </div>
+                </div>
+                <div class="row mb-4">
+                    <div class="col-md-12 mb-2 text-center certificate">
+                        <h3>Detalle habitación</h3>
+                    </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-4 mb-2 input-group">
+                      <label for="text-input ">Habitación : <span v-text="billDetail.number"></span></label>
+                  </div>
+                  <div class="col-md-4 mb-2 input-group">
+                      <label for="text-input ">Tipo habitación : <span v-text="billDetail.name_type_room"></span></label>
+                  </div>
+                  <div class="col-md-4 mb-2 input-group">
+                      <label for="text-input ">Precio : <span >{{billDetail.price | currency}}</span></label>
+                  </div>
+                </div>
+                <hr>
+                <div class="row mb-4 mt-3">
+                    <div class="col-md-12 mb-2 text-center certificate">
+                        <h3>Días de estadía</h3>
+                    </div>
+                </div>
+                <div class="row">
+                  <table class="table table-bordered table-striped table-sm">
+                    <thead >
+                        <tr>
+                            <th class="text-center">Fecha</th>
+                            <th class="text-center">Tipo de ventilación</th>
+                            <th class="text-center">precio día/hora</th>
+                            <th class="text-center">total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="text-center" v-for="day in daysDetail" :Key="day.id">
+                          <td v-text="day.date_day"></td>
+                          <td  v-text="day.type_frozen_day"></td>
+                          <td>{{day.price_day + day.price_hour | currency}}</td>
+                          <td>{{day.total_day | currency}}</td>
+                        </tr>
+                    </tbody>
+                  </table>
+                  <table class="table table-hover  table-sm text-center" >
+                      <thead >
+                        <tr class="d-flex justify-content-end">
+                          <th>Total días</th>
+                          <th class="bg-warning">{{billDetail.total_days | currency}}</th>
+                        </tr>
+                      </thead>
+                    </table>
+                </div>
+                <hr>
+                <div class="row mb-4 mt-3">
+                    <div class="col-md-12 mb-2 text-center certificate">
+                        <h3>Productos consumidos</h3>
+                    </div>
+                </div>
+                <div class="row">
+                  <table class="table table-bordered table-striped table-sm">
+                    <thead >
+                        <tr>
+                            <th class="text-center">Producto</th>
+                            <th class="text-center">cantidad</th>
+                            <th class="text-center">total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="text-center" v-for="product in salesDetail" :Key="product.id">
+                          <td v-text="product.name_product"> </td>
+                          <td  v-text="product.quantity_sales"></td>
+                          <td>{{product.total_sales | currency}}</td>
+                        </tr>
+                    </tbody>
+                  </table>
+                  <table class="table table-hover  table-sm text-center" >
+                    <thead >
+                      <tr class="d-flex justify-content-end">
+                        <th>Total productos</th>
+                        <th class="bg-warning">{{billDetail.total_products | currency}}</th>
+                      </tr>
+                    </thead>
+                  </table>
+                </div>
+                <hr>
+                <div class="row mb-4 mt-3">
+                    <div class="col-md-12 mb-2 text-center certificate">
+                        <h4>Servicios adicionales</h4>
+                    </div>
+                </div>
+                <div class="row">
+                  <table class="table table-bordered table-striped table-sm">
+                    <thead >
+                        <tr>
+                            <th class="text-center">Producto</th>
+                            <th class="text-center">total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="text-center" v-for="additional in additionalsDetail"  :Key="additional.id">
+                          <td v-text="additional.name_additional"></td>
+                          <td>{{additional.price_additional | currency}}</td>
+                        </tr>
+                    </tbody>
+                  </table>
+                  <table class="table table-hover  table-sm text-center" >
+                    <thead >
+                      <tr class="d-flex justify-content-end">
+                        <th>Total adicionales </th>
+                        <th class="bg-warning">{{billDetail.total_additionals | currency}}</th>
+                      </tr>
+                    </thead>
+                  </table>
+                  <table class="table table-hover  table-sm text-center" >
+                    <thead >
+                      <tr class="d-flex justify-content-end">
+                        <th>Total fatura</th>
+                        <th class="bg-success">{{billDetail.total_bill | currency}}</th>
+                      </tr>
+                    </thead>
+                  </table>
+                </div>
+              </div>
+            </div>
         </template>
         
     </div>
@@ -93,6 +256,10 @@
             arrayLinksActive : [],
             bill : '',
             number_bill : '',
+            billDetail : [],
+            daysDetail : [],
+            additionalsDetail : [],
+            salesDetail : [],
             modal : 0,
             titleModal : '',
             arrayDetalleBills : [],
@@ -163,15 +330,18 @@
             });
         },
 
-        detalleBills(number_bill){
+        detalleBills(id_bill){
           let me=this;
-          var url = 'bill/listbills?number_bill='+number_bill;
+          var url = 'bill/billDetail?id_bill='+id_bill;
           axios.get(url).then(function (response) {
-                var respuesta = response.data;
-                 me.arrayDetalleBills= respuesta.bills;
-                 me.arrayDetalleSales= respuesta.sales;
-              // me.arrayDetalle = respuesta.bills.data;
-              //console.log(me.arrayDetalleBills);
+              me.billDetail = response.data.billDetail[0];
+              me.daysDetail = response.data.days;
+              me.salesDetail = response.data.sales;
+              me.additionalsDetail = response.data.additionals;
+              //  console.log( me.billDetail);
+              //  console.log( me.daysDetail);
+              //  console.log( me.salesDetail);
+              //  console.log( me.additionalsDetail);
 
           })
             .catch(function (error) {
@@ -193,15 +363,20 @@
 
               case  "bill_detail" : {
                 this.facture = 1;
+                this.id_bill = data['id'];
+                this.detalleBills(this.id_bill);
               }
           }
 
       },
 
-        closeModal(){
-          this.modal = 0;
-          this.arrayError = [];
-          this.listBills(1,this.search,this.valor);
+        closedModal(accion){
+          switch(accion){
+
+              case  "bill_detail" : {
+                this.facture = 0;
+              }
+          }
         },
 
     },

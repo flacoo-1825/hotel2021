@@ -142,6 +142,7 @@ Route::get('sale/searchExt','SaleController@searchExt')->name('sale.searchExt');
 Route::get('sale/listSales','SaleController@listSales')->name('sale.listSales');
 
 Route::get('bill','BillController@index')->name('bill.index');
+Route::get('bill/billDetail','BillController@billDetail')->name('bill.billDetail');
 Route::post('bill/register','BillController@store')->name('companion.store');
 Route::put('bill/update','BillController@update')->name('bill.update');
 Route::put('bill/active','BillController@activo')->name('bill.update');

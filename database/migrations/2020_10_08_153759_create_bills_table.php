@@ -26,6 +26,7 @@ class CreateBillsTable extends Migration
             $table->string('number_bill');
             $table->enum('class_bill',['Compra','Venta']);
             $table->string('faker_number_bill');
+            $table->string('name_type_room');
             $table->date('date_entry_bill')->nullable();
             $table->date('date_exit_bill')->nullable();
             $table->enum('dian_bill',['yes','no']);
