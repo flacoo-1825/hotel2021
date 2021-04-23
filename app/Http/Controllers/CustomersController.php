@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use App\Customers;
 use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade as PDF;
 
 class CustomersController extends Controller
 {
@@ -103,6 +104,24 @@ class CustomersController extends Controller
                                 'secondSurname_client','nationality_client','phone_client','email_client')
                                 ->get();
          return $customer;
+
+     }
+
+     public function pdfCustomers(Request $request){
+
+        // $customer_id = 1;
+
+        // if (!$request->ajax()) return redirect('/');
+        // $customer_id = $request->customer_id;
+        // $customer = Customers::select('id','cedula_client','name_client','firstSurname_client',
+        //                         'secondSurname_client','nationality_client','phone_client','email_client')
+        //                         ->get();
+
+        $customers = Customers::select('id','name_client')
+                                ->get();
+        $pdf = PDF::loadView('pdf.clients',compact('customers'));
+
+         return $pdf->download('clients-list.pdf');
 
      }
 
