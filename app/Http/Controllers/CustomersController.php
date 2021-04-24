@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 use App\Customers;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade as PDF;
+use Maatwebsite\Excel\facades\Excel;
+use App\Exports\excelCustomers;
+
 
 class CustomersController extends Controller
 {
@@ -122,6 +125,12 @@ class CustomersController extends Controller
         $pdf = PDF::loadView('pdf.clients',compact('customers'));
 
          return $pdf->download('clients-list.pdf');
+
+     }
+
+     public function excelCustomers(){
+
+         return Excel::download(new excelCustomers, 'customers-list.xlsx');
 
      }
 

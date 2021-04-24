@@ -68,6 +68,7 @@ Route::put('customers/update','CustomersController@update')->name('customers.upd
 Route::get('customers/searchClient','CustomersController@searchClient')->name('customers.searchClient');
 Route::get('searchCustomer','CustomersController@searchCustomer')->name('customers.searchCustomer');
 Route::get('pdfCustomers','CustomersController@pdfCustomers')->name('customers.pdfCustomers');
+Route::get('excelCustomers','CustomersController@excelCustomers')->name('customers.excelCustomers');
 
 Route::get('worker','WorkerController@index')->name('worker.index');
 Route::post('worker/register','WorkerController@store')->name('worker.store');
