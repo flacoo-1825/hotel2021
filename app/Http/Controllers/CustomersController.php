@@ -124,7 +124,7 @@ class CustomersController extends Controller
                                 ->get();
         $pdf = PDF::loadView('pdf.clients',compact('customers'));
 
-         return $pdf->download('clients-list.pdf');
+        return $pdf->download('clients-list.pdf');
 
      }
 

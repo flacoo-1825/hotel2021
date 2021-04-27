@@ -168,6 +168,9 @@
                             <li class="nav-item">
                                 <a class="nav-link" href="#" @click="indice=15"><i class="icon-chart"></i> Reporte Ventas</a>
                             </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#" @click="indice=25"><i class="fas fa-file-download"></i> Listados Excel y Pdf</a>
+                            </li>
                         </ul>
                     </li>
                     <li class="nav-item" @click="indice=16">
@@ -220,6 +223,7 @@
             <servicie v-if="indice==24"></servicie>
             <provider v-if="indice==22"></provider>
             <companion v-if="indice==23"></companion>
+            <export v-if="indice==25"></export>
 
         </main>
     </div>
