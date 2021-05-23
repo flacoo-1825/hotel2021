@@ -14,7 +14,7 @@
     <link href="css/simple-line-icons.min.css" rel="stylesheet">
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <!-- Main styles for this application -->
-    <link href="css/style.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet"> 
     <link href="css/styleHotel.css" rel="stylesheet">
 </head>
 
@@ -104,6 +104,9 @@
                                 </li>
                                 <li class="nav-item" @click="indice=5">
                                     <a class="nav-link" href="#"><i class="fas fa-shopping-cart"></i> Compras</a>
+                                </li>
+                                <li class="nav-item" @click="indice=26">
+                                    <a class="nav-link" href="#"><i class="fas fa-toolbox"></i> caja</a>
                                 </li>
                             </ul>
                         </li>
@@ -224,6 +227,7 @@
             <provider v-if="indice==22"></provider>
             <companion v-if="indice==23"></companion>
             <export v-if="indice==25"></export>
+            <box v-if="indice==26"></box>
 
         </main>
     </div>

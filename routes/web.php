@@ -132,6 +132,7 @@ Route::get('counter/searchCertificate','CounterController@searchCertificate')->n
 Route::get('counter/searchReception','CounterController@searchReception')->name('counter.searchReception');
 Route::get('counter/searchExt','CounterController@searchExt')->name('counter.searchExt');
 Route::get('counter/searchBuy','CounterController@searchBuy')->name('counter.searchBuy');
+Route::get('counter/searchBox','CounterController@searchBox')->name('counter.searchBox');
 
 Route::get('sale','SaleController@index')->name('sale.index');
 Route::post('sale/register','SaleController@store')->name('companion.store');
@@ -187,6 +188,12 @@ Route::post('day/register','DayController@store')->name('day.store');
 Route::put('day/update','DayController@update')->name('day.update');
 Route::get('day/listDays','DayController@listDays')->name('day.listDays');
 Route::put('day/inactivo','DayController@inactivo')->name('day.inactivo');
+
+Route::get('box','BoxController@index')->name('box.index');
+Route::post('box/register','BoxController@store')->name('box.store');
+Route::put('box/update','BoxController@update')->name('box.update');
+Route::get('box/listDays','BoxController@listDays')->name('box.listDays');
+Route::get('box/search','BoxController@searchBox')->name('box.search');
 
 Auth::routes();
 

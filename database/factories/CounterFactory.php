@@ -16,5 +16,7 @@ $factory->define(App\Counter::class, function (Faker $faker) {
         'end_ext'=> $faker->randomElement($array = array ('-Fact/ext')),
         'number_buy'=> $faker->numberBetween($min = 1001, $max = 9000), 
         'end_buy'=> $faker->randomElement($array = array ('-Comp')),
+        'number_box'=> $faker->numberBetween($min = 1001, $max = 9000), 
+        'end_box'=> $faker->randomElement($array = array ('-Box')),
     ];
 });

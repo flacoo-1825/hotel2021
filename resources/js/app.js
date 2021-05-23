@@ -41,6 +41,7 @@ Vue.component('user', require('./components/User.vue').default);
 Vue.component('role', require('./components/Role.vue').default);
 Vue.component('spinner', require('./components/Spinner.vue').default);
 Vue.component('export', require('./components/Export.vue').default);
+Vue.component('box', require('./components/Box.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -51,7 +52,7 @@ Vue.component('export', require('./components/Export.vue').default);
 const app = new Vue({
     el: '#app',
     data: {
-        indice: 25,
+        indice: 26,
     }
 });
 

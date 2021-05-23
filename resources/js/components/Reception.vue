@@ -608,223 +608,324 @@
       </template>
       <template v-if="factura==1">
         <div class="card">
-                  <div class="card-header">
-                      <i class="fas fa-chevron-right fa5x"></i> Factura
-                      <span>
-                          <button type="button" class="btn btn-danger"  @click="factura=0;closeModal('modal')">
-                            <i class="fas fa-times-circle"></i> Cerrar
-                          </button>
-                          <a  class="btn btn-primary shadow text-white" @click="question()" v-if="accion==2">
-                            <i class="fas fa-money-check-alt"></i> Facturar
-                          </a>
-                          <a  class="btn btn-warning shadow text-black" @click="openModal('room','move')" v-if="accion==2">
-                            <i class="fas fa-exchange-alt"></i> Trasladar habitación
-                          </a>
-                      </span>
+            <div class="card-header">
+                <i class="fas fa-chevron-right fa5x"></i> Factura
+                <span>
+                    <button type="button" class="btn btn-danger"  @click="factura=0;closeModal('modal')">
+                      <i class="fas fa-times-circle"></i> Cerrar
+                    </button>
+                    <a  class="btn btn-primary shadow text-white" @click="question(1)" v-if="accion==2">
+                      <i class="fas fa-money-check-alt"></i> Facturar
+                    </a>
+                    <a  class="btn btn-warning shadow text-black" @click="openModal('room','move')" v-if="accion==2">
+                      <i class="fas fa-exchange-alt"></i> Trasladar habitación
+                    </a>
+                </span>
+            </div>
+            <div class="card-body">
+                <div class="container-fluid mb-5">
+                  <div class="row">
+                    <div class="col-md-8 mb-2">
+                    </div>
+                    <div class="col-md-4 mb-2 certificate  input-group">
+                        <label for="text-input ">Factura</label>
+                        <h2 v-text="number_facture"></h2>
+                    </div>
                   </div>
-                  <div class="card-body">
-                      <div class="container-fluid mb-5">
-                        <div class="row">
-                          <div class="col-md-8 mb-2">
-                          </div>
-                          <div class="col-md-4 mb-2 certificate  input-group">
-                              <label for="text-input ">Factura</label>
-                              <h2 v-text="number_facture"></h2>
-                          </div>
-                        </div>
-                        <div class="row mb-4">
-                            <div class="col-md-12 mb-2 text-center certificate">
-                                <h3>Información del huéped</h3>
-                            </div>
-                        </div>
-                        <div class="row">
-                          <div class="col-sm-12 col-md-4 mb-2 input-group">
-                              <label for="text-input ">Cliente :
-                                <span v-text="name_client">
-                                  </span>
-                                  <span v-text="firstSurname_client">&nbsp
-                                  </span>
-                                  <span v-text="secondSurname_client">&nbsp
-                                  </span>
-                              </label>
-                          </div>
-                          <div class="col-md-6 mb-2 input-group">
-                              <label for="text-input ">Celular : <span v-text="phone_client"></span></label>
-                          </div>
-                        </div>
-                        <div class="row mb-4">
-                            <div class="col-md-12 mb-2 text-center certificate">
-                                <h3>Detalle habitación</h3>
-                            </div>
-                        </div>
-                        <div class="row">
-                          <div class="col-md-4 mb-2 input-group">
-                              <label for="text-input ">tipo ventilación : <span v-text="frozen"></span></label>
-                          </div>
-                          <div class="col-md-4 mb-2 input-group">
-                              <label for="text-input ">Precio : <span >{{price | currency}}</span></label>
-                          </div>
-                          <div class="col-md-4 mb-2 input-group">
-                              <table class="table table-hover  table-sm text-center" >
-                                <thead >
-                                  <tr class="d-flex justify-content-end">
-                                    <th>Total fatura <span class="text-danger" v-text="number_facture"></span></th>
-                                    <th class="bg-success">{{totalFacture | currency}}</th>
-                                  </tr>
-                                </thead>
-                              </table>
-                          </div>
-                        </div>
-                        <hr>
-                        <div class="row mb-4 mt-3">
-                            <div class="col-md-12 mb-2 text-center certificate">
-                                <h3>Días de estadía</h3>
-                            </div>
-                            <div class="col-md-12 mb-2 text-right certificate">
-                                <button type="button" class="btn btn-success"  @click="openModal('room','days')">
-                                  <i class="fas fa-calendar-day"></i> Generar día
-                                </button>
-                            </div>
-                        </div>
-                        <div class="row">
-                          <table class="table table-bordered table-striped table-sm">
-                            <thead >
-                                <tr>
-                                    <th class="text-center">Fecha</th>
-                                    <th class="text-center">Tipo de ventilación</th>
-                                    <th class="text-center">precio día/hora</th>
-                                    <th class="text-center">total</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr class="text-center" v-for="day in listDays" :Key="day.id">
-                                  <td v-text="day.date_day"></td>
-                                  <td  v-text="day.type_frozen_day"></td>
-                                  <td>{{day.price_day + day.price_hour | currency}}</td>
-                                  <td>{{day.total_day | currency}}</td>
-                                </tr>
-                            </tbody>
-                          </table>
-                          <table class="table table-hover  table-sm text-center" >
-                              <thead >
-                                <tr class="d-flex justify-content-end">
-                                  <th>Total días</th>
-                                  <th class="bg-warning">{{totalDays | currency}}</th>
-                                </tr>
-                              </thead>
-                            </table>
-                        </div>
-                        <hr>
-                        <div class="row mb-4 mt-3">
-                            <div class="col-md-12 mb-2 text-center certificate">
-                                <h3>Productos consumidos</h3>
-                            </div>
-                            <div class="col-md-12 mb-2 text-right certificate">
-                                <button type="button" class="btn btn-success"  @click="openModal('room','sale')">
-                                  <i class="fas fa-cash-register"></i> Venta Extra
-                                </button>
-                                <button type="button" class="btn btn-info"  @click="openModal('room','additional')">
-                                  <i class="fas fa-plus-circle"></i> Adicional
-                                </button>
-                            </div>
-                        </div>
-                        <div class="row">
-                          <table class="table table-bordered table-striped table-sm">
-                            <thead >
-                                <tr>
-                                    <th class="text-center">Producto</th>
-                                    <th class="text-center">Factura</th>
-                                    <th class="text-center">cantidad</th>
-                                    <th class="text-center">total</th>
-                                    <th class="text-center">
-                                      <span class="custom-control custom-checkbox">
-                                        <a href="#" @click="selectAll()" class="btn btn-primary">Seleccionar Todo</a>
-                                      </span>
-                                      <span class="custom-control custom-checkbox">
-                                        <a href="#" class="btn btn-success" @click="openModal('room','reception')" >Generar factura</a>
-                                      </span>
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr class="text-center" v-for="product in listSales" :Key="product.id">
-                                  <td v-text="product.name_product">
-                                  </td>
-                                  <td  v-text="product.number_bill_sales"></td>
-                                  <td  v-text="product.quantity_sales"></td>
-                                  <td>{{product.total_sales | currency}}</td>
-                                  <td class="d-flex justify-content-center">
-                                      <span class="custom-control custom-checkbox">
-                                        <input type="checkbox" class="custom-control-input prueba" :value="product"  :id="product.id" v-model="check" >
-                                        <label :for="product.id"  class="custom-control-label" >facturar por recepción</label>
-                                      </span>
-                                  </td>
-                                </tr>
-                            </tbody>
-                          </table>
-                          <table class="table table-hover  table-sm text-center" >
-                              <thead >
-                                <tr class="d-flex justify-content-end">
-                                  <th>Total productos</th>
-                                  <th class="bg-warning">{{totalNewSaleFacture | currency}}</th>
-                                </tr>
-                              </thead>
-                            </table>
-                        </div>
-                        <hr>
-                        <div class="row mb-4 mt-3">
-                            <div class="col-md-12 mb-2 text-center certificate">
-                                <h4>Servicios adicionales</h4>
-                            </div>
-                        </div>
-                        <div class="row">
-                          <table class="table table-bordered table-striped table-sm">
-                            <thead >
-                                <tr>
-                                    <th class="text-center">Producto</th>
-                                    <th class="text-center">Factura</th>
-                                    <th class="text-center">total</th>
-                                    <th class="text-center">
-                                      <span class="custom-control custom-checkbox">
-                                        <a href="#" @click="selectAllAdditional()" class="btn btn-primary">Seleccionar Todo</a>
-                                      </span>
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr class="text-center" v-for="additional in listAdditional"  :Key="additional.id">
-                                  <td v-text="additional.name_additional">
-                                  </td>
-                                  <td  v-text="additional.number_facture_additional"></td>
-                                  <td>{{additional.price_additional | currency}}</td>
-                                  <td class="d-flex justify-content-center">
-                                      <span class="custom-control custom-checkbox">
-                                        <input type="checkbox" class="custom-control-input additional2" :value="additional"  :id="additional.id+50" v-model="check2" >
-                                        <label :for="additional.id+50"  class="custom-control-label" >facturar por recepción</label>
-                                      </span>
-                                  </td>
-                                </tr>
-                            </tbody>
-                          </table>
-                          <table class="table table-hover  table-sm text-center" >
-                            <thead >
-                              <tr class="d-flex justify-content-end">
-                                <th>Total adicionales </th>
-                                <th class="bg-warning">{{totalAdditional | currency}}</th>
-                              </tr>
-                            </thead>
-                          </table>
-                          <table class="table table-hover  table-sm text-center" >
-                            <thead >
-                              <tr class="d-flex justify-content-end">
-                                <th>Total fatura <span class="text-danger" v-text="number_facture"></span></th>
-                                <th class="bg-success">{{totalFacture | currency}}</th>
-                              </tr>
-                            </thead>
-                          </table>
-                        </div>
+                  <div class="row mb-4">
+                      <div class="col-md-12 mb-2 text-center certificate">
+                          <h3>Información del huéped</h3>
                       </div>
                   </div>
+                  <div class="row">
+                    <div class="col-sm-12 col-md-4 mb-2 input-group">
+                        <label for="text-input ">Cliente :
+                          <span v-text="name_client">
+                            </span>
+                            <span v-text="firstSurname_client">&nbsp
+                            </span>
+                            <span v-text="secondSurname_client">&nbsp
+                            </span>
+                        </label>
+                    </div>
+                    <div class="col-md-6 mb-2 input-group">
+                        <label for="text-input ">Celular : <span v-text="phone_client"></span></label>
+                    </div>
+                  </div>
+                  <div class="row mb-4">
+                      <div class="col-md-12 mb-2 text-center certificate">
+                          <h3>Detalle habitación</h3>
+                      </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-4 mb-2 input-group">
+                        <label for="text-input ">tipo ventilación : <span v-text="frozen"></span></label>
+                    </div>
+                    <div class="col-md-4 mb-2 input-group">
+                        <label for="text-input ">Precio : <span >{{price | currency}}</span></label>
+                    </div>
+                    <div class="col-md-4 mb-2 input-group">
+                        <table class="table table-hover  table-sm text-center" >
+                          <thead >
+                            <tr class="d-flex justify-content-end">
+                              <th>Total fatura <span class="text-danger" v-text="number_facture"></span></th>
+                              <th class="bg-success">{{totalFacture | currency}}</th>
+                            </tr>
+                          </thead>
+                        </table>
+                    </div>
+                  </div>
+                  <hr>
+                  <div class="row mb-4 mt-3">
+                      <div class="col-md-12 mb-2 text-center certificate">
+                          <h3>Días de estadía</h3>
+                      </div>
+                      <div class="col-md-12 mb-2 text-right certificate">
+                          <button type="button" class="btn btn-success"  @click="openModal('room','days')">
+                            <i class="fas fa-calendar-day"></i> Generar día
+                          </button>
+                      </div>
+                  </div>
+                  <div class="row">
+                    <table class="table table-bordered table-striped table-sm">
+                      <thead >
+                          <tr>
+                              <th class="text-center">Fecha</th>
+                              <th class="text-center">Tipo de ventilación</th>
+                              <th class="text-center">precio día/hora</th>
+                              <th class="text-center">total</th>
+                          </tr>
+                      </thead>
+                      <tbody>
+                          <tr class="text-center" v-for="day in listDays" :Key="day.id">
+                            <td v-text="day.date_day"></td>
+                            <td  v-text="day.type_frozen_day"></td>
+                            <td>{{day.price_day + day.price_hour | currency}}</td>
+                            <td>{{day.total_day | currency}}</td>
+                          </tr>
+                      </tbody>
+                    </table>
+                    <table class="table table-hover  table-sm text-center" >
+                        <thead >
+                          <tr class="d-flex justify-content-end">
+                            <th>Total días</th>
+                            <th class="bg-warning">{{totalDays | currency}}</th>
+                          </tr>
+                        </thead>
+                      </table>
+                  </div>
+                  <hr>
+                  <div class="row mb-4 mt-3">
+                      <div class="col-md-12 mb-2 text-center certificate">
+                          <h3>Productos consumidos</h3>
+                      </div>
+                      <div class="col-md-12 mb-2 text-right certificate">
+                          <button type="button" class="btn btn-success"  @click="openModal('room','sale')">
+                            <i class="fas fa-cash-register"></i> Venta Extra
+                          </button>
+                          <button type="button" class="btn btn-info"  @click="openModal('room','additional')">
+                            <i class="fas fa-plus-circle"></i> Adicional
+                          </button>
+                      </div>
+                  </div>
+                  <div class="row">
+                    <table class="table table-bordered table-striped table-sm">
+                      <thead >
+                          <tr>
+                              <th class="text-center">Producto</th>
+                              <th class="text-center">Factura</th>
+                              <th class="text-center">cantidad</th>
+                              <th class="text-center">total</th>
+                              <th class="text-center">
+                                <span class="custom-control custom-checkbox">
+                                  <a href="#" @click="selectAll()" class="btn btn-primary">Seleccionar Todo</a>
+                                </span>
+                                <span class="custom-control custom-checkbox">
+                                  <a href="#" class="btn btn-success" @click="openModal('room','reception')" >Generar factura</a>
+                                </span>
+                              </th>
+                          </tr>
+                      </thead>
+                      <tbody>
+                          <tr class="text-center" v-for="product in listSales" :Key="product.id">
+                            <td v-text="product.name_product">
+                            </td>
+                            <td  v-text="product.number_bill_sales"></td>
+                            <td  v-text="product.quantity_sales"></td>
+                            <td>{{product.total_sales | currency}}</td>
+                            <td class="d-flex justify-content-center">
+                                <span class="custom-control custom-checkbox">
+                                  <input type="checkbox" class="custom-control-input prueba" :value="product"  :id="product.id" v-model="check" >
+                                  <label :for="product.id"  class="custom-control-label" >facturar por recepción</label>
+                                </span>
+                            </td>
+                          </tr>
+                      </tbody>
+                    </table>
+                    <table class="table table-hover  table-sm text-center" >
+                        <thead >
+                          <tr class="d-flex justify-content-end">
+                            <th>Total productos</th>
+                            <th class="bg-warning">{{totalNewSaleFacture | currency}}</th>
+                          </tr>
+                        </thead>
+                      </table>
+                  </div>
+                  <hr>
+                  <div class="row mb-4 mt-3">
+                      <div class="col-md-12 mb-2 text-center certificate">
+                          <h4>Servicios adicionales</h4>
+                      </div>
+                  </div>
+                  <div class="row">
+                    <table class="table table-bordered table-striped table-sm">
+                      <thead >
+                          <tr>
+                              <th class="text-center">Producto</th>
+                              <th class="text-center">Factura</th>
+                              <th class="text-center">total</th>
+                              <th class="text-center">
+                                <span class="custom-control custom-checkbox">
+                                  <a href="#" @click="selectAllAdditional()" class="btn btn-primary">Seleccionar Todo</a>
+                                </span>
+                              </th>
+                          </tr>
+                      </thead>
+                      <tbody>
+                          <tr class="text-center" v-for="additional in listAdditional"  :Key="additional.id">
+                            <td v-text="additional.name_additional">
+                            </td>
+                            <td  v-text="additional.number_facture_additional"></td>
+                            <td>{{additional.price_additional | currency}}</td>
+                            <td class="d-flex justify-content-center">
+                                <span class="custom-control custom-checkbox">
+                                  <input type="checkbox" class="custom-control-input additional2" :value="additional"  :id="additional.id+50" v-model="check2" >
+                                  <label :for="additional.id+50"  class="custom-control-label" >facturar por recepción</label>
+                                </span>
+                            </td>
+                          </tr>
+                      </tbody>
+                    </table>
+                    <table class="table table-hover  table-sm text-center" >
+                      <thead >
+                        <tr class="d-flex justify-content-end">
+                          <th>Total adicionales </th>
+                          <th class="bg-warning">{{totalAdditional | currency}}</th>
+                        </tr>
+                      </thead>
+                    </table>
+                    <table class="table table-hover  table-sm text-center" >
+                      <thead >
+                        <tr class="d-flex justify-content-end">
+                          <th>Total fatura <span class="text-danger" v-text="number_facture"></span></th>
+                          <th class="bg-success">{{totalFacture | currency}}</th>
+                        </tr>
+                      </thead>
+                    </table>
+                  </div>
+                </div>
+            </div>
+            <div class="modal fade" :class="{'mostrar' : add6 }" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="display: none;" aria-hidden="true">
+                  <div class="modal-dialog modal-dialog-scrollable modal-primary modal-lg" role="document">
+                      <div class="modal-content">
+                          <div class="modal-header">
+                              <h4 class="modal-title" v-text="titleModal"></h4>
+                              <button type="button" class="close" @click="closeModal('temperature')">
+                              <span aria-hidden="true">×</span>
+                              </button>
+                          </div>
+                          <div class="modal-body">
+                              <form action="" method="post" enctype="multipart/form-data" class="form-horizontal product customers">
+                                  <div class="row">
+                                    <div class="col-md-6 mb-2 certificate">
+                                    </div>
+                                    <div class="col-md-6 mb-2 certificate  input-group">
+                                        <label for="text-input ">Acta</label>
+                                        <h2 v-text="number_certificate"></h2>
+                                    </div>
+                                  </div>
+                                  <div class="row mb-4">
+                                      <div class="col-md-12 mb-2 text-center certificate">
+                                          <h3>Información del huéped</h3>
+                                      </div>
+                                  </div>
+                                  <div class="row mt-4">
+                                      <div class="col-md-4 mb-2">
+                                          <label for="text-input ">Cliente : </label>
+                                          <p for="text-secondary" v-text="name_client + firstSurname_client + ' ' + secondSurname_client"></p>
+                                      </div>
+                                      <div class="col-sm-12 col-md-3 input-group">
+                                        <div class="input-group">
+                                          <label for="text-input ">Temperatura de salida</label>
+                                        </div>
+                                        <input type="number" class="form-control"  v-model="temperature_exit_client"  placeholder="">
+                                        <div class="input-group-append">
+                                          <span class="input-group-text">°C</span>
+                                        </div>
+                                      </div>
+                                      <div class="col-sm-12 col-md-4 input-group">
+                                        <div class="input-group">
+                                          <label for="text-input ">Fecha de salida</label>
+                                        </div>
+                                        <date-picker v-model="exit_certificate"   :language="es" :lang="lang" valueType="format"></date-picker>
+                                      </div>
+                                  </div>
+                                  <div class="row mt-4">
+                                      <div class="col-sm-12 col-md-3 input-group">
+                                        <div class="input-group">
+                                          <label for="text-input ">Hora de salida</label>
+                                        </div>
+                                        <input type="text" class="form-control"  v-model="time_exit_certificate"  placeholder="">
+                                      </div>
+                                  </div>
+                                  <hr/>
+                                  <template v-if="counts > 0">
+                                    <div class="row mb-4">
+                                        <div class="col-md-12 mb-2 mt-4 certificate text-center ">
+                                            <h3>Información de los acompañantes</h3>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                      <div class="col-sm-12">
+                                        <table class="table table-hover  table-sm" >
+                                          <thead >
+                                            <tr class="">
+                                              <th class="text-center">Nombre completo</th>
+                                              <th class="text-center">Temperatura de salida</th>
+                                            </tr>
+                                          </thead>
+                                          <tbody class="">
+                                            <tr v-for="acomp in updateCompanios " :key="acomp.id">
+                                              <td class="text-center" v-text="acomp.name_acomp + ' ' + acomp.firstSurname_acomp + ' ' + acomp.secondSurname_acomp"></td>
+                                              <td>
+                                                <div class="col-sm-12 col-md-12 input-group">
+                                                  <input type="number" class="form-control"  v-model="acomp.temperature_exit_acomp"  placeholder="">
+                                                  <div class="input-group-append">
+                                                    <span class="input-group-text">°C</span>
+                                                  </div>
+                                                </div>
+                                              </td>
+                                            </tr>
+                                          </tbody>
+                                        </table>
+                                      </div>
+                                    </div>
+                                  </template>
+                                  <div class="row mt-4">
+                                      <div class="col-sm-12 col-md-12 form-group">
+                                          <label for="text-input ">Observaciones</label>
+                                          <textarea  class="form-control"   v-model="updateCertificates.observation_certificate" rows="2"></textarea>
+                                      </div>
+                                  </div>
+                              </form>
+                          </div>
+                          <div class="modal-footer">
+                              <a  class="btn btn-danger  text-white" @click="closeModal('temperature')">Cerrar</a>
+                              <a  class="btn btn-success  text-white" @click="stateFree(answer)">Siguiente</a>
+                          </div>
+                      </div>
+                  </div>
+            </div>
         </div>
       </template>
        <div class="modal fade" tabindex="-1" :class="{'mostrar' : add5 }" >
@@ -1360,6 +1461,10 @@
               },
               events: [],
             },
+            resp : 0,
+            updateCertificates : [],
+            counts : 0,
+            updateCompanios : [],
             many_hours_day : 0,
             quantity_day : 0,
             description_day : '',
@@ -1372,8 +1477,11 @@
             total_days : 0,
             total_bill : 0,
             total_product_sale : 0,
-            total_additionals : 0, 
+            total_additionals : 0,
+            exit_certificate : 0,
             time_entry_certificate : '',
+            time_exit_certificate : '',
+            temperature_exit_client :'',
             temperature_exit_acomp : 0,
             temperature_entry_acomp : 0,
             options : 0,
@@ -1480,6 +1588,7 @@
             add3 : 0,
             add4 : 0,
             add5 : 0,
+            add6 : 0,
             daysPrice : [],
             desactivar : 0,
             condition : 1,
@@ -2650,6 +2759,48 @@
                           this.price_air = this.dataRoom['price_air'];
                         break;
                       };
+
+                      case "temperature" :{
+                          this.add6 = 1;
+                          this.add = 0,
+                          this.titleModal = 'Acta de entrada';
+                          this.number_certificate = data['number_certificate'];
+                          this.rooms_id ;
+                          this.updateCompanios;
+                          this.counts = this.updateCompanios.length;
+                          this.time_entry_certificate = '';
+                          this.observation_certificate = '';
+                          this.children_certificate = '';
+                          this.adults_certificate = '';
+                          this.cityOrigin_certificate = '';
+                          this.temperature_entry_client = '';
+                          this.entry_certificate = '';
+                          this.cityDestination_certificate = '';
+                          this.name_client = data['name_client'];
+                          this.name_type_room =  this.name_type_room;
+                          this.number =  this.number;
+                          this.price =  this.price;
+                          this.price_air =  this.price_air;
+                          this.frozen =  data['frozen'];
+                          this.state =  data['state'];
+                          this.client_id = data['id'];
+                          this.type_id= data['type_room_id'];
+                          this.cedula_client=  data['cedula_client'];
+                          this.firstSurname_client =  data['firstSurname_client'];
+                          this.secondSurname_client =  data['secondSurname_client'];
+                          this.birth_date_client =  data['birth_date_client'];
+                          this.gender_client =  data['gender_client'];
+                          this.age_client =  data['age_client'];
+                          this.address_client =  data['address_client'];
+                          this.city_client =  data['city_client'];
+                          this.nationality_client =  data['nationality_client'];
+                          this.state_client =  data['state_client'];
+                          this.phone_client =  data['phone_client'];
+                          this.email_client =  data['email_client'];
+
+                          break;
+
+                      };
                   }
               }
           }
@@ -2709,6 +2860,15 @@
 
             case "days":
               this.add5 = 0;
+              break;
+
+            case "temperature":
+              this.add6 = 0;
+              this.add = 0;
+              this.add1 = 0;
+              this.add2 = 0;
+              this.add3 = 0;
+              this.add4 = 0;
               break;
           }
         },
@@ -2798,6 +2958,7 @@
                       showConfirmButton: false,
                       timer: 1500
                     });
+                      me.listAcomp = [];
                       me.closeModal('modal');
                       me.updateCustomers();
                       me.listRoomsActive(1,this.search,this.valor);
@@ -2914,7 +3075,7 @@
                 });
         },
         registerBill(answer){
-            var answer = this.answer;
+            this.answer = answer;
               // console.log(answer);
             let me = this;
             var url  = 'bill/register';
@@ -2936,6 +3097,7 @@
                         'state_bill'    : 1,
                         'class_bill'    : 'Venta',
                         'name_type_room' : this.name_type_room,
+                        'number_certificate' : this.number_certificate,
                         
 
             }).then(function (response) {
@@ -2981,7 +3143,7 @@
 
         },
 
-        question(){
+        question(resp){
           const swalWithBootstrapButtons = Swal.mixin({
             customClass: {
               confirmButton: 'btn btn-success',
@@ -2990,7 +3152,7 @@
             buttonsStyling: false
           })
           swalWithBootstrapButtons.fire({
-                  title: 'Desea factura fÍsica?',
+                  title: 'Desea factura fisica?',
                   icon: 'info',
                   showCancelButton: true,
                   confirmButtonText: 'Si, generar factura',
@@ -2998,20 +3160,23 @@
                   reverseButtons: true
                 }).then((result) => {
                   if (result.value) {
-
-                    this.stateFree(this.answer='Yes');
-                  
+                   
+                      this.certificate = this.dataRoom['number_certificate'];
+                      this.searchCertificate(this.certificate);
+                      this.answer = 'yes'
+                    // this.search = this.number_certificate
                   } else if (
                     /* Read more about handling dismissals below */
                     result.dismiss === Swal.DismissReason.cancel
                   ) {
-                     this.stateFree(this.answer='No');
+                      this.certificate = this.dataRoom['number_certificate'];
+                      this.searchCertificate(this.certificate);
+                      this.answer = 'no'
                   }
                 })
         },
         stateFree(answer){
                 var answer = this.answer;
-                // console.log(answer);
                 const swalWithBootstrapButtons = Swal.mixin({
                 customClass: {
                   confirmButton: 'btn btn-success',
@@ -3029,8 +3194,11 @@
                   cancelButtonText: 'No, Cancelar!',
                   reverseButtons: true
                 }).then((result) => {
-                  if (result.value) { 
+                  if (result.value) {
                         this.registerBill(answer);
+                        this.updateAcompanios();
+                        this.updateCertificateBill();
+                        this.closeModal('temperature');
                         let me = this;
                         var url  = 'room/statefree';
                         axios.put(url,{
@@ -3041,14 +3209,11 @@
                           }).then(function (response) {
                               me.listRoomsActive(1,'','valor');
                               me.factura = 0;
-                           
                           }).catch(function (error) {
                               console.log(error);
                           });
-                      
 
                     swalWithBootstrapButtons.fire(
-                      
                       'Activado!',
                       'Tu habitación quedó Disponible.',
                       'success'
@@ -3065,6 +3230,75 @@
                   }
                 })
             },
+
+        searchCertificate(search){
+          let me=this;
+          let valor = 'number_certificate';
+          var url = 'certificate?search='+ search + "&valor=" + valor;
+          axios.get(url).then(function (response) {
+                var respuesta= response.data;
+                me.updateCertificates = respuesta.certificates.data[0];
+                // console.log(me.updateCertificates);
+                me.searchAcompanios(me.updateCertificates['id']);
+          }).catch(function (error) {
+              console.log(error);
+            });
+        },
+        searchAcompanios(search){
+          let me=this;
+          let valor = 'certificate_id';
+          var url = 'companion/searchCompanions?search='+ search + "&valor=" + valor;
+          axios.get(url).then(function (response) {
+                var respuesta= response.data;
+                me.updateCompanios = respuesta.companions;
+                me.openModal('room','temperature',me.updateCertificates)
+          }).catch(function (error) {
+              console.log(error);
+            });
+        },
+        updateAcompanios(){
+          let me = this;
+          // console.log(this.updateCompanios);
+          var url  = 'companion/update';
+          axios.put(url,{
+            'companions' :  me.updateCompanios,
+
+          }).then(function (response) {
+              // me.listRoomsActive(1,'','valor');
+              // me.factura = 0;
+          }).catch(function (error) {
+              console.log(error);
+          });
+        },
+        updateCertificateBill(){
+          let me=this;
+          var url = 'certificate/update';
+          axios.put(url,{
+                  
+                            'id'                          :    this.updateCertificates['id'],
+                            'observation_certificate'     :    this.updateCertificates['observation_certificate'],
+                            'client_id'                   :    this.arrayUsuarioCliente['id'],
+                            'cityOrigin_certificate'      :    this.updateCertificates['cityOrigin_certificate'],
+                            'cityDestination_certificate' :    this.updateCertificates['cityDestination_certificate'],
+                            'placabike_certificate'       :    this.updateCertificates['placabike_certificate'],
+                            'placaCar_certificate'        :    this.updateCertificates['placaCar_certificate'],
+                            'adults_certificate'          :    this.updateCertificates['adults_certificate'],
+                            'children_certificate'        :    this.updateCertificates['children_certificate'],
+                            'entry_certificate'           :    this.updateCertificates['entry_certificate'],
+                            'exit_certificate'            :    this.exit_certificate,
+                            'temperature_exit_client'     :    this.temperature_exit_client,
+                            'temperature_entry_client'    :    this.updateCertificates['temperature_entry_client'],
+                            'time_entry_certificate'      :    this.updateCertificates['time_entry_certificate'],
+                            'time_exit_certificate'       :    this.time_exit_certificate,
+                            'number_certificate'          :    this.updateCertificates['number_certificate']
+          })
+            .catch(function (error) {
+                  var respuesta = error.response.data;
+                  me.arrayError = respuesta.errors;
+                  console.log(error.response.data);
+            });
+
+        },
 
         addAcomp(){
 

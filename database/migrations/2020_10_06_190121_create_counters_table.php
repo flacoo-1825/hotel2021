@@ -27,7 +27,8 @@ class CreateCountersTable extends Migration
             $table->string('end_ext')->default('-Fact/ext');
             $table->integer('number_buy')->unsigned()->nullable();
             $table->string('end_buy')->default('-Comp');
-
+            $table->integer('number_box')->unsigned()->nullable();
+            $table->string('end_box')->default('-Comp');
             $table->timestamps();
         });
     }

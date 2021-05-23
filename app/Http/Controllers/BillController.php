@@ -86,7 +86,7 @@ class BillController extends Controller
                         ->join('customers', 'bills.customer_id', '=' ,'customers.id')
                         ->join('certificates', 'bills.certificate_id', '=' ,'certificates.id')
                         // ->join('workers', 'bills.worker_id', '=' ,'workers.id')
-                        ->select('bills.id','bills.number_bill','bills.date_entry_bill',
+                        ->select('bills.id','bills.number_bill','bills.number_certificate','bills.date_entry_bill',
                         'bills.date_exit_bill','bills.total_bill','bills.name_type_room','bills.total_products',
                         'bills.total_additionals','bills.total_days','bills.description_bill',
                         'customers.name_client','customers.firstSurname_client','customers.cedula_client',

@@ -23,7 +23,7 @@ class CreateProvidersTable extends Migration
             $table->string('address_provider')->nullable();
             $table->string('phone_provider');
             $table->string('email_provider')->nullable();
-            $table->boolean('condition_provider')->default(1);
+            $table->integer('condition_provider')->default(1);
             $table->timestamps();
         });
     }

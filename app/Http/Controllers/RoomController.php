@@ -135,6 +135,8 @@ class RoomController extends Controller
         $room =  Room::findOrFail($request->id);
         $room->state = 'Disponible';
         $room->client_id = NULL;
+        $room->number_certificate= NULL;
+        $room->number_facture= NULL;
         $room->save();
     }
 
@@ -150,7 +152,7 @@ class RoomController extends Controller
             $room = Room::leftJoin('customers','rooms.client_id' ,'=', 'customers.id')
                         ->join('type_rooms','rooms.type_room_id', '=', 'type_rooms.id')
                         ->select('rooms.id', 'rooms.state','type_rooms.name_type_room',
-                        'rooms.number','rooms.price','rooms.client_id','rooms.condition',
+                        'rooms.number','rooms.price','rooms.number_certificate','rooms.client_id','rooms.condition',
                         'rooms.price_air','rooms.frozen','rooms.number_facture',
                         'rooms.state','customers.firstSurname_client','customers.cedula_client',
                         'customers.name_client','customers.nationality_client','customers.phone_client',
@@ -162,7 +164,7 @@ class RoomController extends Controller
             $room = Room::leftJoin('customers','rooms.client_id' ,'=', 'customers.id')
                         ->join('type_rooms','rooms.type_room_id', '=', 'type_rooms.id')
                         ->select('rooms.id', 'rooms.state','type_rooms.name_type_room',
-                        'rooms.number','rooms.price','rooms.client_id','rooms.condition',
+                        'rooms.number','rooms.price','rooms.number_certificate','rooms.client_id','rooms.condition',
                         'rooms.price_air','rooms.frozen','rooms.number_facture',
                         'rooms.state','customers.firstSurname_client','customers.cedula_client',
                         'customers.name_client','customers.nationality_client','customers.phone_client',

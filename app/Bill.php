@@ -16,6 +16,7 @@ class Bill extends Model
         'certificate_id',
         'taxe_id',
         'number_bill',
+        'number_certificate',
         'faker_number_bill',
         'date_entry_bill',
         'date_exit_bill',

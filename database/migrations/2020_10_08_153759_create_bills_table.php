@@ -24,6 +24,7 @@ class CreateBillsTable extends Migration
             $table->integer('certificate_id')->unsigned()->nullable();
             $table->integer('taxe_id')->unsigned()->nullable();
             $table->string('number_bill');
+            $table->string('number_certificate');
             $table->enum('class_bill',['Compra','Venta']);
             $table->string('faker_number_bill');
             $table->string('name_type_room');

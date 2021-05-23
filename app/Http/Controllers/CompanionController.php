@@ -39,7 +39,7 @@ class CompanionController extends Controller
 
 
     public function store(Request $request)
-    {     
+    {    
             if (!$request->ajax()) return redirect('/');
             $companions=Companions::create($request->all());
 
@@ -52,10 +52,14 @@ class CompanionController extends Controller
        		
             if (!$request->ajax()) return redirect('/');
 
-            $companions =  Companions::findOrFail($request->id) ;
+            $arrayCompanions = $request->companions;
 
-            $companions->temperature_exit_acomp = $request->temperature_exit_acomp;
-            $companions->save();
+            for ($i=0; $i > count(array($arrayCompanions)) ; $i++) {
+
+                $companions =  Companion::findOrFail($arrayCompanions[$i]['id']);
+                $companions->temperature_exit_acomp = $arrayCompanions[$i]['temperature_exit_acomp'];
+                $companions->save();
+            }
             
     }
 
@@ -68,7 +72,7 @@ class CompanionController extends Controller
             // $search =24;
             $valor  = 'certificate_id';
     
-            $companions = Companion::where($valor,$search )->orderBy('id', 'desc')->get();
+            $companions = Companion::where($valor,'=',$search )->orderBy('id', 'desc')->get();
   
   
          return [

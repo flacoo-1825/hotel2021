@@ -20,6 +20,7 @@ class Counter extends Model
         'end_ext',
         'number_buy',
         'end_buy',
-
+        'number_box',
+        'end_box',
     ];
 }

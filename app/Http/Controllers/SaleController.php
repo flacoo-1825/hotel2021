@@ -70,7 +70,7 @@ class SaleController extends Controller
         $number_reception = $request->number_reception;
 
        if ($listSale) {
-            for ($i=0; $i < count($listSale) ; $i++) {
+            for ($i=0; $i < count($listSale) ; $i++) { 
 
                 $sale =  Sale::findOrFail($listSale[$i]['id']);
                 $sale->number_bill_sales = $number_reception;

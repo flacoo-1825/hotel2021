@@ -91,6 +91,14 @@ class CounterController extends Controller
 
             break;
             };
+
+            case 8 : {
+
+                $counter->number_box = $request->number_box+1;
+                $counter->save();
+
+            break;
+            };
           
         }
        
@@ -138,5 +146,12 @@ class CounterController extends Controller
         if (!$request->ajax()) return redirect('/');
         $buy = counter::select('number_buy','end_buy')->get();
         return  $buy;
+    }
+    
+    public function searchBox(Request $request)
+    {   
+        if (!$request->ajax()) return redirect('/');
+        $box = counter::select('number_box','end_box')->get();
+        return  $box;
     }
 }

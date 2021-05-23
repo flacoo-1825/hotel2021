@@ -13,7 +13,7 @@ class CertificateController extends Controller
          
        	if (!$request->ajax()) return redirect('/');
          $search = $request->search;
-         $valor = $request->valor;
+         $valor = $request->valor; 
        
         if ($search==''){
             $certificates = Certificate::join('customers','certificates.client_id','=','customers.id')
@@ -21,7 +21,8 @@ class CertificateController extends Controller
                                 'certificates.number_certificate','certificates.cityDestination_certificate',
                                     'certificates.placabike_certificate','certificates.placaCar_certificate',
                                     'certificates.adults_certificate','certificates.children_certificate', 
-                                    'certificates.entry_certificate','certificates.exit_certificate',
+                                    'certificates.entry_certificate','certificates.time_exit_certificate',
+                                    'certificates.time_entry_certificate','certificates.exit_certificate',
                                     'certificates.observation_certificate', 'certificates.temperature_entry_client',
                                     'certificates.temperature_exit_client','customers.firstSurname_client',
                                     'customers.cedula_client','customers.email_client','customers.name_client',
@@ -35,7 +36,8 @@ class CertificateController extends Controller
                                         'certificates.number_certificate','certificates.cityDestination_certificate',
                                         'certificates.placabike_certificate','certificates.placaCar_certificate',
                                         'certificates.adults_certificate','certificates.children_certificate', 
-                                        'certificates.entry_certificate','certificates.exit_certificate',
+                                        'certificates.entry_certificate','certificates.time_exit_certificate',
+                                        'certificates.time_entry_certificate','certificates.exit_certificate',
                                         'certificates.observation_certificate', 'certificates.temperature_entry_client',
                                         'certificates.temperature_exit_client','customers.firstSurname_client',
                                         'customers.cedula_client','customers.email_client','customers.name_client',
@@ -100,6 +102,8 @@ class CertificateController extends Controller
             $certificates->children_certificate = $request->children_certificate;
             $certificates->entry_certificate = $request->entry_certificate;
             $certificates->exit_certificate = $request->exit_certificate;
+            $certificates->time_entry_certificate = $request->time_entry_certificate;
+            $certificates->time_exit_certificate = $request->time_exit_certificate;
             $certificates->observation_certificate = $request->observation_certificate;
             $certificates->save();
             
