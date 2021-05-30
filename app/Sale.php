@@ -10,6 +10,7 @@ class sale extends Model
         'bill_id' , 
         'checkbook_id', 
         'product_id' ,
+        'worker_id',
         'addition_id' ,  
         'taxe_id' , 
         'number_bill_sales' ,  

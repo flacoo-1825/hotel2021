@@ -3098,6 +3098,7 @@
                         'class_bill'    : 'Venta',
                         'name_type_room' : this.name_type_room,
                         'number_certificate' : this.number_certificate,
+                        'worker_id' : 1,
                         
 
             }).then(function (response) {

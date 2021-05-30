@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use App\Box;
 use DB;
 use App\Bill;
+use App\Sale;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -86,30 +87,33 @@ class BoxController extends Controller
                     ->select('id','number_box','open_efecty_box','download_box','created_at','description_box')
                     ->get();
 
-        // $ventasdia=DB::select('SELECT DATE_FORMAT(b.created_at,"%d/%m/%Y") as dia, sum(b.total_bill) as totaldia from bills b where b.class_bill="Venta" group by b.created_at order by day(b.created_at) desc limit 15');
-        // $ventasdia =  Bill::where([
-        //     ['created_at','=', $box[0]->created_at],
-        //     ['class_bill','=', 'Venta']
-        // ])
-        // ->sum('total_bill')
-        // ->get();
-        // $ventasdia =  DB::table('bills')->where([
-        //         ['created_at','=', $box[0]->created_at],
-        //         ['class_bill','=', 'Venta']
-        //     ])->sum('total_bill');
-        //      dd($ventasdia);
-        // return $box[0]->created_at;
-        // 
-        // $ventasdia =  DB::table('bills')->where('class_bill','=', 'Venta')->sum('total_bill');
-            // $dia =new Carbon();
-        // $ventasdia =  Bill::where([['created_at','=', $box[0]->created_at],
-        //         ['class_bill','=', 'Venta']])->sum('total_bill');
-        // $dato = $box[0]->created_at;
-        
-        // $ventasdia =  Bill::whereBetween('created_at',[$dato, $dia])->sum('total_bill');
-
-                
-        
-        // return $ventasdia;
+        $count = count($box);
+        $search = 'Recept';
+        $attribute = 'number_bill_sales';
+        // $rooms = Room::where($attrivute, 'like', '%'. $search . '%')->orderBy('id', 'asc')->paginate(10);
+        if ($count > 0) {
+            $day = Carbon::now()->toDateTimeString();
+            $day_created = Carbon::parse($box[0]->created_at)->toDateTimeString();
+            $sale_room_turne = Bill::where([
+                                ['worker_id', '=', $id],
+                                ['class_bill', '=', 'Venta']
+                            ])
+                        ->whereBetween('created_at', [$day_created, $day])
+                        ->sum('total_bill');
+            $sale_reception_turne = Sale::where([
+                                ['worker_id', $id],
+                                [$attribute, 'like', '%'. $search . '%']
+                            ])
+                            ->whereBetween('created_at', [$day_created, $day])
+                            ->sum('total_sales');
+            return  [
+                        'sale_reception_turne'=>$sale_reception_turne,
+                        'sale_room_turne'=>$sale_room_turne
+                    ];
+            // return  ['from'=>$day_created,
+            //         'to'=>$day];
+        }else{
+            return 'closed';
+        }
     }
 }

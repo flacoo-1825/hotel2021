@@ -87,7 +87,7 @@ class CategoryController extends Controller
 
       public function listCategoryActive(Request $request)
     {   
-         
+        
        if (!$request->ajax()) return redirect('/');
         
         $category = Category::where('condition_category','=','1')

@@ -43,7 +43,8 @@ class SaleController extends Controller
             if (!$request->ajax()) return redirect('/');
             // $sale=Sale::create($request->all());
             $listSale = $request->sale;
-            $number_facture = $request->number_facture;
+            $number_facture = $request->sale[0]['number_facture'];
+            $worker_id = 1;
 
             for ($i=0; $i < count($listSale) ; $i++) {
                 $sale = new Sale();
@@ -56,6 +57,7 @@ class SaleController extends Controller
                 $sale->dian_bill = 'No' ;
                 $sale->total_sales = $listSale[$i]['total'] ;
                 $sale->state_bill = 1 ;
+                $sale->worker_id = 1;
                 $sale->save();
             }
     }
@@ -80,7 +82,7 @@ class SaleController extends Controller
 
             for ($i=0; $i < count($listAdditional) ; $i++) {
 
-                // $sale = new Sale();
+                // $sale = new Sale(); 
                 // $sale->checkbook_id = NULL ;
                 // $sale->additional_id = $listAdditional[$i]['id'];
                 // $sale->taxe_id = NULL ;

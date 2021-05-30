@@ -189,7 +189,7 @@
           axios.get(url).then(function (response) {
             me.arrayBox = response.data;
             // console.log(me.arrayBox)
-            if (me.arrayBox == "") {
+            if (me.arrayBox == "closed") {
                 me.box = 'Closed';
             }else{
                 me.box = 'Open'

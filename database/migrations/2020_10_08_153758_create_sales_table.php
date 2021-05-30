@@ -17,6 +17,7 @@ class CreateSalesTable extends Migration
             $table->increments('id');
             $table->integer('checkbook_id')->unsigned()->nullable();
             $table->integer('product_id')->unsigned()->nullable();
+            $table->integer('worker_id')->unsigned()->nullable();
             $table->integer('additional_id')->unsigned()->nullable();
             $table->integer('day_id')->unsigned()->nullable();
             $table->integer('taxe_id')->unsigned()->nullable();
@@ -30,6 +31,7 @@ class CreateSalesTable extends Migration
             $table->timestamps();
 
             $table->foreign('product_id')->references('id')->on('products');
+            $table->foreign('worker_id')->references('id')->on('workers');
             $table->foreign('taxe_id')->references('id')->on('taxes');
             $table->foreign('checkbook_id')->references('id')->on('checkbooks');
             $table->foreign('additional_id')->references('id')->on('additionals');
