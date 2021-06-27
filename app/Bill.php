@@ -27,8 +27,10 @@ class Bill extends Model
         'total_bill',
         'state_bill',
         'class_bill',
+        'pay_bill',
         'description_bill',
-        'name_type_room'
+        'name_type_room',
+        'date_pay_bill'
     ];
 
     // public function products()

@@ -26,6 +26,8 @@ class CreateBillsTable extends Migration
             $table->string('number_bill');
             $table->string('number_certificate');
             $table->enum('class_bill',['Compra','Venta']);
+            $table->enum('pay_bill',['Efecty','Credit']);
+            $table->date('date_pay_bill')->nullable();
             $table->string('faker_number_bill');
             $table->string('name_type_room');
             $table->date('date_entry_bill')->nullable();

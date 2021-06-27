@@ -877,6 +877,22 @@
                                         </div>
                                         <input type="text" class="form-control"  v-model="time_exit_certificate"  placeholder="">
                                       </div>
+                                      <div class="col-sm-12 col-md-4 input-group">
+                                        <div class="input-group">
+                                          <label for="text-input ">Pago de factura</label>
+                                        </div>
+                                        <select class="form-control custom-select " v-model='pay_bill' >
+                                          <option value="0">Seleccione una opción</option>
+                                          <option value="Efecty">Contado</option>
+                                          <option value="Credit">Crédito</option>
+                                        </select>
+                                      </div>
+                                      <div class="col-sm-12 col-md-4 input-group" :class="pay_bill=='Credit'?'' : 'd-none'">
+                                        <div class="input-group">
+                                          <label for="text-input ">Fecha de pago</label>
+                                        </div>
+                                        <date-picker v-model="date_pay_bill"   :language="es" :lang="lang" valueType="format"></date-picker>
+                                      </div>
                                   </div>
                                   <hr/>
                                   <template v-if="counts > 0">
@@ -1462,6 +1478,8 @@
               events: [],
             },
             resp : 0,
+            pay_bill : 0,
+            date_pay_bill : new Date(),
             updateCertificates : [],
             counts : 0,
             updateCompanios : [],
@@ -2763,7 +2781,7 @@
                       case "temperature" :{
                           this.add6 = 1;
                           this.add = 0,
-                          this.titleModal = 'Acta de entrada';
+                          this.titleModal = 'Recuperación acta de entrada';
                           this.number_certificate = data['number_certificate'];
                           this.rooms_id ;
                           this.updateCompanios;
@@ -2775,6 +2793,7 @@
                           this.cityOrigin_certificate = '';
                           this.temperature_entry_client = '';
                           this.entry_certificate = '';
+                          this.pay_bill = this.pay_bill;
                           this.cityDestination_certificate = '';
                           this.name_client = data['name_client'];
                           this.name_type_room =  this.name_type_room;
@@ -3099,6 +3118,8 @@
                         'name_type_room' : this.name_type_room,
                         'number_certificate' : this.number_certificate,
                         'worker_id' : 1,
+                        'pay_bill' : this.pay_bill,
+                        'date_pay_bill' : this.date_pay_bill
                         
 
             }).then(function (response) {

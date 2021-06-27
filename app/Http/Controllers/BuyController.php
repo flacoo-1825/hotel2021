@@ -48,12 +48,14 @@ class BuyController extends Controller
             $provider_id = $request->provider_id;
             $date_pay = $request->date_pay;
             $number_bill = $request->number_bill;
+            $worker_id = 1;
 
             for ($i=0; $i < count($listBuy) ; $i++) { 
                 $buy = new Buy();
                 $buy->number_bill = $number_bill;
                 $buy->product_id = $listBuy[$i]['product_id'] ;
                 $buy->provider_id = $provider_id;
+                $buy->worker_id = $worker_id;
                 $buy->taxe_id = NULL ;
                 $buy->number_bill_buy = $number_bill_buy;
                 $buy->class_pay = $class_pay;

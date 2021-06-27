@@ -42,6 +42,7 @@ Vue.component('role', require('./components/Role.vue').default);
 Vue.component('spinner', require('./components/Spinner.vue').default);
 Vue.component('export', require('./components/Export.vue').default);
 Vue.component('box', require('./components/Box.vue').default);
+Vue.component('adminbox', require('./components/Adminbox.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -52,7 +53,7 @@ Vue.component('box', require('./components/Box.vue').default);
 const app = new Vue({
     el: '#app',
     data: {
-        indice: 26,
+        indice: 27,
     }
 });
 

@@ -106,7 +106,10 @@
                                     <a class="nav-link" href="#"><i class="fas fa-shopping-cart"></i> Compras</a>
                                 </li>
                                 <li class="nav-item" @click="indice=26">
-                                    <a class="nav-link" href="#"><i class="fas fa-toolbox"></i> caja</a>
+                                    <a class="nav-link" href="#"><i class="fas fa-toolbox"></i> Caja</a>
+                                </li>
+                                <li class="nav-item" @click="indice=27">
+                                    <a class="nav-link" href="#"><i class="fas fa-toolbox"></i><i class="fas fa-user-friends"></i> Admin caja</a>
                                 </li>
                             </ul>
                         </li>
@@ -228,6 +231,7 @@
             <companion v-if="indice==23"></companion>
             <export v-if="indice==25"></export>
             <box v-if="indice==26"></box>
+            <adminbox v-if="indice==27"></adminbox>
 
         </main>
     </div>

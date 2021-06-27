@@ -18,6 +18,7 @@ class CreateBuysTable extends Migration
             $table->string('number_bill')->nullable();
             $table->integer('product_id')->unsigned()->nullable();
             $table->integer('provider_id')->unsigned()->nullable();
+            $table->integer('worker_id')->unsigned()->nullable();
             $table->integer('taxe_id')->unsigned()->nullable();
             $table->string('number_bill_buy');
             $table->enum('class_pay',['Contado','Crédito'])->nullable();
@@ -31,6 +32,7 @@ class CreateBuysTable extends Migration
             $table->timestamps();
 
             $table->foreign('product_id')->references('id')->on('products');
+            $table->foreign('worker_id')->references('id')->on('workers');
             $table->foreign('provider_id')->references('id')->on('providers');
             $table->foreign('taxe_id')->references('id')->on('taxes');
         });

@@ -9,6 +9,7 @@ class Buy extends Model
     protected $fillable = [
     'number_bill',
     'product_id',
+    'worker_id',
     'provider_id',
     'taxe_id',
     'number_bill_buy',
@@ -20,5 +21,5 @@ class Buy extends Model
     'price_unit_buy',
     'total_buy',
     'state_buy',
-    ]; 
+    ];
 }

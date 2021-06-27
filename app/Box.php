@@ -17,6 +17,8 @@ class Box extends Model
         'state_box',
         'description_box',
         'open_efecty_box',
-        'efecty_soft_box'
+        'efecty_soft_box',
+        'sale_room',
+        'sale_reception',
         ];
 }

@@ -17,42 +17,48 @@
             <div class="card-body">
                 <!-- {{bill.total_bill | currency}} -->
                 <template v-if="box=='Open'">
-                    <form action="" method="post" enctype="multipart/form-data" class="form-horizontal" v-for="box in arrayBox" :Key="box.id">
+                    <form action="" method="post" enctype="multipart/form-data" class="form-horizontal">
                         <div class="row">
                             <div class="input-group input-group-sm mb-4 col-sm-12 col-md-6">
                                 <div class="input-group-prepend">
                                     <span class="input-group-text" id="inputGroup-sizing-sm">Base</span>
                                 </div>
-                                <label for="" class="form-control">{{box.open_efecty_box | currency}}</label>
+                                <label for="" class="form-control">{{box_data.open_efecty_box | currency}}</label>
                             </div>
                             <div class="input-group input-group-sm mb-4 col-sm-12 col-md-6">
                                 <div class="input-group-prepend">
                                     <span class="input-group-text" id="inputGroup-sizing-sm">Descargue</span>
                                 </div>
-                                <label for="" class="form-control">{{box.download_box | currency}}</label>
+                                <label for="" class="form-control">{{box_data.download_box | currency}}</label>
                             </div>
                             <div class="input-group input-group-sm mb-4 col-sm-12 col-md-6">
                                 <div class="input-group-prepend">
-                                    <span class="input-group-text" id="inputGroup-sizing-sm">efectivo</span>
+                                    <span class="input-group-text" id="inputGroup-sizing-sm">Venta habitación</span>
                                 </div>
-                                <label for="" class="form-control">{{box.efecty_soft_box | currency}}</label>
+                                <label for="" class="form-control">{{sale_room | currency}}</label>
+                            </div>
+                            <div class="input-group input-group-sm mb-4 col-sm-12 col-md-6">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="inputGroup-sizing-sm">Venta recepción</span>
+                                </div>
+                                <label for="" class="form-control">{{sale_reception | currency}}</label>
                             </div>
                             <div class="input-group input-group-sm mb-4 col-sm-12 col-md-6">
                                 <div class="input-group-prepend">
                                     <span class="input-group-text" id="inputGroup-sizing-sm">Credito</span>
                                 </div>
-                                <label for="" class="form-control">{{box.credit_box | currency}}</label>
+                                <label for="" class="form-control">{{credit_box | currency}}</label>
                             </div>
                             <div class="input-group input-group-sm mb-4 col-sm-12 col-md-6">
                                 <div class="input-group-prepend">
                                     <span class="input-group-text" id="inputGroup-sizing-sm">Compras</span>
                                 </div>
-                                <label for="" class="form-control">{{box.buy_box | currency}}</label>
+                                <label for="" class="form-control">{{buy_turne | currency}}</label>
                             </div>
                         </div>
                         <div class="form-group">
                             <h5>Observaciones : </h5>
-                            <label class="form-control" v-text="box.description_box"  rows="10"></label>
+                            <label class="form-control" v-text="box_data.description_box"  rows="10"></label>
                         </div>
                     </form>
                 </template>
@@ -99,15 +105,27 @@
                                 <template v-if="box=='Open'">
                                     <div class="input-group input-group-sm mb-4 col-sm-12 col-md-6">
                                         <div class="input-group-prepend">
-                                            <span class="input-group-text" id="inputGroup-sizing-sm">Efectivo en caja</span>
+                                            <span class="input-group-text" id="inputGroup-sizing-sm">Total venta recepción</span>
                                         </div>
-                                        <label for="" class="form-control">{{efecty_soft_box | currency}}</label>
+                                        <label for="" class="form-control">{{sale_reception | currency}}</label>
+                                    </div>
+                                    <div class="input-group input-group-sm mb-4 col-sm-12 col-md-6">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text" id="inputGroup-sizing-sm">Total venta estadia</span>
+                                        </div>
+                                        <label for="" class="form-control">{{sale_room | currency}}</label>
+                                    </div>
+                                    <div class="input-group input-group-sm mb-4 col-sm-12 col-md-6">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text" id="inputGroup-sizing-sm">Efectivo total en caja</span>
+                                        </div>
+                                        <label for="" class="form-control">{{sale_total_turne | currency}}</label>
                                     </div>
                                     <div class="input-group input-group-sm mb-4 col-sm-12 col-md-6">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text" id="inputGroup-sizing-sm">Efectivo de cierre</span>
                                         </div>
-                                        <input type="text" class="form-control" v-model="efecty_box"  aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
+                                        <input type="text" class="form-control" :class="alertEfecty" v-model="efecty_box"  aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
                                     </div>
                                     <div class="input-group input-group-sm mb-4 col-sm-12 col-md-6">
                                         <div class="input-group-prepend">
@@ -171,13 +189,36 @@
             modal : 0,
             titleModal : '',
             accion : 0,
-            arrayBox : [],
+            box_data : [],
+            sale_room : 0,
+            sale_reception : 0,
+            buy_turne : 0,
             number_box : '',
             number_box_update : 0,
+            sale_total_turne : 0,
           }
     },
     computed:{
-     
+        alertEfecty : function(){
+            let bg_efecty_box = '';
+            if(this.efecty_box===0){
+                bg_efecty_box = '';
+                return bg_efecty_box;
+            }
+            if(this.efecty_box == this.sale_total_turne){
+                bg_efecty_box = 'ifSuccess';
+                return bg_efecty_box;
+            }
+            if(this.efecty_box < this.sale_total_turne && this.efecty_box != 0){
+                bg_efecty_box = 'ifDanger';
+                return bg_efecty_box;
+            }
+            if(this.efecty_box > this.sale_total_turne && this.efecty_box != 0){
+                bg_efecty_box = 'ifWarning';
+                return bg_efecty_box;
+            }
+        }
+
     },
 
 
@@ -187,9 +228,12 @@
           let me=this;
           var url = 'box/search';
           axios.get(url).then(function (response) {
-            me.arrayBox = response.data;
-            // console.log(me.arrayBox)
-            if (me.arrayBox == "closed") {
+            me.box_data = response.data.box[0];
+            me.sale_reception = response.data.sale_reception_turne;
+            me.sale_room = response.data.sale_room_turne;
+            me.credit_box = response.data.credit_room_turne;
+            me.buy_turne = response.data.buy_turne;
+            if (me.box_data == 'closed') {
                 me.box = 'Closed';
             }else{
                 me.box = 'Open'
@@ -234,11 +278,15 @@
                     this.titleModal = 'Cierre de caja';
                     this.box = this.box;
                     this.accion = 2;
-                    this.efecty_box = this.efecty_box;
-                    this.number_box = this.arrayBox[0]['number_box'];
-                    this.open_efecty_box = this.arrayBox[0]['open_efecty_box'];
-                    this.description_box = this.arrayBox[0]['description_box'];
-                    this.download_box = this.arrayBox[0]['download_box'];
+                    this.efecty_box = 0;
+                    this.number_box = this.box_data.number_box;
+                    this.open_efecty_box = this.box_data.open_efecty_box;
+                    this.description_box = this.box_data.description_box;
+                    this.download_box = this.box_data.download_box;
+                    this.buy_turne = this.buy_turne;
+                    this.sale_reception = this.sale_reception;
+                    this.sale_room = this.sale_room;
+                    this.sale_total_turne = this.sale_room + this.sale_reception;
                     break;
 
                 };
@@ -351,14 +399,26 @@
 
 <style>
     .modal-content{
-    width:100% ! important;
-    position:  absolute ! important; 
+        width:100% ! important;
+        position:  absolute ! important; 
     }
     .mostrar{
-    display:  list-item ! important;  
-    opacity:  1 ! important;
-    position:  absolute ! important;
-    background-color: #3c29297a !important;
+        display:  list-item ! important;  
+        opacity:  1 ! important;
+        position:  absolute ! important;
+        background-color: #3c29297a !important;
+    }
+    .ifSuccess{
+        background:#5ae922a8;
+        color: #000;
+    }
+    .ifDanger{
+        background:#e6222ca8;
+        color: #fff;
+    }
+    .ifWarning{
+        background:#ffc107;
+        color: rgb(12, 12, 12);
     }
 
 

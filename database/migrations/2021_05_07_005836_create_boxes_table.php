@@ -18,6 +18,8 @@ class CreateBoxesTable extends Migration
             $table->integer('worker_id')->unsigned();
             $table->string('number_box');
             $table->double('open_efecty_box', 8, 1)->nullable();
+            $table->double('sale_room', 8, 1)->nullable();
+            $table->double('sale_reception', 8, 1)->nullable();
             $table->double('efecty_box', 8, 1)->nullable();
             $table->double('efecty_soft_box', 8, 1)->nullable();
             $table->double('credit_box', 8, 1)->nullable();
