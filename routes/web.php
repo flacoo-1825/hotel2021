@@ -192,6 +192,7 @@ Route::put('day/inactivo','DayController@inactivo')->name('day.inactivo');
 Route::get('box','BoxController@index')->name('box.index');
 Route::post('box/register','BoxController@store')->name('box.store');
 Route::put('box/update','BoxController@update')->name('box.update');
+Route::put('box/toChecked','BoxController@toChecked')->name('box.toChecked');
 Route::get('box/listDays','BoxController@listDays')->name('box.listDays');
 Route::get('box/search','BoxController@searchBox')->name('box.search');
 

@@ -28,6 +28,7 @@ class CreateBoxesTable extends Migration
             $table->double('difference_box', 8, 1)->nullable();
             $table->enum('state_box',['open','closed','pause']);
             $table->text('description_box')->nullable();
+            $table->boolean('condition_box')->default(1);
             $table->timestamps();
 
 

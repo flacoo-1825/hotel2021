@@ -3,16 +3,16 @@
     <div class="card">
         <template v-if="facture == 0">
           <div class="card-header">
-            <i class="fas fa-chevron-right fa5x"></i> Ventas habitación
+            <i class="fas fa-chevron-right fa5x"></i> Administración de caja
           </div>
           <div class="card-body">
             <div class="form-group row">
                 <div class="col-md-6">
                     <div class="input-group">
                         <select class="form-control col-md-3" v-model="valor">
-                          <option value="number_bill">Factura</option>
+                          <option value="number_box">Ref</option>
                         </select>
-                        <input type="text" v-model="search" @keyup="listBills(1,search,valor)"  class="form-control" placeholder="Texto a buscar">
+                        <input type="text" v-model="search" @keyup="listBoxes(1,search,valor)"  class="form-control" placeholder="Texto a buscar">
                         <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i> Buscar</button>
                     </div>
                 </div>
@@ -20,19 +20,48 @@
             <table class="table table-bordered table-striped table-sm">
                 <thead>
                     <tr>
-                        <th>Factura</th>
+                      <th class="text-center">tipo de alerta</th>
+                      <th class="text-center">Color alerta</th>
+                    </tr>
+                </thead>
+                <tbody >
+                    <tr>
+                      <td>alerta normal</td>
+                      <td class="d-flex justify-content-center"><div class="alertBoxSuccess"></div></td>
+                    </tr>
+                    <tr>
+                      <td>alerta descuadre en contra</td>
+                      <td class="d-flex justify-content-center"><div class="alertBoxDanger"></div></td>
+                    </tr>
+                    <tr>
+                      <td>alerta descuadre a favor</td>
+                      <td class="d-flex justify-content-center"><div class="alertBoxWarning"></div></td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="table table-bordered table-striped table-sm mt-5">
+                <thead>
+                    <tr>
+                        <th>Tipo de alerta</th>
+                        <th>Ref caja</th>
                         <th>total</th>
-                        <th>Detalles factura</th>
+                        <th>Detalles Caja</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr class="text-center" v-for="bill in arrayBill" :Key="bill.id">
-                        <td  v-text="bill.number_bill"></td>
-                        <td>{{bill.total_bill | currency}}</td>
+                    <tr class="text-center" v-for="box in arrayBox" :Key="box.id" :class="box.condition_box == 1 ? 'bg-secondary' : ''">
+                        <td class="d-flex justify-content-center"><div :class="alertBox(box.efecty_box,box.efecty_soft_box)"></div></td>
+                        <td  v-text="box.number_box"></td>
+                        <td>{{box.total_bill | currency}}</td>
                         <td>
-                          <a href="#" class="btn  btn-warning btn-sm p-1" title="Ver" @click="openModal('bill_detail',bill)" >
-                            <i class="far fa-eye"></i> Ver Detalle
-                          </a>
+                          <span>
+                            <a href="#" class="btn  btn-warning btn-sm p-1" title="Ver" @click="compareBox(box)" >
+                              <i class="far fa-eye"></i> Ver Detalle
+                            </a>
+                          </span>
+                          <span :class="box.state_box != 'open'? 'd-none' : ''">
+                            <h5 title="El proceso"><span class="text-dark badge badge-success" > En proceso </span></h5>
+                          </span>
                         </td>
                     </tr>
                 </tbody>
@@ -53,170 +82,82 @@
           </div>
         </template>
         <template v-if="facture == 1">
-          <div class="card-header">
-              <i class="fas fa-chevron-right fa5x"></i> Factura de habitación
-              <button type="button" class="btn btn-danger"  @click="closedModal('bill_detail')">
-                  <i class="far fa-times-circle"></i>&nbsp;Cerrar
-              </button>
+          <div class="card">
+            <div class="card-header">
+                <i class="fas fa-chevron-right fa5x"></i> Cajas a comparar
+                  <button type="button" class="btn btn-danger"  @click="closedModal('closedCompare')">
+                      <i class="fas fa-times-circle"></i>&nbsp;Cerrar
+                  </button>
+                  <button :class="isChecked" type="button" class="btn btn-success mr-1"  @click="toChecked()">
+                      <i class="fas fa-plus-circle"></i>&nbsp;marcar como revisada
+                  </button>
+            </div>
           </div>
-            <div class="card-body">
-              <div class="container-fluid mb-5">
+          <form action="" method="post" enctype="multipart/form-data" class="form-horizontal p-3">
+            <div  class="row">
+              <div class="col-sm-6" v-for="box in arrayCompare" :Key="box.id" :class="box.id == id_compare ?'bg-secondary':''" >
                 <div class="row">
-                  <div class="col-md-8 mb-2">
-                  </div>
-                  <div class="col-md-4 mb-2 certificate  input-group">
-                      <label for="text-input ">Factura</label>
-                      <h2 v-text="billDetail.number_bill"></h2>
-                  </div>
-                </div>
-                <div class="row mb-4">
-                    <div class="col-sm-12 col-md-12 mb-2 text-center certificate">
-                        <h3>Información del huéped</h3>
+                    <div class="mb-4 col-sm-12 col-md-12  ">
+                        <h2 for="" class=" text-danger text-center" v-text="box.number_box"></h2>
                     </div>
-                </div>
-                <div class="row">
-                  <div class="col-sm-12 col-md-4 mb-2 input-group">
-                      <label for="text-input ">Cliente :
-                        <span v-text="billDetail.name_client">
-                          </span>
-                          <span v-text="billDetail.firstSurname_client">&nbsp
-                          </span>
-                          <span v-text="billDetail.secondSurname_client">&nbsp
-                          </span>
-                      </label>
-                  </div>
-                  <div class="col-sm-12 col-md-4 mb-2 input-group">
-                      <label for="text-input ">Celular : <span v-text="billDetail.phone_client"></span></label>
-                  </div>
-                  <div class="col-sm-12 col-md-4 mb-2 input-group">
-                      <label for="text-input ">Número de documento : <span v-text="billDetail.cedula_client"></span></label>
-                  </div>
-                   <div class="col-sm-12 col-md-4 mb-2 input-group">
-                      <label for="text-input ">Nacionalidad : <span v-text="billDetail.nationality_client"></span></label>
-                  </div>
-                </div>
-                <div class="row mb-4">
-                    <div class="col-md-12 mb-2 text-center certificate">
-                        <h3>Detalle habitación</h3>
+                    <div class="input-group input-group-sm mb-4 col-sm-12 col-md-6">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="inputGroup-sizing-sm">Base</span>
+                        </div>
+                        <label for="" class="form-control">{{ box.open_efecty_box | currency}}</label>
                     </div>
-                </div>
-                <div class="row">
-                  <div class="col-md-4 mb-2 input-group">
-                      <label for="text-input ">Habitación : <span v-text="billDetail.number"></span></label>
-                  </div>
-                  <div class="col-md-4 mb-2 input-group">
-                      <label for="text-input ">Tipo habitación : <span v-text="billDetail.name_type_room"></span></label>
-                  </div>
-                  <div class="col-md-4 mb-2 input-group">
-                      <label for="text-input ">Precio : <span >{{billDetail.price | currency}}</span></label>
-                  </div>
-                </div>
-                <hr>
-                <div class="row mb-4 mt-3">
-                    <div class="col-md-12 mb-2 text-center certificate">
-                        <h3>Días de estadía</h3>
+                    <div class="input-group input-group-sm mb-4 col-sm-12 col-md-6">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="inputGroup-sizing-sm">Descargue</span>
+                        </div>
+                        <label for="" class="form-control">{{box.download_box | currency}}</label>
                     </div>
-                </div>
-                <div class="row">
-                  <table class="table table-bordered table-striped table-sm">
-                    <thead >
-                        <tr>
-                            <th class="text-center">Fecha</th>
-                            <th class="text-center">Tipo de ventilación</th>
-                            <th class="text-center">precio día/hora</th>
-                            <th class="text-center">total</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr class="text-center" v-for="day in daysDetail" :Key="day.id">
-                          <td v-text="day.date_day"></td>
-                          <td  v-text="day.type_frozen_day"></td>
-                          <td>{{day.price_day + day.price_hour | currency}}</td>
-                          <td>{{day.total_day | currency}}</td>
-                        </tr>
-                    </tbody>
-                  </table>
-                  <table class="table table-hover  table-sm text-center" >
-                      <thead >
-                        <tr class="d-flex justify-content-end">
-                          <th>Total días</th>
-                          <th class="bg-warning">{{billDetail.total_days | currency}}</th>
-                        </tr>
-                      </thead>
-                    </table>
-                </div>
-                <hr>
-                <div class="row mb-4 mt-3">
-                    <div class="col-md-12 mb-2 text-center certificate">
-                        <h3>Productos consumidos</h3>
+                    <div class="input-group input-group-sm mb-4 col-sm-12 col-md-6">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="inputGroup-sizing-sm">Venta habitación</span>
+                        </div>
+                        <label for="" class="form-control">{{box.sale_room | currency}}</label>
                     </div>
-                </div>
-                <div class="row">
-                  <table class="table table-bordered table-striped table-sm">
-                    <thead >
-                        <tr>
-                            <th class="text-center">Producto</th>
-                            <th class="text-center">cantidad</th>
-                            <th class="text-center">total</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr class="text-center" v-for="product in salesDetail" :Key="product.id">
-                          <td v-text="product.name_product"> </td>
-                          <td  v-text="product.quantity_sales"></td>
-                          <td>{{product.total_sales | currency}}</td>
-                        </tr>
-                    </tbody>
-                  </table>
-                  <table class="table table-hover  table-sm text-center" >
-                    <thead >
-                      <tr class="d-flex justify-content-end">
-                        <th>Total productos</th>
-                        <th class="bg-warning">{{billDetail.total_products | currency}}</th>
-                      </tr>
-                    </thead>
-                  </table>
-                </div>
-                <hr>
-                <div class="row mb-4 mt-3">
-                    <div class="col-md-12 mb-2 text-center certificate">
-                        <h4>Servicios adicionales</h4>
+                    <div class="input-group input-group-sm mb-4 col-sm-12 col-md-6">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="inputGroup-sizing-sm">Venta total</span>
+                        </div>
+                        <label for="" class="form-control">{{box.efecty_soft_box | currency}}</label>
                     </div>
-                </div>
-                <div class="row">
-                  <table class="table table-bordered table-striped table-sm">
-                    <thead >
-                        <tr>
-                            <th class="text-center">Producto</th>
-                            <th class="text-center">total</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr class="text-center" v-for="additional in additionalsDetail"  :Key="additional.id">
-                          <td v-text="additional.name_additional"></td>
-                          <td>{{additional.price_additional | currency}}</td>
-                        </tr>
-                    </tbody>
-                  </table>
-                  <table class="table table-hover  table-sm text-center" >
-                    <thead >
-                      <tr class="d-flex justify-content-end">
-                        <th>Total adicionales </th>
-                        <th class="bg-warning">{{billDetail.total_additionals | currency}}</th>
-                      </tr>
-                    </thead>
-                  </table>
-                  <table class="table table-hover  table-sm text-center" >
-                    <thead >
-                      <tr class="d-flex justify-content-end">
-                        <th>Total fatura</th>
-                        <th class="bg-success">{{billDetail.total_bill | currency}}</th>
-                      </tr>
-                    </thead>
-                  </table>
+                    <div class="input-group input-group-sm mb-4 col-sm-12 col-md-6">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="inputGroup-sizing-sm">Diferencia de venta</span>
+                        </div>
+                        <label for="" class="form-control">{{box.difference_box | currency}}</label>
+                    </div>
+                    <div class="input-group input-group-sm mb-4 col-sm-12 col-md-6">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="inputGroup-sizing-sm">Venta recepción</span>
+                        </div>
+                        <label for="" class="form-control">{{box.sale_reception | currency}}</label>
+                    </div>
+                    <div class="input-group input-group-sm mb-4 col-sm-12 col-md-6">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="inputGroup-sizing-sm">Credito</span>
+                        </div>
+                        <label for="" class="form-control">{{box.credit_box | currency}}</label>
+                    </div>
+                    <div class="input-group input-group-sm mb-4 col-sm-12 col-md-6">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="inputGroup-sizing-sm">Compras</span>
+                        </div>
+                        <label for="" class="form-control">{{box.buy_turne | currency}}</label>
+                    </div>
+                    <div class="input-group input-group-sm mb-4 col-sm-12 col-md-12">
+                      <div class="input-group-prepend">
+                          <span class="input-group-text" id="inputGroup-sizing-sm">Observaciones</span>
+                      </div>
+                      <textarea class="form-control" disabled rows="10" v-text="box.description_box"></textarea>
+                    </div>
                 </div>
               </div>
             </div>
+          </form>
         </template>
         
     </div>
@@ -225,9 +166,6 @@
 
 
 <script>
-  import DatePicker from 'vue2-datepicker';
-  import 'vue2-datepicker/index.css';
-  import {es}  from 'vue2-datepicker/locale/es';
   import VueCurrencyFilter from 'vue-currency-filter'
   Vue.use(VueCurrencyFilter, {
     symbol: '$', // El símbolo, por ejemplo €
@@ -249,13 +187,15 @@
                     monthBeforeYear: false,
             },
             facture  : 0,
+            id_compare : 0,
+            arrayCompare : [],
             name_bill : '',
             total_bills : '',
             desactivar : 0,
-            arrayBill: [],
+            arrayBox: [],
             arrayLinksActive : [],
-            bill : '',
-            number_bill : '',
+            box : '',
+            number_box : '',
             billDetail : [],
             daysDetail : [],
             additionalsDetail : [],
@@ -267,7 +207,7 @@
             accion : 0,
             bill_id : 0,
             search:'',
-            valor : 'number_bill',
+            valor : 'number_box',
             arrayError : [],
             error : [],
             pagination : {
@@ -282,6 +222,23 @@
           }
     },
     computed:{
+        isChecked : function(){
+          let toCheck = '';
+          if(this.arrayCompare.length>1){
+            if(this.arrayCompare[1]['condition_box'] == 0){
+              toCheck = 'd-none';
+            }else{
+              toCheck = ''
+            }
+          }else{
+            if(this.arrayCompare[0]['condition_box'] == 0){
+              toCheck = 'd-none';
+            }else{
+              toCheck = ''
+            }
+          }
+          return toCheck;
+        },
         //muestra la pagina activa
         isActived: function(){
             return this.pagination.current_page;
@@ -307,83 +264,153 @@
                 pagesArray.push(from);
                 from++;
             }
-            return pagesArray;             
+            return pagesArray;
 
-        }
+        },
+        
     },
 
 
     methods : {
 
-        listBills(page,search,valor){
-          let me=this;
-          var url = 'bill?page=' + page + '&search='+ search + "&valor=" + valor;
-          axios.get(url).then(function (response) {
-              var respuesta= response.data;
-              me.arrayBill = respuesta.bills.data;
-              me.pagination= respuesta.pagination;
-            // console.log(response);
+      alertBox(efecty_box,efecty_soft_box){
+        let valor = '';
+        if(efecty_soft_box == efecty_box){
+          valor = 'alertBoxSuccess';
+        }else if(efecty_soft_box > efecty_box){
+          valor = 'alertBoxDanger';
+        }else{
+          valor = 'alertBoxWarning'
+        }
+        return valor;
+      },
 
-          })
-            .catch(function (error) {
-              console.log(error);
+      listBoxes(page,search,valor){
+        let me=this;
+        var url = 'box?page=' + page + '&search='+ search + "&valor=" + valor;
+        axios.get(url).then(function (response) {
+            var respuesta= response.data;
+            me.arrayBox = respuesta.boxes.data;
+            me.pagination= respuesta.pagination;
+          // console.log(response);
+
+        })
+          .catch(function (error) {
+            console.log(error);
+          });
+      },
+
+      detalleBills(id_box){
+        let me=this;
+        var url = 'box/billDetail?id_box='+id_box;
+        axios.get(url).then(function (response) {
+            me.billDetail = response.data.billDetail[0];
+            me.daysDetail = response.data.days;
+            me.salesDetail = response.data.sales;
+            me.additionalsDetail = response.data.additionals;
+            //  console.log( me.billDetail);
+            //  console.log( me.daysDetail);
+            //  console.log( me.salesDetail);
+            //  console.log( me.additionalsDetail);
+
+        })
+          .catch(function (error) {
+            console.log(error);
+          });
+      },
+
+      toChecked(){
+        console.log(this.arrayCompare)
+        let me = this;
+        let idChange = '';
+        var url = 'box/toChecked';
+        if(me.arrayCompare.length>1){
+          idChange = this.arrayCompare[1]['id']
+        }else{
+          idChange = this.arrayCompare[0]['id']
+        }
+        axios.put(url,{
+            'id' : idChange,
+            'condition_box' : 0,
+
+        }).then(function (response) {
+              Swal.fire({
+              position: 'center',
+              icon: 'success',
+              title: 'Caja revisada!',
+              showConfirmButton: false,
+              timer: 1500
             });
-        },
-
-        detalleBills(id_bill){
-          let me=this;
-          var url = 'bill/billDetail?id_bill='+id_bill;
-          axios.get(url).then(function (response) {
-              me.billDetail = response.data.billDetail[0];
-              me.daysDetail = response.data.days;
-              me.salesDetail = response.data.sales;
-              me.additionalsDetail = response.data.additionals;
-              //  console.log( me.billDetail);
-              //  console.log( me.daysDetail);
-              //  console.log( me.salesDetail);
-              //  console.log( me.additionalsDetail);
-
+              me.facture = 0;
+              me.arrayCompare = [];
+              me.listBoxes(1,me.search,me.valor);
           })
-            .catch(function (error) {
-              console.log(error);
-            });
-        },
+          .catch(function (error) {
+                console.log(error);
+          });
+      },
 
-        cambiarPagina(page,search,valor){
-          let me = this;
-          //Actualiza la página actual
-          me.pagination.current_page = page;
-          //Envia la petición para visualizar la data de esa página
-          me.listBills(page,search,valor);
-        },
+      cambiarPagina(page,search,valor){
+        let me = this;
+        //Actualiza la página actual
+        me.pagination.current_page = page;
+        //Envia la petición para visualizar la data de esa página
+        me.listBoxes(page,search,valor);
+      },
 
-        openModal(accion, data = [] ){
+      openModal(accion, data = [] ){
 
           switch(accion){
 
-              case  "bill_detail" : {
+              case  "box_detail" : {
                 this.facture = 1;
-                this.id_bill = data['id'];
-                this.detalleBills(this.id_bill);
+                this.arrayCompare = data;
               }
           }
 
       },
 
-        closedModal(accion){
-          switch(accion){
+      closedModal(accion){
+        switch(accion){
 
-              case  "bill_detail" : {
-                this.facture = 0;
-              }
+            case  "bill_detail" : {
+              this.facture = 0;
+              break;
+            };
+            case "closedCompare" :{
+              this.facture = 0;
+              this.arrayCompare = [];
+
+            }
+        }
+      },
+      compareBox(box){
+        let id_box = box.id-1;
+        let counter = 0;
+        
+        this.id_compare = box.id;
+        this.arrayCompare = [];
+        if(id_box == 0){
+          this.arrayCompare.push(box);
+          
+        }else{
+          while(this.arrayBox.length > counter && counter >= 0){
+            if(this.arrayBox[counter]['id'] == id_box){
+              this.arrayCompare.push(this.arrayBox[counter]);
+              this.arrayCompare.push(box);
+              counter = -2;
+            }
+            counter ++;
           }
-        },
+        }
+        this.openModal('box_detail',this.arrayCompare);
+      }
 
     },
 
     mounted() {
 
-        this.listBills(1,this.search,this.valor);
+        this.listBoxes(1,this.search,this.valor);
 
     }
   }
@@ -413,6 +440,25 @@
 
     .form_certificate{
       overflow: auto;
+    }
+
+    .alertBoxSuccess{
+       background: rgba(26, 252, 18, 0.781);
+       width: 30px;
+       height: 30px;
+       border-radius: 50%;
+    }
+    .alertBoxDanger{
+       background: rgb(247, 9, 9);
+       width: 30px;
+       height: 30px;
+       border-radius: 50%;
+    }
+    .alertBoxWarning{
+       background: rgb(250, 236, 39);
+       width: 30px;
+       height: 30px;
+       border-radius: 50%;
     }
 
 

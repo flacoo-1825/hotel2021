@@ -20,5 +20,6 @@ class Box extends Model
         'efecty_soft_box',
         'sale_room',
         'sale_reception',
+        'condition_box',
         ];
 }

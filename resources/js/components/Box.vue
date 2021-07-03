@@ -233,6 +233,8 @@
             me.sale_room = response.data.sale_room_turne;
             me.credit_box = response.data.credit_room_turne;
             me.buy_turne = response.data.buy_turne;
+              console.log(me.box_data);
+
             if (me.box_data == 'closed') {
                 me.box = 'Closed';
             }else{
@@ -352,7 +354,7 @@
                 var url = 'box/update';
                 axios.put(url,{
 
-                    'id' : this.arrayBox[0]['id'],
+                    'id' : this.box_data.id,
                     'efecty_box'  : this.efecty_box,
                     'credit_box'  : this.credit_box,
                     'buy_box'  : this.buy_box,

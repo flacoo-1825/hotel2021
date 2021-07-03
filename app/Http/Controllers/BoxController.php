@@ -16,9 +16,29 @@ class BoxController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        if (!$request->ajax()) return redirect('/');
+        $search = $request->search;
+        $valor = $request->valor;
+        if ($search==''){
+            $boxes = Box::orderBy('id', 'desc')->paginate(10);
+        }
+        else{
+            $boxes = Box::where($valor, 'like', '%'. $search . '%')->orderBy('id', 'desc')->paginate(10);
+        }
+
+        return [
+                'pagination'      => [
+                'total'              => $boxes->total(),
+                'current_page' => $boxes->currentPage(),
+                'per_page'       => $boxes->perPage(),
+                'last_page'      => $boxes->lastPage(),
+                'from'              => $boxes->firstItem(),
+                'to'                  => $boxes->lastItem(),
+            ],
+            'boxes' => $boxes
+        ];
     }
     /**
      * Store a newly created resource in storage.
@@ -32,23 +52,6 @@ class BoxController extends Controller
         $box = Box::create($request->all());
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        // 
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
 
     public function update(Request $request)
     {
@@ -65,20 +68,16 @@ class BoxController extends Controller
 
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
+    public function ToChecked(Request $request)
     {
-        //
-    }
+        $box = Box::findOrFail($request->id);
+        $box->condition_box = $request->condition_box;
+        $box->save();
 
+    }
     public function searchBox(Request $request)
     {
-    //    if (!$request->ajax()) return redirect('/');
+        if (!$request->ajax()) return redirect('/');
         $id = 1;
 
         $box = Box::where([
