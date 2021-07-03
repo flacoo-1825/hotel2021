@@ -28,6 +28,7 @@
         "@fullcalendar/interaction": "^5.3.1",
         "@fullcalendar/vue": "^5.3.1",
         "ajv": "^6.12.6",
+        "chart.js": "^3.4.0",
         "vue-currency-filter": "^5.2.0",
         "vue2-datepicker": "^3.6.2"
     }
