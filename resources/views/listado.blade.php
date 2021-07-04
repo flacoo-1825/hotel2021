@@ -199,6 +199,9 @@
                             </li>
                         </ul>
                     </li>
+                    <li class="nav-item" @click="indice=28">
+                        <a class="nav-link" href="#"><i class="fas fa-chart-pie"></i> Panel Principal </a>
+                    </li>
                 </ul>
             </nav>
             <button class="sidebar-minimizer brand-minimizer" type="button"></button>
@@ -232,6 +235,7 @@
             <export v-if="indice==25"></export>
             <box v-if="indice==26"></box>
             <adminbox v-if="indice==27"></adminbox>
+            <panel v-if="indice==28"></panel>
 
         </main>
     </div>
