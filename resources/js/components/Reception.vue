@@ -36,6 +36,18 @@
                                 </div>
                               </div>
                             </template>
+                            <template v-else-if="room.state=='Mantenimiento'">
+                              <div class=" m-1 mantenimiento" @click="openModal('room','maintenance')">
+                                <div class="card-body p-3 d-flex align-items-center " :class='room.state'>
+                                  <i class="fas fa-bed  p-3  mr-3"></i>
+                                  <div class="text-center">
+                                    <h3 v-text="room.state"></h3>
+                                    <h2 v-text="room.number"></h2>
+                                    <h5 class="text-value-sm text-black" v-text="room.name_type_room"></h5>
+                                  </div>
+                                </div>
+                              </div>
+                            </template>
                             <template v-else>
                               <div @click="openModal('room','edit',room)">
                               <!-- <div @click="factura=1,room"> -->
@@ -2440,7 +2452,6 @@
                   room = me.dataRoom;
                   me.search_days();
                   me.closeModal('days');
-                  console.log(room);
                   // me.openModal('room','edit',room);
               })
               .catch(function (error) {
@@ -2470,7 +2481,7 @@
               case  "room" : {
                   switch(accion){
                       case "create" : {
-                          console.log(data);
+                          // console.log(data);
 
                           this.search_check();
                           this.modal = 1;
@@ -2524,6 +2535,15 @@
                           break;
 
                       };
+
+                      case "maintenance" :{
+                        Swal.fire(
+                          'No la puedes usar',
+                          '!sigue en mantenimiento!',
+                          'error'
+                        )
+                        break;
+                      }
 
                       case "certificate" :{
                           this.search_certificate();
@@ -3095,31 +3115,35 @@
         },
         registerBill(answer){
             this.answer = answer;
-              // console.log(answer);
+            if (this.pay_bill == 'Efecty') {
+              this.date_pay_bill = this.exit_certificate;
+            }else{
+              this.date_pay_bill = this.date_pay_bill;
+            }
             let me = this;
             var url  = 'bill/register';
             axios.post(url,{
-
-                        'customer_id' :    1,
-                        'room_id' :    this.rooms_id,
-                        'certificate_id' :   1,
-                        'taxe_id'    : null,
-                        'number_bill'    : this.number_ticket,
-                        'faker_number_bill'    : this.number_facture,
-                        'date_entry_bill'    : null,
-                        'date_exit_bill'    : null,
-                        'dian_bill'    : answer,
-                        'total_products'    : this.total_product_sale,
-                        'total_days'    : this.total_days,
-                        'total_additionals'    : this.total_additionals,
-                        'total_bill'    : this.total_bill,
-                        'state_bill'    : 1,
-                        'class_bill'    : 'Venta',
-                        'name_type_room' : this.name_type_room,
-                        'number_certificate' : this.number_certificate,
-                        'worker_id' : 1,
-                        'pay_bill' : this.pay_bill,
-                        'date_pay_bill' : this.date_pay_bill
+              
+              'customer_id' :    1,
+              'room_id' :    this.rooms_id,
+              'certificate_id' :   1,
+              'taxe_id'    : null,
+              'number_bill'    : this.number_ticket,
+              'faker_number_bill'    : this.number_facture,
+              'date_entry_bill'    : null,
+              'date_exit_bill'    : null,
+              'dian_bill'    : answer,
+              'total_products'    : this.total_product_sale,
+              'total_days'    : this.total_days,
+              'total_additionals'    : this.total_additionals,
+              'total_bill'    : this.total_bill,
+              'state_bill'    : 1,
+              'class_bill'    : 'Venta',
+              'name_type_room' : this.name_type_room,
+              'number_certificate' : this.number_certificate,
+              'worker_id' : 1,
+              'pay_bill' : this.pay_bill,
+              'date_pay_bill' : this.date_pay_bill
                         
 
             }).then(function (response) {
@@ -3572,6 +3596,45 @@
     }
 
     .Ocupada:hover h3{
+      color: #000;
+    }
+
+
+    .Mantenimiento{
+      border: 1px solid rgba(253, 165, 50, 0.859) ;
+      /* border: 1px solid #e0e5ec;  */
+      border-radius: 5%;
+      color:rgba(253, 165, 50, 0.859) ;
+      box-shadow: 8px 8px 16px rgba(165,177,198, 0.8),
+	    -8px -8px 16px rgba(255,255,255,0.8);
+      -webkit-transition: all .3s ease;
+      -moz-transition: all .3s ease;
+      -ms-transition: all .3s ease;
+      -o-transition: all .3s ease;
+      transition: all .3s ease;
+    }
+
+    .Mantenimiento i{
+      font-size: 45px;
+      color:rgba(253, 165, 50, 0.859);
+    }
+
+    .Mantenimiento h3{
+      font-size: 24px;
+      color:rgba(253, 165, 50, 0.859);
+    }
+
+     .Mantenimiento:hover{
+      background-color:rgba(253, 165, 50, 0.759);
+      color: #000;
+      transform: scaleY(1.1);
+    }
+
+    .Mantenimiento:hover i{
+      color:#000 ;
+    }
+
+    .Mantenimiento:hover h3{
       color: #000;
     }
 

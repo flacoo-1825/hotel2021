@@ -195,6 +195,8 @@ Route::put('box/update','BoxController@update')->name('box.update');
 Route::put('box/toChecked','BoxController@toChecked')->name('box.toChecked');
 Route::get('box/listDays','BoxController@listDays')->name('box.listDays');
 Route::get('box/search','BoxController@searchBox')->name('box.search');
+Route::get('box/firstPanel','BoxController@firstPanel')->name('box.firstPanel');
+Route::get('box/arrayMonths','BoxController@arrayMonths')->name('box.arrayMonths');
 
 Auth::routes();
 

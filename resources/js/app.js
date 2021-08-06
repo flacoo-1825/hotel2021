@@ -43,6 +43,8 @@ Vue.component('export', require('./components/Export.vue').default);
 Vue.component('box', require('./components/Box.vue').default);
 Vue.component('adminbox', require('./components/Adminbox.vue').default);
 Vue.component('panel', require('./components/Panel.vue').default);
+Vue.component('linec', require('./components/Linec.vue').default);
+Vue.component('bar', require('./components/bar.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
